@@ -25,11 +25,12 @@ class Mycog(commands.Cog):
             cur.execute("SELECT * FROM quotes")
             rows = cur.fetchall()
             found = 0
+            name = '{}'.format(row[7])
             for row in rows:
                 if row[1] == ctx.message.guild.id:
                     numb = row[2]
                     if '{}'.format(numb) == '{}'.format(word):
-                        name = '{}'.format(row[7])
+                        
                         url = ''
                         addedby = '?'
                         img = ''
@@ -77,18 +78,18 @@ class Mycog(commands.Cog):
             url = ''
             addedby = '?'
             check = 0
+            name = '{}'.format(row[7])
             for row in rows:
                 if row[1] == ctx.message.guild.id:
                     if '{}'.format(check) == '{}'.format(randval):
                         for member in ctx.message.guild.members:
-                            name = '{}'.format(row[7])
                             if row[6] == member.id:
                                 name = '{}'.format(member.display_name)
                                 url = member.avatar_url
                             if row[5] == member.id:
                                 addedby = '{}'.format(member.display_name)
                         emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]), colour = 0x00ff00)
-                        emb.set_footer(text = 'Added by: {}'.format(addedby))
+                        emb.set_footer(text = 'Added by: {} | Quote ID: {}'.format(addedby, row[2]))
                         if row[10] != None:
                             emb.set_image(url='{}'.format(row[10]))
                         emb.set_thumbnail(url='{}'.format(url))
@@ -184,7 +185,7 @@ class Mycog(commands.Cog):
                                 if row[5] == member.id:
                                     addedby = '{}'.format(member.display_name)
                             emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]), colour = 0x00ff00)
-                            emb.set_footer(text = 'Added by: {}'.format(addedby))
+                            emb.set_footer(text = 'Added by: {} | Quote ID: {}'.format(addedby, row[2]))
                             if row[10] != None:
                                 emb.set_image(url='{}'.format(row[10]))
                             emb.set_thumbnail(url='{}'.format(url))
