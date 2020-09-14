@@ -19,7 +19,7 @@ class Mycog(commands.Cog):
         
         conn = None
         try:
-            conn = sqlite3.connect(r"Z:\_DBS\quotes.sqlite")
+            conn = sqlite3.connect(r"quotes.sqlite")
             print(sqlite3.version)
 
             cur = conn.cursor()
