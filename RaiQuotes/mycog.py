@@ -120,12 +120,11 @@ class Mycog(commands.Cog):
             inputString = ('{}'.format(ctx.message.guild.id),'{}'.format(ctx.message.author.id), '{}'.format(author), '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id))
             cur.execute(sql,inputString)
             conn.commit()
+            lastid = cur.lastrowid
             cur.execute("SELECT * FROM quotes")
             rows = cur.fetchall()
             quoteid = 0
-            for row in rows:
-                if '{}'.format(row[8]) == quoted:
-                    quoteid = row[2]
+            quoteid = rows[lastid][2]
             await ctx.channel.send('Added that quote at id {} for ya! :)'.format(quoteid))
         except Error as e:
             print(e)
