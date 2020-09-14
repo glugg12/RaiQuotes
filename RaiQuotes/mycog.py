@@ -20,7 +20,6 @@ class Mycog(commands.Cog):
         conn = None
         try:
             conn = sqlite3.connect(r"quotes.sqlite")
-            print(sqlite3.version)
 
             cur = conn.cursor()
             cur.execute("SELECT * FROM quotes")
@@ -36,7 +35,6 @@ class Mycog(commands.Cog):
                         img = ''
                         for member in ctx.message.guild.members:
                             if row[6] == member.id:
-                                print(member.display_name)
                                 name = '{}'.format(member.display_name)
                                 url = member.avatar_url
                             if row[5] ==member.id:
@@ -66,7 +64,6 @@ class Mycog(commands.Cog):
         conn = None
         try:
             conn = sqlite3.connect(r"quotes.sqlite")
-            print(sqlite3.version)
 
             cur = conn.cursor()
             count = 0
@@ -118,7 +115,6 @@ class Mycog(commands.Cog):
         conn = None
         try:
             conn = sqlite3.connect(r"quotes.sqlite")
-            print(sqlite3.version)
             sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
             cur = conn.cursor()
             inputString = ('{}'.format(ctx.message.guild.id),'{}'.format(ctx.message.author.id), '{}'.format(author), '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id))
@@ -144,7 +140,6 @@ class Mycog(commands.Cog):
         conn = None
         try:
             conn = sqlite3.connect(r"quotes.sqlite")
-            print(sqlite3.version)
 
             cur = conn.cursor()
             count = 0
@@ -167,7 +162,6 @@ class Mycog(commands.Cog):
                             name = '{}'.format(row[7])
                             for member in ctx.message.guild.members:
                                 if row[6] == member.id:
-                                    print("here")
                                     name = '{}'.format(member.display_name)
                                     url = member.avatar_url
                                 if row[5] == member.id:
