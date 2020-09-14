@@ -123,6 +123,7 @@ class Mycog(commands.Cog):
             lastid = cur.lastrowid
             cur.execute("SELECT * FROM quotes")
             rows = cur.fetchall()
+            print(lastid)
             quoteid = 0
             quoteid = rows[lastid][2]
             await ctx.channel.send('Added that quote at id {} for ya! :)'.format(quoteid))
