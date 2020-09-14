@@ -110,6 +110,8 @@ class Mycog(commands.Cog):
         print(ctx.message.content)
         quoted = ctx.message.content
         quoted = quoted.replace(author, "")
+        quoted = quoted.replace(quoted[0],"")
+        quoted = quoted.replace(" addquote ","")
         author = author.replace("<", "")
         author = author.replace(">", "")
         author = author.replace("@", "")
