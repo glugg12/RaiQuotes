@@ -65,7 +65,7 @@ class Mycog(commands.Cog):
 
         conn = None
         try:
-            conn = sqlite3.connect(r"Z:\_DBS\quotes.sqlite")
+            conn = sqlite3.connect(r"quotes.sqlite")
             print(sqlite3.version)
 
             cur = conn.cursor()
@@ -117,7 +117,7 @@ class Mycog(commands.Cog):
         print(author)
         conn = None
         try:
-            conn = sqlite3.connect(r"Z:\_DBS\quotes.sqlite")
+            conn = sqlite3.connect(r"quotes.sqlite")
             print(sqlite3.version)
             sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
             cur = conn.cursor()
@@ -143,7 +143,7 @@ class Mycog(commands.Cog):
 
         conn = None
         try:
-            conn = sqlite3.connect(r"Z:\_DBS\quotes.sqlite")
+            conn = sqlite3.connect(r"quotes.sqlite")
             print(sqlite3.version)
 
             cur = conn.cursor()
