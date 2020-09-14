@@ -115,7 +115,7 @@ class Mycog(commands.Cog):
         quoted = quoted.replace("  ","")
         mention = 0
         print('{}'.format(author))
-        if '{}'.format(author) == "<":
+        if author[0] == "<":
             mention = 1
             author = author.replace("<", "")
             author = author.replace(">", "")
