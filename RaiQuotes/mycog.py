@@ -107,22 +107,18 @@ class Mycog(commands.Cog):
     async def addquote(self, ctx, author):
         """This does stuff!"""
         # Your code will go here
-        print(ctx.message.content)
         quoted = ctx.message.content
         quoted = quoted.replace(author, "")
         quoted = quoted.replace(quoted[0],"")
         quoted = quoted.replace("addquote","")
         quoted = quoted.replace("  ","")
         mention = 0
-        print('{}'.format(author))
         if author[0] == "<":
             mention = 1
             author = author.replace("<", "")
             author = author.replace(">", "")
             author = author.replace("@", "")
             author = author.replace("!", "")
-        
-        print(author)
         conn = None
         try:
             conn = sqlite3.connect(r"quotes.sqlite")
