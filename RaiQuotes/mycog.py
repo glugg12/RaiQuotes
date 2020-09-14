@@ -107,7 +107,7 @@ class Mycog(commands.Cog):
     async def addquote(self, ctx, author):
         """This does stuff!"""
         # Your code will go here
-        print(ctx.message)
+        print(ctx.message.content)
         quoted = ctx.message.content
         quoted = quoted.replace(author, "")
         author = author.replace("<", "")
