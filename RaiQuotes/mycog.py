@@ -112,15 +112,22 @@ class Mycog(commands.Cog):
         quoted = quoted.replace(author, "")
         quoted = quoted.replace(quoted[0],"")
         quoted = quoted.replace("addquote","")
-        author = author.replace("<", "")
-        author = author.replace(">", "")
-        author = author.replace("@", "")
-        author = author.replace("!", "")
+        mention = 0
+        if '{}'.format(author) == "<":
+            mention = 1
+            author = author.replace("<", "")
+            author = author.replace(">", "")
+            author = author.replace("@", "")
+            author = author.replace("!", "")
+        
         print(author)
         conn = None
         try:
             conn = sqlite3.connect(r"quotes.sqlite")
-            sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
+            if mention == 1:
+                sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
+            if mention == 0:
+                sql = '''INSERT INTO quotes(server_id,added_by,author_name,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
             cur = conn.cursor()
             inputString = ('{}'.format(ctx.message.guild.id),'{}'.format(ctx.message.author.id), '{}'.format(author), '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id))
             cur.execute(sql,inputString)
