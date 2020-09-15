@@ -167,7 +167,9 @@ class Mycog(commands.Cog):
                 if row[1] == ctx.message.guild.id:
                     if '{}'.format(row[6]) == '{}'.format(author):
                         count = count + 1
-            randval = randint(1,count)
+            randval = 0;
+            if count != 0:
+                randval = randint(1,count)
             name = 'Error'
             url = ''
             addedby = '?'
@@ -192,6 +194,8 @@ class Mycog(commands.Cog):
                             emb.set_thumbnail(url='{}'.format(url))
                             await ctx.channel.send(embed=emb)
                         check = check + 1
+             if count == 0:
+                await ctx.channel.send("That author does not have any quotes saved. :(")
             
             
             
@@ -215,6 +219,34 @@ class Mycog(commands.Cog):
             cur.execute(sql,(word,))
             conn.commit()
             await ctx.channel.send('Quote {} should now be deleted! :)'.format(word))
+        except Error as e:
+            print(e)
+        finally:
+            if conn:
+                conn.close()
+        
+    @commands.command()
+    async def random(self, ctx, author):
+        """This does stuff!"""
+        # Your code will go here
+        author = author.replace("<", "")
+        author = author.replace(">", "")
+        author = author.replace("@", "")
+        author = author.replace("!", "")
+
+        conn = None
+        try:
+            conn = sqlite3.connect(r"quotes.sqlite")
+
+            cur = conn.cursor()
+            count = 0
+            cur.execute("SELECT * FROM quotes")
+            rows = cur.fetchall()
+            for row in rows:
+                if row[1] == ctx.message.guild.id:
+                    if '{}'.format(row[6]) == '{}'.format(author):
+                        count = count + 1
+            await ctx.channel.send('{} has {} quotes saved in this server!'.format(author, count))
         except Error as e:
             print(e)
         finally:
