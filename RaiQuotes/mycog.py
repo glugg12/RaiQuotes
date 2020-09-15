@@ -25,12 +25,12 @@ class Mycog(commands.Cog):
             cur.execute("SELECT * FROM quotes")
             rows = cur.fetchall()
             found = 0
-            name = '{}'.format(None)
+            
             for row in rows:
                 if row[1] == ctx.message.guild.id:
                     numb = row[2]
                     if '{}'.format(numb) == '{}'.format(word):
-                        
+                        name = '{}'.format(row[7])
                         url = ''
                         addedby = '?'
                         img = ''
@@ -78,10 +78,10 @@ class Mycog(commands.Cog):
             url = ''
             addedby = '?'
             check = 0
-            name = '{}'.format(row[7])
             for row in rows:
                 if row[1] == ctx.message.guild.id:
                     if '{}'.format(check) == '{}'.format(randval):
+                        name = '{}'.format(row[7])
                         for member in ctx.message.guild.members:
                             if row[6] == member.id:
                                 name = '{}'.format(member.display_name)
@@ -210,7 +210,7 @@ class Mycog(commands.Cog):
         conn = None
         try:
             conn = sqlite3.connect(r"quotes.sqlite")
-            sql = 'DELETE FROM tasks WHERE id=?'
+            sql = 'DELETE FROM quotes WHERE id=?'
             cur = conn.cursor()
             cur.execute(sql,(word,))
             conn.commit()
