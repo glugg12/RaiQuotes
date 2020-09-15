@@ -246,7 +246,7 @@ class Mycog(commands.Cog):
                 if row[1] == ctx.message.guild.id:
                     if '{}'.format(row[6]) == '{}'.format(author):
                         count = count + 1
-            await ctx.channel.send('{} has {} quotes saved in this server!'.format(author, count))
+            await ctx.channel.send('<@!{}> has {} quotes saved in this server!'.format(author, count))
         except Error as e:
             print(e)
         finally:
