@@ -167,14 +167,13 @@ class Mycog(commands.Cog):
                 if row[1] == ctx.message.guild.id:
                     if '{}'.format(row[6]) == '{}'.format(author):
                         count = count + 1
-                        
-            randval = 0
-            if count != 0:
-                randval = randint(1,count)
             name = 'Error'
             url = ''
             addedby = '?'
             check = 1
+            randval = 0
+            if count != 0:
+                randval = randint(1, count)
             
                             
             name = '{}'.format(row[7])
