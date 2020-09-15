@@ -194,7 +194,7 @@ class Mycog(commands.Cog):
                             emb.set_thumbnail(url='{}'.format(url))
                             await ctx.channel.send(embed=emb)
                         check = check + 1
-             if count == 0:
+            if count == 0:
                 await ctx.channel.send("That author does not have any quotes saved. :(")
             
             
