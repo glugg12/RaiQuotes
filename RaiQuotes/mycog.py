@@ -226,7 +226,7 @@ class Mycog(commands.Cog):
                 conn.close()
         
     @commands.command()
-    async def random(self, ctx, author):
+    async def total(self, ctx, author):
         """This does stuff!"""
         # Your code will go here
         author = author.replace("<", "")
