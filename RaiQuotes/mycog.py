@@ -210,7 +210,7 @@ class Mycog(commands.Cog):
         conn = None
         try:
             conn = sqlite3.connect(r"quotes.sqlite")
-            sql = 'DELETE FROM quotes WHERE id=?'
+            sql = 'DELETE FROM quotes WHERE server_quote_id=?'
             cur = conn.cursor()
             cur.execute(sql,(word,))
             conn.commit()
