@@ -200,3 +200,23 @@ class Mycog(commands.Cog):
         finally:
             if conn:
                 conn.close()
+                
+                
+    @commands.command()
+    async def deleteid(self, ctx, word):
+        """This does stuff!"""
+        # Your code will go here
+        
+        conn = None
+        try:
+            conn = sqlite3.connect(r"quotes.sqlite")
+            sql = 'DELETE FROM tasks WHERE id=?'
+            cur = conn.cursor()
+            cur.execute(sql,(word,))
+            conn.commit()
+            await ctx.channel.send('Quote {} should now be deleted! :)'.format(word))
+        except Error as e:
+            print(e)
+        finally:
+            if conn:
+                conn.close()
