@@ -164,7 +164,9 @@ class Mycog(commands.Cog):
                 quoted = quoted.replace(">", "")
                 quoted = quoted.replace("@", "")
                 quoted = quoted.replace("!", "")
+        print(author)
         if author == 0:
+            print("Entered author 0")
             conn = None
             try:
                 conn = sqlite3.connect(r"quotes.sqlite")
@@ -215,6 +217,7 @@ class Mycog(commands.Cog):
                 if conn:
                     conn.close()
         if author == 1:
+            print("Entered author 1")
             conn = None
             try:
                 conn = sqlite3.connect(r"quotes.sqlite")
