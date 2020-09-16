@@ -177,7 +177,7 @@ class Mycog(commands.Cog):
                 rows = cur.fetchall()
                 for row in rows:
                     if row[1] == ctx.message.guild.id:
-                        if '{}'.format(row[6]) == '{}'.format(author):
+                        if '{}'.format(row[6]) == '{}'.format(quoted):
                             count = count + 1
                 name = 'Error'
                 url = ''
@@ -191,7 +191,7 @@ class Mycog(commands.Cog):
                 name = '{}'.format(row[7])
                 for row in rows:
                     if row[1] == ctx.message.guild.id:
-                        if '{}'.format(row[6]) == '{}'.format(author):
+                        if '{}'.format(row[6]) == '{}'.format(quoted):
                             if '{}'.format(check) == '{}'.format(randval):
                                 for member in ctx.message.guild.members:
                                     if row[6] == member.id:
