@@ -221,22 +221,39 @@ class Mycog(commands.Cog):
             conn = None
             try:
                 conn = sqlite3.connect(r"quotes.sqlite")
-                if mention == 1:
-                    sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
-                if mention == 0:
-                    sql = '''INSERT INTO quotes(server_id,added_by,author_name,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
+
                 cur = conn.cursor()
-                inputString = ('{}'.format(ctx.message.guild.id),'{}'.format(ctx.message.author.id), '{}'.format(author), '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id))
-                cur.execute(sql,inputString)
-                conn.commit()
-                lastid = cur.lastrowid
+                count = 0
                 cur.execute("SELECT * FROM quotes")
                 rows = cur.fetchall()
-                quoteid = 0
                 for row in rows:
-                    if '{}'.format(row[0]) == '{}'.format(lastid):
-                        quoteid = row[2]
-                await ctx.channel.send('Added that quote at id {} for ya! :)'.format(quoteid))
+                    if row[1] == ctx.message.guild.id:
+                        count = count + 1
+                randval = randint(0,count)
+                name = 'Error'
+                url = ''
+                addedby = '?'
+                check = 0
+                for row in rows:
+                    if row[1] == ctx.message.guild.id:
+                        if '{}'.format(check) == '{}'.format(randval):
+                            name = '{}'.format(row[7])
+                            for member in ctx.message.guild.members:
+                                if row[6] == member.id:
+                                    name = '{}'.format(member.display_name)
+                                    url = member.avatar_url
+                                if row[5] == member.id:
+                                    addedby = '{}'.format(member.display_name)
+                            emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]), colour = 0x00ff00)
+                            emb.set_footer(text = 'Added by: {} | Quote ID: {}'.format(addedby, row[2]))
+                            if row[10] != None:
+                                emb.set_image(url='{}'.format(row[10]))
+                            emb.set_thumbnail(url='{}'.format(url))
+                            await ctx.channel.send(embed=emb)
+                        check = check + 1
+            
+            
+            
             except Error as e:
                 print(e)
             finally:
