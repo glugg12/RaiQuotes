@@ -146,65 +146,97 @@ class Mycog(commands.Cog):
                 conn.close()
 
     @commands.command()
-    async def random(self, ctx, author):
+    async def random(self, ctx):
         """This does stuff!"""
         # Your code will go here
         random.seed(datetime.now())
-        author = author.replace("<", "")
-        author = author.replace(">", "")
-        author = author.replace("@", "")
-        author = author.replace("!", "")
+        quoted = ctx.message.content
+        quoted = quoted.replace(quoted[0],"")
+        quoted = quoted.replace("random","")
+        author = 0
+        if quoted != "":
+            author = 1
+            quoted = quoted.replace(" ", "")
+            if quoted[0] == "<":
+                quoted = quoted.replace("<", "")
+                quoted = quoted.replace(">", "")
+                quoted = quoted.replace("@", "")
+                quoted = quoted.replace("!", "")
+        if author == 0:
+            conn = None
+            try:
+                conn = sqlite3.connect(r"quotes.sqlite")
 
-        conn = None
-        try:
-            conn = sqlite3.connect(r"quotes.sqlite")
-
-            cur = conn.cursor()
-            count = 0
-            cur.execute("SELECT * FROM quotes")
-            rows = cur.fetchall()
-            for row in rows:
-                if row[1] == ctx.message.guild.id:
-                    if '{}'.format(row[6]) == '{}'.format(author):
-                        count = count + 1
-            name = 'Error'
-            url = ''
-            addedby = '?'
-            check = 1
-            randval = 0
-            if count != 0:
-                randval = randint(1, count)
+                cur = conn.cursor()
+                count = 0
+                cur.execute("SELECT * FROM quotes")
+                rows = cur.fetchall()
+                for row in rows:
+                    if row[1] == ctx.message.guild.id:
+                        if '{}'.format(row[6]) == '{}'.format(author):
+                            count = count + 1
+                name = 'Error'
+                url = ''
+                addedby = '?'
+                check = 1
+                randval = 0
+                if count != 0:
+                    randval = randint(1, count)
             
                             
-            name = '{}'.format(row[7])
-            for row in rows:
-                if row[1] == ctx.message.guild.id:
-                    if '{}'.format(row[6]) == '{}'.format(author):
-                        if '{}'.format(check) == '{}'.format(randval):
-                            for member in ctx.message.guild.members:
-                                if row[6] == member.id:
-                                    name = '{}'.format(member.display_name)
-                                    url = member.avatar_url
-                                if row[5] == member.id:
-                                    addedby = '{}'.format(member.display_name)
-                            emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]), colour = 0x00ff00)
-                            emb.set_footer(text = 'Added by: {} | Quote ID: {}'.format(addedby, row[2]))
-                            if row[10] != None:
-                                emb.set_image(url='{}'.format(row[10]))
-                            emb.set_thumbnail(url='{}'.format(url))
-                            await ctx.channel.send(embed=emb)
-                        check = check + 1
-            if count == 0:
-                await ctx.channel.send("That author does not have any quotes saved. :(")
+                name = '{}'.format(row[7])
+                for row in rows:
+                    if row[1] == ctx.message.guild.id:
+                        if '{}'.format(row[6]) == '{}'.format(author):
+                            if '{}'.format(check) == '{}'.format(randval):
+                                for member in ctx.message.guild.members:
+                                    if row[6] == member.id:
+                                        name = '{}'.format(member.display_name)
+                                        url = member.avatar_url
+                                    if row[5] == member.id:
+                                        addedby = '{}'.format(member.display_name)
+                                emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]), colour = 0x00ff00)
+                                emb.set_footer(text = 'Added by: {} | Quote ID: {}'.format(addedby, row[2]))
+                                if row[10] != None:
+                                    emb.set_image(url='{}'.format(row[10]))
+                                emb.set_thumbnail(url='{}'.format(url))
+                                await ctx.channel.send(embed=emb)
+                            check = check + 1
+                if count == 0:
+                    await ctx.channel.send("That author does not have any quotes saved. :(")
             
             
             
-        except Error as e:
-            print(e)
-        finally:
-            if conn:
-                conn.close()
-                
+            except Error as e:
+                print(e)
+            finally:
+                if conn:
+                    conn.close()
+        if author == 1:
+            conn = None
+            try:
+                conn = sqlite3.connect(r"quotes.sqlite")
+                if mention == 1:
+                    sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
+                if mention == 0:
+                    sql = '''INSERT INTO quotes(server_id,added_by,author_name,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
+                cur = conn.cursor()
+                inputString = ('{}'.format(ctx.message.guild.id),'{}'.format(ctx.message.author.id), '{}'.format(author), '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id))
+                cur.execute(sql,inputString)
+                conn.commit()
+                lastid = cur.lastrowid
+                cur.execute("SELECT * FROM quotes")
+                rows = cur.fetchall()
+                quoteid = 0
+                for row in rows:
+                    if '{}'.format(row[0]) == '{}'.format(lastid):
+                        quoteid = row[2]
+                await ctx.channel.send('Added that quote at id {} for ya! :)'.format(quoteid))
+            except Error as e:
+                print(e)
+            finally:
+                if conn:
+                    conn.close()
                 
     @commands.command()
     async def deleteid(self, ctx, word):
