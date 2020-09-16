@@ -151,6 +151,7 @@ class Mycog(commands.Cog):
         # Your code will go here
         random.seed(datetime.now())
         quoted = ctx.message.content
+        print(ctx.message.content)
         quoted = quoted.replace(quoted[0],"")
         quoted = quoted.replace("random","")
         author = 0
