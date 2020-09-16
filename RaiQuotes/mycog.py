@@ -155,7 +155,7 @@ class Mycog(commands.Cog):
         quoted = quoted.replace(quoted[0],"")
         quoted = quoted.replace("random","")
         author = 0
-        print(quoted)
+        print('{}<--'.format(quoted))
         if quoted != "":
             author = 1
             quoted = quoted.replace(" ", "")
