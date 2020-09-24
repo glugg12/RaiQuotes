@@ -76,7 +76,11 @@ class Mycog(commands.Cog):
         try:
             conn = sqlite3.connect(r"quotes.sqlite")
             if mention == 1:
-                sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
+                if len(ctx.message.attachments) > 0:
+                    print(ctx.message.attaments[0])
+                elif:
+                    sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
+                
             if mention == 0:
                 sql = '''INSERT INTO quotes(server_id,added_by,author_name,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
             cur = conn.cursor()
