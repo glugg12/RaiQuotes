@@ -78,7 +78,7 @@ class Mycog(commands.Cog):
             if mention == 1:
                 if len(ctx.message.attachments) > 0:
                     print(ctx.message.attaments[0])
-                elif:
+                else:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
                 
             if mention == 0:
