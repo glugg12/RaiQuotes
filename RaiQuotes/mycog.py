@@ -67,7 +67,7 @@ class Mycog(commands.Cog):
         quoted = quoted.replace("  ","")
         if(quoted.find("https") != -1):
             print(quoted.index(" ", quoted.index("https"), len(quoted)))
-            link = quoted[quoted.index("https"):(len(quoted) - quoted.index(" ", quoted.index("https"), len(quoted)))]
+            link = quoted[quoted.index("https"):quoted.index(" ", quoted.index("https"), len(quoted))]
             print(link)
         mention = 0
         if author[0] == "<":
