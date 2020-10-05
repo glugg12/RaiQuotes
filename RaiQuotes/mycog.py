@@ -70,6 +70,7 @@ class Mycog(commands.Cog):
             linked = 1
             link = quoted[quoted.index("https"):quoted.index(" ", quoted.index("https"), len(quoted))]
             quoted = quoted.replace(link,"")
+            print(quoted)
         mention = 0
         if author[0] == "<":
             mention = 1
