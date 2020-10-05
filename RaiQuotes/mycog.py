@@ -68,8 +68,12 @@ class Mycog(commands.Cog):
         linked = 0
         if(quoted.find("https") != -1):
             linked = 1
-            link = quoted[quoted.index("https"):quoted.index(" ", quoted.index("https"), len(quoted))]
-            quoted = quoted.replace(link,"")
+            if(quoted.find(" ", quoted.index("https"), len(quoted)) != -1):
+                link = quoted[quoted.index("https"):quoted.index(" ", quoted.index("https"), len(quoted))]
+                quoted = quoted.replace(link,"")
+            else:
+                link = quoted[quoted.index("https"):]
+                quoted = quoted.replace(link,"")
             print(quoted)
         mention = 0
         if author[0] == "<":
