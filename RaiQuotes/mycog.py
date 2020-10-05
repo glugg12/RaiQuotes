@@ -65,10 +65,11 @@ class Mycog(commands.Cog):
         quoted = quoted.replace(quoted[0],"")
         quoted = quoted.replace("addquote","")
         quoted = quoted.replace("  ","")
+        linked = 0
         if(quoted.find("https") != -1):
-            print(quoted.index(" ", quoted.index("https"), len(quoted)))
+            linked = 1
             link = quoted[quoted.index("https"):quoted.index(" ", quoted.index("https"), len(quoted))]
-            print(link)
+            quoted = quoted.replace(link,"")
         mention = 0
         if author[0] == "<":
             mention = 1
@@ -83,6 +84,9 @@ class Mycog(commands.Cog):
                 if len(ctx.message.attachments) > 0:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
                     inputString = ('{}'.format(ctx.message.guild.id),'{}'.format(ctx.message.author.id), '{}'.format(author), '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id), '{}'.format(ctx.message.attachments[0].url))
+                elif linked == 1:
+                    sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
+                    inputString = ('{}'.format(ctx.message.guild.id),'{}'.format(ctx.message.author.id), '{}'.format(author), '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id), '{}'.format(link))
                 else:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
                     inputString = ('{}'.format(ctx.message.guild.id),'{}'.format(ctx.message.author.id), '{}'.format(author), '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id))
