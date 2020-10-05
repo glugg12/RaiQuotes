@@ -74,7 +74,6 @@ class Mycog(commands.Cog):
             else:
                 link = quoted[quoted.index("https"):]
                 quoted = quoted.replace(link,"")
-            print(quoted)
         mention = 0
         if author[0] == "<":
             mention = 1
