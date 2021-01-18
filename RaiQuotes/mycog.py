@@ -283,3 +283,23 @@ class Mycog(commands.Cog):
         finally:
             if conn:
                 conn.close()
+
+    @commands.command()
+    async def grandtotal(self, ctx):
+        """This does stuff!"""
+        # Your code will go here
+
+        conn = None
+        try:
+            conn = sqlite3.connect(r"quotes.sqlite")
+
+            cur = conn.cursor()
+            count = 0
+            cur.execute("SELECT * FROM quotes")
+            rows = cur.fetchall()
+            await ctx.channel.send('There are {} quotes saved in this server!'.format(rows.length()))
+        except Error as e:
+            print(e)
+        finally:
+            if conn:
+                conn.close()
