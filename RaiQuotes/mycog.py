@@ -297,7 +297,9 @@ class Mycog(commands.Cog):
             count = 0
             cur.execute("SELECT * FROM quotes")
             rows = cur.fetchall()
-            await ctx.channel.send('There are {} quotes saved in this server!'.format(rows.len()))
+            for row in rows:
+                count = count + 1
+            await ctx.channel.send('There are {} quotes saved in this server!'.format(count))
         except Error as e:
             print(e)
         finally:
