@@ -15,7 +15,7 @@ class Mycog(commands.Cog):
     async def quoteid(self, ctx, word):
         """This does stuff!"""
         # Your code will go here
-        
+        print(path)
         conn = None
         try:
             conn = sqlite3.connect(path)
