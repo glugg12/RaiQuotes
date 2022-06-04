@@ -7,7 +7,7 @@ from random import seed
 from random import randint
 from datetime import datetime
 client = discord.Client()
-path = r"C:\Users\starg\AppData\Local\Red-DiscordBot\Red-DiscordBot\data\Springfield\cogs\CogManager\cogs\RaiQuotes\quotes.sqlite"
+path = r"C:\Users\starg\AppData\Local\Red-DiscordBot\Red-DiscordBot\data\Springfield\cogs\RaiQuotes\quotes.sqlite"
 class Mycog(commands.Cog):
     """My custom cog"""
 
@@ -15,7 +15,6 @@ class Mycog(commands.Cog):
     async def quoteid(self, ctx, word):
         """This does stuff!"""
         # Your code will go here
-        print(path)
         conn = None
         try:
             conn = sqlite3.connect(path)
@@ -82,7 +81,7 @@ class Mycog(commands.Cog):
             author = author.replace("!", "")
         conn = None
         try:
-            conn = sqlite3.connect(r"quotes.sqlite")
+            conn = sqlite3.connect(path)
             if mention == 1:
                 if len(ctx.message.attachments) > 0:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
@@ -127,7 +126,6 @@ class Mycog(commands.Cog):
         # Your code will go here
         random.seed(datetime.now())
         quoted = ctx.message.content
-        print(ctx.message.content)
         quoted = quoted.replace(quoted[0],"")
         quoted = quoted.replace("random","")
         author = 0
@@ -142,10 +140,9 @@ class Mycog(commands.Cog):
                 quoted = quoted.replace("!", "")
         print(author)
         if author == 1:
-            print("Entered author 1")
             conn = None
             try:
-                conn = sqlite3.connect(r"quotes.sqlite")
+                conn = sqlite3.connect(path)
 
                 cur = conn.cursor()
                 count = 0
@@ -193,10 +190,9 @@ class Mycog(commands.Cog):
                 if conn:
                     conn.close()
         if author == 0:
-            print("Entered author 0")
             conn = None
             try:
-                conn = sqlite3.connect(r"quotes.sqlite")
+                conn = sqlite3.connect(path)
 
                 cur = conn.cursor()
                 count = 0
@@ -243,7 +239,7 @@ class Mycog(commands.Cog):
         
         conn = None
         try:
-            conn = sqlite3.connect(r"quotes.sqlite")
+            conn = sqlite3.connect(path)
             sql = 'DELETE FROM quotes WHERE server_quote_id=?'
             cur = conn.cursor()
             cur.execute(sql,(word,))
@@ -266,7 +262,7 @@ class Mycog(commands.Cog):
 
         conn = None
         try:
-            conn = sqlite3.connect(r"quotes.sqlite")
+            conn = sqlite3.connect(path)
 
             cur = conn.cursor()
             count = 0
@@ -290,7 +286,7 @@ class Mycog(commands.Cog):
 
         conn = None
         try:
-            conn = sqlite3.connect(r"quotes.sqlite")
+            conn = sqlite3.connect(path)
 
             cur = conn.cursor()
             count = 0
@@ -305,3 +301,8 @@ class Mycog(commands.Cog):
         finally:
             if conn:
                 conn.close()
+                
+    @commands.command()
+    async def raihepl(self, ctx):
+        """Help command"""
+        await ctx.channel.send('```Here are the commands for RaiQuotes cog!\nquoteid[id] | Show the quote at [id]\naddqoute [author] [quote] | Add a new quote to the database/ Accepts discord @user for [author] too!\ndeleteid [id] | Deletes quote at [id]. It will be gone.... forever....\nrandom | Shows a random quote\ntotal [author] | Shows how many quotes [author] has in this server\ngrandtotal | Shows the total quotes in the server```'
