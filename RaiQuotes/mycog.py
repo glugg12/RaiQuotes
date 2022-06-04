@@ -7,7 +7,6 @@ from random import seed
 from random import randint
 from datetime import datetime
 client = discord.Client()
-print('init')
 
 class Mycog(commands.Cog):
     """My custom cog"""
@@ -19,7 +18,7 @@ class Mycog(commands.Cog):
         
         conn = None
         try:
-            conn = sqlite3.connect(r"quotes.sqlite")
+            conn = sqlite3.connect(r"%LOCALAPPDATA%\Red-DiscordBot\Red-DiscordBot\data\Springfield\cogs\CogManager\cogs\RaiQuotes\quotes.sqlite")
 
             cur = conn.cursor()
             cur.execute("SELECT * FROM quotes")
