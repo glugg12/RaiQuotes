@@ -7,7 +7,7 @@ from random import seed
 from random import randint
 from datetime import datetime
 client = discord.Client()
-path = 'C:\Users\starg\AppData\Local\Red-DiscordBot\Red-DiscordBot\data\Springfield\cogs\CogManager\cogs\RaiQuotes'
+path = r'C:\Users\starg\AppData\Local\Red-DiscordBot\Red-DiscordBot\data\Springfield\cogs\CogManager\cogs\RaiQuotes'
 class Mycog(commands.Cog):
     """My custom cog"""
 
