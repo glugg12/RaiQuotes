@@ -137,7 +137,6 @@ class Mycog(commands.Cog):
                 quoted = quoted.replace(">", "")
                 quoted = quoted.replace("@", "")
                 quoted = quoted.replace("!", "")
-        print(author)
         if author == 1:
             conn = None
             try:
@@ -304,4 +303,4 @@ class Mycog(commands.Cog):
     @commands.command()
     async def raihepl(self, ctx):
         """Help command"""
-        await ctx.channel.send('```Here are the commands for RaiQuotes cog!\nquoteid[id]               | Show the quote at [id]\naddquote [author] [quote] | Add a new quote to the database/ Accepts discord @user for [author] too!\ndeleteid [id]             | Deletes quote at [id]. It will be gone.... forever....\nrandom                    | Shows a random quote\ntotal [author]           | Shows how many quotes [author] has in this server\ngrandtotal                | Shows the total quotes in the server```')
+        await ctx.channel.send('```Here are the commands for RaiQuotes cog!\nquoteid[id]               | Show the quote at [id]\naddquote [author] [quote] | Add a new quote to the database/ Accepts discord @user for [author] too!\ndeleteid [id]             | Deletes quote at [id]. It will be gone.... forever....\nrandom                    | Shows a random quote\ntotal [author]            | Shows how many quotes [author] has in this server\ngrandtotal                | Shows the total quotes in the server```')
