@@ -13,7 +13,7 @@ class Mycog(commands.Cog):
 
     @commands.command()
     async def quoteid(self, ctx, word):
-        """This does stuff!"""
+        """Finds a quote at the requested id"""
         # Your code will go here
         conn = None
         try:
@@ -56,7 +56,7 @@ class Mycog(commands.Cog):
 
     @commands.command()
     async def addquote(self, ctx, author):
-        """This does stuff!"""
+        """Adds a quote to the database"""
         # Your code will go here
         quoted = ctx.message.content
         quoted = quoted.replace(author, "")
@@ -122,7 +122,7 @@ class Mycog(commands.Cog):
 
     @commands.command()
     async def random(self, ctx):
-        """This does stuff!"""
+        """Shows a random quote"""
         # Your code will go here
         random.seed(datetime.now())
         quoted = ctx.message.content
@@ -232,7 +232,7 @@ class Mycog(commands.Cog):
                 
     @commands.command()
     async def deleteid(self, ctx, word):
-        """This does stuff!"""
+        """Deletes a quote at the requested id"""
         # Your code will go here
         
         conn = None
@@ -251,7 +251,7 @@ class Mycog(commands.Cog):
         
     @commands.command()
     async def total(self, ctx, author):
-        """This does stuff!"""
+        """Counts how many quotes the requested author has"""
         # Your code will go here
         author = author.replace("<", "")
         author = author.replace(">", "")
@@ -279,7 +279,7 @@ class Mycog(commands.Cog):
 
     @commands.command()
     async def grandtotal(self, ctx):
-        """This does stuff!"""
+        """Counts how many quotes are in the server"""
         # Your code will go here
 
         conn = None
@@ -302,5 +302,5 @@ class Mycog(commands.Cog):
                 
     @commands.command()
     async def raihepl(self, ctx):
-        """Help command"""
+        """More detailed help command"""
         await ctx.channel.send('```Here are the commands for RaiQuotes cog!\nquoteid[id]               | Show the quote at [id]\naddquote [author] [quote] | Add a new quote to the database/ Accepts discord @user for [author] too!\ndeleteid [id]             | Deletes quote at [id]. It will be gone.... forever....\nrandom                    | Shows a random quote\ntotal [author]            | Shows how many quotes [author] has in this server\ngrandtotal                | Shows the total quotes in the server```')
