@@ -6,7 +6,8 @@ import random
 from random import seed
 from random import randint
 from datetime import datetime
-client = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
+client = discord.client()
+path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
 class Mycog(commands.Cog):
     """My custom cog"""
 
