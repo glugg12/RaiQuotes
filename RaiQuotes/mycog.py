@@ -318,13 +318,22 @@ class Mycog(commands.Cog):
                     if row[1] == ctx.message.guild.id:
                         count = count + 1
                         if row[6] is None:
-                            output = output + '{}'.format(row[2]) + ' | ' + row[7]
+                            name = row[7]
+                            if name.len() > 20:
+                                name = name[:20]
+                            output = output + '{}'.format(row[2]) + ' | ' + name
+                            for i in range(0, (20 - name.len)):
+                                output = output + ' '
                         else:
                             name = ""
                             for member in ctx.message.guild.members:
                                 if row[6] == member.id:
                                     name = '{}'.format(member.display_name)
+                            if name.len() > 20:
+                                name = name[:20]
                             output = output + '{}'.format(row[2]) + ' | ' + '{}'.format(name)
+                            for i in range(0, (20 - name.len)):
+                                output = output + ' '
                         output = output + ' | ' + row[8] + ' \n'
                 output = output + '```'
                 await ctx.channel.send(output)
