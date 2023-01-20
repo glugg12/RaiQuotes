@@ -142,6 +142,7 @@ class Mycog(commands.Cog):
         dev = devServerID('{}'.format(ctx.message.guild.id))
         quoted = ctx.message.content
         print('{}'.format(ctx.message.guild.id))
+        print(dev)
         quoted = quoted.replace(quoted[0],"")
         quoted = quoted.replace("random","")
         author = 0
@@ -208,7 +209,7 @@ class Mycog(commands.Cog):
             conn = None
             try:
                 conn = getConnection()
-
+                print("here")
                 cur = conn.cursor()
                 count = 0
                 cur.execute("SELECT * FROM quotes")
