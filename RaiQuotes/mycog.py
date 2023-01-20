@@ -155,6 +155,7 @@ class Mycog(commands.Cog):
         if author == 1:
             conn = None
             try:
+                print("Attempt conn")
                 conn = getConnection()
 
                 cur = conn.cursor()
