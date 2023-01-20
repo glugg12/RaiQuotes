@@ -217,6 +217,7 @@ class Mycog(commands.Cog):
                 for row in rows:
                     if row[1] == ctx.message.guild.id or row[1] == dev:
                         count = count + 1
+                        print(count)
                 randval = randint(0,count)
                 name = 'Error'
                 url = ''
