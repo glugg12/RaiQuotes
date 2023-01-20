@@ -12,7 +12,8 @@ client = discord.Client()
 path = r"C:\\quotes.sqlite"
 
 def getConnection():
-    return sqlite3.connect(path)
+    conn = sqlite3.connect(path)
+    return conn
 
 class Mycog(commands.Cog):
     """RaiQuotes Cog"""
@@ -129,6 +130,7 @@ class Mycog(commands.Cog):
     @commands.command()
     async def random(self, ctx):
         """Shows a random quote"""
+        print("Random started")
         # Your code will go here
         random.seed(datetime.now())
         quoted = ctx.message.content
