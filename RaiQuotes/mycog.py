@@ -316,7 +316,7 @@ class Mycog(commands.Cog):
             for row in rows:
                 if row[1] == ctx.message.guild.id:
                     count = count + 1
-                    output = output + row[2] + " | " + row[7] if row[6] is None else row[7] + " | " + row[8] + "\n"
+                    output = output + '{}'.row[2] + " | " + row[7] if row[6] is None else row[7] + " | " + row[8] + "\n"
             output = output + "```"
             await ctx.channel.send(output)
         except Error as e:
