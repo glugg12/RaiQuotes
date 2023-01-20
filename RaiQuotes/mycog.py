@@ -316,7 +316,7 @@ class Mycog(commands.Cog):
             if rows is not None:
                 output = output + "ID    | Name                 | Quote\n"
                 for row in rows:
-                    if row[1] == ctx.message.guild.id:
+                    if row[1] == 198685985234616320:
                         count = count + 1
                         output = output + '{}'.format(row[2])
                         for i in range(0, (5 - len('{}'.format(row[2])))):
