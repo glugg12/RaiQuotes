@@ -308,7 +308,7 @@ class Mycog(commands.Cog):
         quoted = quoted.replace(quoted[0],"")
         quoted = quoted.replace("search","")
         quoted = quoted.replace("  ","")
-
+        print(quoted)
         conn = None
         try:
             conn = sqlite3.connect(path)
