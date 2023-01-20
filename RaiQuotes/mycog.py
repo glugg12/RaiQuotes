@@ -95,7 +95,7 @@ class Mycog(commands.Cog):
             author = author.replace("!", "")
         conn = None
         try:
-            conn = getConnection()
+            conn = sqlite3.connect(path)
             if mention == 1:
                 if len(ctx.message.attachments) > 0:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
@@ -155,7 +155,7 @@ class Mycog(commands.Cog):
             conn = None
             try:
                 
-                conn = getConnection()
+                conn = sqlite3.connect(path)
 
                 cur = conn.cursor()
                 count = 0
@@ -205,7 +205,7 @@ class Mycog(commands.Cog):
         if author == 0:
             conn = None
             try:
-                conn = getConnection()
+                conn = sqlite3.connect(path)
                 print("here")
                 cur = conn.cursor()
                 count = 0
@@ -253,7 +253,7 @@ class Mycog(commands.Cog):
         
         conn = None
         try:
-            conn = getConnection()
+            conn = sqlite3.connect(path)
             sql = 'DELETE FROM quotes WHERE server_quote_id=?'
             cur = conn.cursor()
             cur.execute(sql,(word,))
@@ -276,7 +276,7 @@ class Mycog(commands.Cog):
 
         conn = None
         try:
-            conn = getConnection()
+            conn = sqlite3.connect(path)
 
             cur = conn.cursor()
             count = 0
@@ -300,7 +300,7 @@ class Mycog(commands.Cog):
 
         conn = None
         try:
-            conn = getConnection()
+            conn = sqlite3.connect(path)
 
             cur = conn.cursor()
             count = 0
