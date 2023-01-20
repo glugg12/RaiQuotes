@@ -314,14 +314,18 @@ class Mycog(commands.Cog):
             rows = cur.fetchall()
             output = '```'
             if rows is not None:
+                output = output + "ID    | Name                 | Quote\n"
                 for row in rows:
                     if row[1] == ctx.message.guild.id:
                         count = count + 1
+                        output = output + '{}'.format(row[2]) + ' | '
+                        for i in range(0, (5 - len('{}'.format(row[2])))):
+                            output = output + ' '
                         if row[6] is None:
                             name = row[7]
                             if len(name) > 20:
                                 name = name[:20]
-                            output = output + '{}'.format(row[2]) + ' | ' + name
+                            output = output  + name
                             for i in range(0, (20 - len(name))):
                                 output = output + ' '
                         else:
@@ -331,7 +335,7 @@ class Mycog(commands.Cog):
                                     name = '{}'.format(member.display_name)
                             if len(name) > 20:
                                 name = name[:20]
-                            output = output + '{}'.format(row[2]) + ' | ' + '{}'.format(name)
+                            output = output + '{}'.format(name)
                             for i in range(0, (20 - len(name))):
                                 output = output + ' '
                         output = output + ' | ' + row[8] + ' \n'
