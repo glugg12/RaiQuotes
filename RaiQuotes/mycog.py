@@ -9,7 +9,7 @@ from datetime import datetime
 client = discord.Client()
 #TODO: remember to change this back
 #path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
-path = r"C:\\quotes.sqlite"
+path = r"C:\quotes.sqlite"
 
 def getConnection():
     conn = sqlite3.connect(path)
