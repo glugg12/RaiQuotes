@@ -299,7 +299,7 @@ class Mycog(commands.Cog):
                 conn.close()
 
     @commands.command()
-    async def searchWithWord(self, ctx):
+    async def searchWithWord(self, ctx, word):
         """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
         # Your code will go here
 
@@ -309,8 +309,9 @@ class Mycog(commands.Cog):
 
             cur = conn.cursor()
             count = 0
-            cur.execute("SELECT * FROM quotes where quote like ?")
+            
             query = "%" + word + "%"
+            cur.execute("SELECT * FROM quotes where quote like ?", word)
             rows = cur.fetchall()
             for row in rows:
                 if row[1] == ctx.message.guild.id:
