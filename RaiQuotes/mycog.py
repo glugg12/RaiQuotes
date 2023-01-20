@@ -24,10 +24,11 @@ class Mycog(commands.Cog):
             conn = sqlite3.connect(path)
 
             cur = conn.cursor()
-            toEx = 'SELECT * FROM quotes where server_quote_id = {} and server_id = {}'.format(word, ctx.message.guild.id)
-            print(toEx)
-            cur.execute(toEx)
+            toEx = 'SELECT * FROM quotes where server_quote_id = ? and server_id = ?'
+            
+            cur.execute(toEx,(word,ctx.message.guild.id))
             row = cur.fetchall()
+            print(row)
             found = 0
             print(cur.rowcount)
             if cur.rowcount > 0:
