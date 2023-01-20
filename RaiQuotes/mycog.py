@@ -19,6 +19,8 @@ class Mycog(commands.Cog):
     async def quoteid(self, ctx, word):
         """Finds a quote at the requested id"""
         # originally pulls down all quotes and searches them in code
+        # now does a conditional select all on the db instead. In theory, should be slightly faster, but won't be noticable regardless.
+        # this also just makes more sense to do.
         conn = None
         try:
             conn = sqlite3.connect(path)
@@ -28,7 +30,6 @@ class Mycog(commands.Cog):
             
             cur.execute(toEx,(word,ctx.message.guild.id))
             row = cur.fetchone()
-            print(row)
             found = 0
             if row is not None:
                 name = '{}'.format(row[7])
@@ -127,7 +128,6 @@ class Mycog(commands.Cog):
     @commands.command()
     async def random(self, ctx):
         """Shows a random quote"""
-        print("Random started")
         random.seed(datetime.now())
         quoted = ctx.message.content
         quoted = quoted.replace(quoted[0],"")
@@ -189,7 +189,6 @@ class Mycog(commands.Cog):
             conn = None
             try:
                 conn = sqlite3.connect(path)
-                print("here")
                 cur = conn.cursor()
                 count = 0
                 cur.execute("SELECT * FROM quotes")
