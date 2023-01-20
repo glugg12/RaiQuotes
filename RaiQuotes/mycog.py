@@ -11,16 +11,6 @@ client = discord.Client()
 #path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
 path = r"C:\quotes.sqlite"
 
-def getConnection():
-    conn = sqlite3.connect(path)
-    return conn
-
-def devServerID(guildID):
-    if(guildID == '331960438113959950'):
-        return '198685985234616320'
-    else:
-        return guildID
-
 
 class Mycog(commands.Cog):
     """RaiQuotes Cog"""
@@ -31,7 +21,7 @@ class Mycog(commands.Cog):
         # originally pulls down all quotes and searches them in code
         conn = None
         try:
-            conn = getConnection()
+            conn = sqlite3.connect(path)
 
             cur = conn.cursor()
             cur.execute("SELECT * FROM quotes")
