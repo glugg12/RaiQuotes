@@ -361,11 +361,11 @@ class Mycog(commands.Cog):
 
             cur = conn.cursor()
             count = 0
-            sql = "SELECT * FROM quotes where quote like ? or quote like ? or quote like ?"
+            sql = "SELECT * FROM quotes where quote like ? or quote like ? or quote like ? or quote like ?"
             query = '% {} %'.format(word)
             left = '{} %'.format(word)
             right = '% {}'.format(word)
-            cur.execute(sql, (query,left,right,))
+            cur.execute(sql, (query,left,right,word,))
             rows = cur.fetchall()
             output = '```'
             if rows is not None:
