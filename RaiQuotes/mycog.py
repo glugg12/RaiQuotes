@@ -25,6 +25,7 @@ class Mycog(commands.Cog):
 
             cur = conn.cursor()
             toEx = 'SELECT * FROM quotes where server_quote_id = {} and server_id = {}'.format(word, ctx.message.guild.id)
+            print(toEx)
             cur.execute(toEx)
             row = cur.fetchall()
             found = 0
