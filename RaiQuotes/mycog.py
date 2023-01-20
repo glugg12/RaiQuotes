@@ -139,13 +139,12 @@ class Mycog(commands.Cog):
         """Shows a random quote"""
         print("Random started")
         # allowing test server to use GRAL data store
-        #ctx.message.guild.id = devServerID(ctx.message.guild.id)
+        dev = devServerID('{}'.format(ctx.message.guild.id))
         quoted = ctx.message.content
         print('{}'.format(ctx.message.guild.id))
         quoted = quoted.replace(quoted[0],"")
         quoted = quoted.replace("random","")
         author = 0
-        print(quoted)
         if quoted != "":
             author = 1
             quoted = quoted.replace(" ", "")
