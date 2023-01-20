@@ -306,7 +306,7 @@ class Mycog(commands.Cog):
         quoted = ctx.message.content
         quoted = quoted.replace(word, "")
         quoted = quoted.replace(quoted[0],"")
-        quoted = quoted.replace("addquote","")
+        quoted = quoted.replace("search","")
         quoted = quoted.replace("  ","")
 
         conn = None
