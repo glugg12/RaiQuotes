@@ -215,7 +215,7 @@ class Mycog(commands.Cog):
                 cur.execute("SELECT * FROM quotes")
                 rows = cur.fetchall()
                 for row in rows:
-                    if row[1] == ctx.message.guild.id:
+                    if row[1] == ctx.message.guild.id or row[1] == dev:
                         count = count + 1
                 randval = randint(0,count)
                 name = 'Error'
