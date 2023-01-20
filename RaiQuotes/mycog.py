@@ -9,7 +9,7 @@ from datetime import datetime
 client = discord.Client()
 #TODO: remember to change this back
 #path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
-path = r"C:\quotes.sqlite"
+path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 
 class Mycog(commands.Cog):
@@ -144,9 +144,7 @@ class Mycog(commands.Cog):
         if author == 1:
             conn = None
             try:
-                
                 conn = sqlite3.connect(path)
-
                 cur = conn.cursor()
                 count = 0
                 cur.execute("SELECT * FROM quotes")
@@ -161,9 +159,7 @@ class Mycog(commands.Cog):
                 check = 1
                 randval = 0
                 if count != 0:
-                    randval = randint(1, count)
-            
-                            
+                    randval = randint(1, count)            
                 name = '{}'.format(row[7])
                 for row in rows:
                     if row[1] == ctx.message.guild.id:
@@ -184,9 +180,6 @@ class Mycog(commands.Cog):
                             check = check + 1
                 if count == 0:
                     await ctx.channel.send("That author does not have any quotes saved. :(")
-            
-            
-            
             except Error as e:
                 print(e)
             finally:
@@ -227,9 +220,6 @@ class Mycog(commands.Cog):
                             emb.set_thumbnail(url='{}'.format(url))
                             await ctx.channel.send(embed=emb)
                         check = check + 1
-            
-            
-            
             except Error as e:
                 print(e)
             finally:
