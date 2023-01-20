@@ -318,9 +318,10 @@ class Mycog(commands.Cog):
                 for row in rows:
                     if row[1] == ctx.message.guild.id:
                         count = count + 1
-                        output = output + '{}'.format(row[2]) + ' | '
+                        output = output + '{}'.format(row[2])
                         for i in range(0, (5 - len('{}'.format(row[2])))):
                             output = output + ' '
+                        output = output + ' | '
                         if row[6] is None:
                             name = row[7]
                             if len(name) > 20:
@@ -364,10 +365,38 @@ class Mycog(commands.Cog):
             query = '% {} %'.format(word)
             cur.execute(sql, (query,))
             rows = cur.fetchall()
-            for row in rows:
-                if row[1] == ctx.message.guild.id:
-                    count = count + 1
-            await ctx.channel.send('There are {} quotes with that phrase!'.format(count))
+            output = '```'
+            if rows is not None:
+                output = output + "ID    | Name                 | Quote\n"
+                for row in rows:
+                    if row[1] == ctx.message.guild.id:
+                        count = count + 1
+                        output = output + '{}'.format(row[2])
+                        for i in range(0, (5 - len('{}'.format(row[2])))):
+                            output = output + ' '
+                        output = output + ' | '
+                        if row[6] is None:
+                            name = row[7]
+                            if len(name) > 20:
+                                name = name[:20]
+                            output = output  + name
+                            for i in range(0, (20 - len(name))):
+                                output = output + ' '
+                        else:
+                            name = ""
+                            for member in ctx.message.guild.members:
+                                if row[6] == member.id:
+                                    name = '{}'.format(member.display_name)
+                            if len(name) > 20:
+                                name = name[:20]
+                            output = output + '{}'.format(name)
+                            for i in range(0, (20 - len(name))):
+                                output = output + ' '
+                        output = output + ' | ' + row[8] + ' \n'
+                output = output + '```'
+                await ctx.channel.send(output)
+            else:
+                await ctx.channel.send("No matches for that boss!")
         except Error as e:
             print(e)
         finally:
