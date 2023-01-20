@@ -311,7 +311,7 @@ class Mycog(commands.Cog):
             count = 0
             sql = "SELECT * FROM quotes where quote like ?"
             query = '%{}%'.format(word)
-            cur.execute(sql, query,)
+            cur.execute(sql, (query,))
             rows = cur.fetchall()
             for row in rows:
                 if row[1] == ctx.message.guild.id:
