@@ -140,7 +140,6 @@ class Mycog(commands.Cog):
         print("Random started")
         # allowing test server to use GRAL data store
         ctx.message.guild.id = devServerID(ctx.message.guild.id)
-        random.seed(datetime.now())
         quoted = ctx.message.content
         quoted = quoted.replace(quoted[0],"")
         quoted = quoted.replace("random","")
