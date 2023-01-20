@@ -7,9 +7,9 @@ from random import seed
 from random import randint
 from datetime import datetime
 client = discord.Client()
-#TODO: remember to change this back
-#path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
-path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
+path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
+#testing path
+#path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 
 class Mycog(commands.Cog):
@@ -314,7 +314,7 @@ class Mycog(commands.Cog):
             rows = cur.fetchall()
             output = '```'
             if rows is not None:
-                output = output + "**ID**    | **Name**                 | **Quote**\n"
+                output = output + "ID    | Name                 | Quote\n"
                 for row in rows:
                     if row[1] == ctx.message.guild.id:
                         count = count + 1
@@ -369,7 +369,7 @@ class Mycog(commands.Cog):
             rows = cur.fetchall()
             output = '```'
             if rows is not None:
-                output = output + "**ID**    | **Name**                 | **Quote**\n"
+                output = output + "ID    | Name                 | Quote\n"
                 for row in rows:
                     if row[1] == ctx.message.guild.id:
                         count = count + 1
