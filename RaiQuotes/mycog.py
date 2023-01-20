@@ -24,10 +24,11 @@ class Mycog(commands.Cog):
             conn = sqlite3.connect(path)
 
             cur = conn.cursor()
-            toEx = 'SELECT * FROM quotes where server_quote_id = {}'.format(word)
+            toEx = 'SELECT * FROM quotes where server_quote_id = {} and server_id = {}'.format(word, ctx.message.guild.id)
             cur.execute(toEx)
-            rows = cur.fetchall()
+            row = cur.fetchall()
             found = 0
+            print(cur.rowcount)
             if cur.rowcount > 0:
                 name = '{}'.format(row[7])
                 url = ''
@@ -46,7 +47,8 @@ class Mycog(commands.Cog):
                 
                 emb.set_thumbnail(url='{}'.format(url))
                 found = 1
-                await ctx.channel.send(embed=emb)            
+                await ctx.channel.send(embed=emb)
+                        
             if found == 0:
                 await ctx.channel.send("Couldn't find that quote!")
         except Error as e:
