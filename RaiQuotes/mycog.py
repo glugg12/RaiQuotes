@@ -8,44 +8,49 @@ from random import randint
 from datetime import datetime
 client = discord.Client()
 path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
+#testing path
+#path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
+
+
 class Mycog(commands.Cog):
-    """My custom cog"""
+    """RaiQuotes Cog"""
 
     @commands.command()
     async def quoteid(self, ctx, word):
         """Finds a quote at the requested id"""
-        # Your code will go here
+        # originally pulls down all quotes and searches them in code
+        # now does a conditional select all on the db instead. In theory, should be slightly faster, but won't be noticable regardless.
+        # this also just makes more sense to do.
         conn = None
         try:
             conn = sqlite3.connect(path)
 
             cur = conn.cursor()
-            cur.execute("SELECT * FROM quotes")
-            rows = cur.fetchall()
-            found = 0
+            toEx = 'SELECT * FROM quotes where server_quote_id = ? and server_id = ?'
             
-            for row in rows:
-                if row[1] == ctx.message.guild.id:
-                    numb = row[2]
-                    if '{}'.format(numb) == '{}'.format(word):
-                        name = '{}'.format(row[7])
-                        url = ''
-                        addedby = '?'
-                        img = ''
-                        for member in ctx.message.guild.members:
-                            if row[6] == member.id:
-                                name = '{}'.format(member.display_name)
-                                url = member.avatar_url
-                            if row[5] ==member.id:
-                                addedby = '{}'.format(member.display_name)
-                        emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]), colour = 0x00ff00)
-                        emb.set_footer(text = 'Added by: {}'.format(addedby))
-                        if row[10] != None:
-                            emb.set_image(url='{}'.format(row[10]))
+            cur.execute(toEx,(word,ctx.message.guild.id))
+            row = cur.fetchone()
+            found = 0
+            if row is not None:
+                name = '{}'.format(row[7])
+                url = ''
+                addedby = '?'
+                img = ''
+                for member in ctx.message.guild.members:
+                    if row[6] == member.id:
+                        name = '{}'.format(member.display_name)
+                        url = member.avatar_url
+                    if row[5] ==member.id:
+                            addedby = '{}'.format(member.display_name)
+                emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]), colour = 0x00ff00)
+                emb.set_footer(text = 'Added by: {}'.format(addedby))
+                if row[10] != None:
+                    emb.set_image(url='{}'.format(row[10]))
                 
-                        emb.set_thumbnail(url='{}'.format(url))
-                        found = 1
-                        await ctx.channel.send(embed=emb)
+                emb.set_thumbnail(url='{}'.format(url))
+                found = 1
+                await ctx.channel.send(embed=emb)
+                        
             if found == 0:
                 await ctx.channel.send("Couldn't find that quote!")
         except Error as e:
@@ -123,7 +128,6 @@ class Mycog(commands.Cog):
     @commands.command()
     async def random(self, ctx):
         """Shows a random quote"""
-        # Your code will go here
         random.seed(datetime.now())
         quoted = ctx.message.content
         quoted = quoted.replace(quoted[0],"")
@@ -141,7 +145,6 @@ class Mycog(commands.Cog):
             conn = None
             try:
                 conn = sqlite3.connect(path)
-
                 cur = conn.cursor()
                 count = 0
                 cur.execute("SELECT * FROM quotes")
@@ -156,9 +159,7 @@ class Mycog(commands.Cog):
                 check = 1
                 randval = 0
                 if count != 0:
-                    randval = randint(1, count)
-            
-                            
+                    randval = randint(1, count)            
                 name = '{}'.format(row[7])
                 for row in rows:
                     if row[1] == ctx.message.guild.id:
@@ -179,9 +180,6 @@ class Mycog(commands.Cog):
                             check = check + 1
                 if count == 0:
                     await ctx.channel.send("That author does not have any quotes saved. :(")
-            
-            
-            
             except Error as e:
                 print(e)
             finally:
@@ -191,7 +189,6 @@ class Mycog(commands.Cog):
             conn = None
             try:
                 conn = sqlite3.connect(path)
-
                 cur = conn.cursor()
                 count = 0
                 cur.execute("SELECT * FROM quotes")
@@ -199,11 +196,13 @@ class Mycog(commands.Cog):
                 for row in rows:
                     if row[1] == ctx.message.guild.id:
                         count = count + 1
-                randval = randint(0,count)
+                randval = 0
+                if count != 0:
+                    randval = randint(1, count)  
                 name = 'Error'
                 url = ''
                 addedby = '?'
-                check = 0
+                check = 1
                 for row in rows:
                     if row[1] == ctx.message.guild.id:
                         if '{}'.format(check) == '{}'.format(randval):
@@ -221,9 +220,8 @@ class Mycog(commands.Cog):
                             emb.set_thumbnail(url='{}'.format(url))
                             await ctx.channel.send(embed=emb)
                         check = check + 1
-            
-            
-            
+                if count == 0:
+                    await ctx.channel.send("Eh? Somethings gone tits up. Go grab a coffee and let Rai know.")
             except Error as e:
                 print(e)
             finally:
@@ -299,7 +297,114 @@ class Mycog(commands.Cog):
         finally:
             if conn:
                 conn.close()
-                
+
+    @commands.command()
+    async def search(self, ctx, word):
+        """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
+        # Your code will go here
+        conn = None
+        try:
+            conn = sqlite3.connect(path)
+
+            cur = conn.cursor()
+            count = 0
+            sql = "SELECT * FROM quotes where quote like ?"
+            query = '%{}%'.format(word)
+            cur.execute(sql, (query,))
+            rows = cur.fetchall()
+            output = '```'
+            if rows is not None:
+                output = output + "ID    | Name                 | Quote\n"
+                for row in rows:
+                    if row[1] == ctx.message.guild.id:
+                        count = count + 1
+                        output = output + '{}'.format(row[2])
+                        for i in range(0, (5 - len('{}'.format(row[2])))):
+                            output = output + ' '
+                        output = output + ' | '
+                        if row[6] is None:
+                            name = row[7]
+                            if len(name) > 20:
+                                name = name[:20]
+                            output = output  + name
+                            for i in range(0, (20 - len(name))):
+                                output = output + ' '
+                        else:
+                            name = ""
+                            for member in ctx.message.guild.members:
+                                if row[6] == member.id:
+                                    name = '{}'.format(member.display_name)
+                            if len(name) > 20:
+                                name = name[:20]
+                            output = output + '{}'.format(name)
+                            for i in range(0, (20 - len(name))):
+                                output = output + ' '
+                        output = output + ' | ' + row[8] + ' \n'
+                output = output + '```'
+                await ctx.channel.send(output)
+            else:
+                await ctx.channel.send("No matches for that boss!")
+        except Error as e:
+            print(e)
+        finally:
+            if conn:
+                conn.close()
+
+    @commands.command()
+    async def searchStrict(self, ctx, word):
+        """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
+        # Your code will go here
+
+        conn = None
+        try:
+            conn = sqlite3.connect(path)
+
+            cur = conn.cursor()
+            count = 0
+            sql = "SELECT * FROM quotes where quote like ? or quote like ? or quote like ? or quote like ?"
+            query = '% {} %'.format(word)
+            left = '{} %'.format(word)
+            right = '% {}'.format(word)
+            cur.execute(sql, (query,left,right,word,))
+            rows = cur.fetchall()
+            output = '```'
+            if rows is not None:
+                output = output + "ID    | Name                 | Quote\n"
+                for row in rows:
+                    if row[1] == ctx.message.guild.id:
+                        count = count + 1
+                        output = output + '{}'.format(row[2])
+                        for i in range(0, (5 - len('{}'.format(row[2])))):
+                            output = output + ' '
+                        output = output + ' | '
+                        if row[6] is None:
+                            name = row[7]
+                            if len(name) > 20:
+                                name = name[:20]
+                            output = output  + name
+                            for i in range(0, (20 - len(name))):
+                                output = output + ' '
+                        else:
+                            name = ""
+                            for member in ctx.message.guild.members:
+                                if row[6] == member.id:
+                                    name = '{}'.format(member.display_name)
+                            if len(name) > 20:
+                                name = name[:20]
+                            output = output + '{}'.format(name)
+                            for i in range(0, (20 - len(name))):
+                                output = output + ' '
+                        output = output + ' | ' + row[8] + ' \n'
+                output = output + '```'
+                await ctx.channel.send(output)
+            else:
+                await ctx.channel.send("No matches for that boss!")
+        except Error as e:
+            print(e)
+        finally:
+            if conn:
+                conn.close()
+
     @commands.command()
     async def raihepl(self, ctx):
         """More detailed help command"""
