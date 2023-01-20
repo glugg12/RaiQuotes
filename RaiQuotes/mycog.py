@@ -341,8 +341,8 @@ class Mycog(commands.Cog):
                                 output = output + ' '
                         output = output + ' | ' + row[8] + ' \n'
                 output = output + '```'
-                if len(output) > 4000:
-                    output = output[:3970] + "\nresults too long```"
+                if len(output) > 2000:
+                    output = output[:1970] + "\nresults too long```"
                 await ctx.channel.send(output)
             else:
                 await ctx.channel.send("No matches for that boss!")
@@ -398,8 +398,8 @@ class Mycog(commands.Cog):
                                 output = output + ' '
                         output = output + ' | ' + row[8] + ' \n'
                 output = output + '```'
-                if len(output) > 4000:
-                    output = output[:3970] + "\nresults too long```"
+                if len(output) > 2000:
+                    output = output[:1970] + "\nresults too long```"
                 await ctx.channel.send(output)
             else:
                 await ctx.channel.send("No matches for that boss!")
