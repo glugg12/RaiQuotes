@@ -7,20 +7,26 @@ from random import seed
 from random import randint
 from datetime import datetime
 client = discord.Client()
-path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
+#TODO: remember to change this back
+#path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
+path = r"C:\\quotes.sqlite"
+
+def getConnection():
+    return sqlite3.connect(path)
+
 class Mycog(commands.Cog):
-    """My custom cog"""
+    """RaiQuotes Cog"""
 
     @commands.command()
     async def quoteid(self, ctx, word):
         """Finds a quote at the requested id"""
-        # Your code will go here
+        # originally pulls down all quotes and searches them in code
         conn = None
         try:
-            conn = sqlite3.connect(path)
+            conn = getConnection()
 
             cur = conn.cursor()
-            cur.execute("SELECT * FROM quotes")
+            cur.execute("SELECT * FROM quotes where ")
             rows = cur.fetchall()
             found = 0
             
@@ -81,7 +87,7 @@ class Mycog(commands.Cog):
             author = author.replace("!", "")
         conn = None
         try:
-            conn = sqlite3.connect(path)
+            conn = getConnection()
             if mention == 1:
                 if len(ctx.message.attachments) > 0:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
@@ -140,7 +146,7 @@ class Mycog(commands.Cog):
         if author == 1:
             conn = None
             try:
-                conn = sqlite3.connect(path)
+                conn = getConnection()
 
                 cur = conn.cursor()
                 count = 0
@@ -190,7 +196,7 @@ class Mycog(commands.Cog):
         if author == 0:
             conn = None
             try:
-                conn = sqlite3.connect(path)
+                conn = getConnection()
 
                 cur = conn.cursor()
                 count = 0
@@ -237,7 +243,7 @@ class Mycog(commands.Cog):
         
         conn = None
         try:
-            conn = sqlite3.connect(path)
+            conn = getConnection()
             sql = 'DELETE FROM quotes WHERE server_quote_id=?'
             cur = conn.cursor()
             cur.execute(sql,(word,))
@@ -260,7 +266,7 @@ class Mycog(commands.Cog):
 
         conn = None
         try:
-            conn = sqlite3.connect(path)
+            conn = getConnection()
 
             cur = conn.cursor()
             count = 0
@@ -284,7 +290,7 @@ class Mycog(commands.Cog):
 
         conn = None
         try:
-            conn = sqlite3.connect(path)
+            conn = getConnection()
 
             cur = conn.cursor()
             count = 0
