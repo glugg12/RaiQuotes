@@ -310,7 +310,7 @@ class Mycog(commands.Cog):
             cur = conn.cursor()
             count = 0
             sql = "SELECT * FROM quotes where quote like ?"
-            query = "%" + word + "%"
+            query = '%{}%'.format(word)
             cur.execute(sql, query)
             rows = cur.fetchall()
             for row in rows:
