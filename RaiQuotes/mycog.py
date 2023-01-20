@@ -299,7 +299,7 @@ class Mycog(commands.Cog):
                 conn.close()
 
     @commands.command()
-    async def searchWithWord(self, ctx, word):
+    async def search(self, ctx, word):
         """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
         # Your code will go here
 
@@ -311,6 +311,31 @@ class Mycog(commands.Cog):
             count = 0
             sql = "SELECT * FROM quotes where quote like ?"
             query = '%{}%'.format(word)
+            cur.execute(sql, (query,))
+            rows = cur.fetchall()
+            for row in rows:
+                if row[1] == ctx.message.guild.id:
+                    count = count + 1
+            await ctx.channel.send('There are {} quotes with that phrase!'.format(count))
+        except Error as e:
+            print(e)
+        finally:
+            if conn:
+                conn.close()
+
+    @commands.command()
+    async def searchStrict(self, ctx, word):
+        """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
+        # Your code will go here
+
+        conn = None
+        try:
+            conn = sqlite3.connect(path)
+
+            cur = conn.cursor()
+            count = 0
+            sql = "SELECT * FROM quotes where quote like ?"
+            query = '{}'.format(word)
             cur.execute(sql, (query,))
             rows = cur.fetchall()
             for row in rows:
