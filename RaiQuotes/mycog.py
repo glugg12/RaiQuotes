@@ -9,7 +9,7 @@ from datetime import datetime
 client = discord.Client()
 path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
 #testing path
-#path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
+path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 
 class Mycog(commands.Cog):
@@ -299,7 +299,7 @@ class Mycog(commands.Cog):
                 conn.close()
 
     @commands.command()
-    async def search(self, ctx, word):
+    async def searchQuotes(self, ctx, word):
         """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
         # Your code will go here
         conn = None
@@ -351,7 +351,7 @@ class Mycog(commands.Cog):
                 conn.close()
 
     @commands.command()
-    async def searchStrict(self, ctx, word):
+    async def searchQuotesStrict(self, ctx, word):
         """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
         # Your code will go here
 
