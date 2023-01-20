@@ -302,13 +302,6 @@ class Mycog(commands.Cog):
     async def search(self, ctx, word):
         """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
         # Your code will go here
-
-        quoted = ctx.message.content
-        quoted = quoted.replace(word, "")
-        quoted = quoted.replace(quoted[0],"")
-        quoted = quoted.replace("search","")
-        quoted = quoted.replace("  ","")
-        print(quoted)
         conn = None
         try:
             conn = sqlite3.connect(path)
@@ -316,13 +309,16 @@ class Mycog(commands.Cog):
             cur = conn.cursor()
             count = 0
             sql = "SELECT * FROM quotes where quote like ?"
-            query = '%{}%'.format(quoted)
+            query = '%{}%'.format(word)
             cur.execute(sql, (query,))
             rows = cur.fetchall()
+            output = "```"
             for row in rows:
                 if row[1] == ctx.message.guild.id:
                     count = count + 1
-            await ctx.channel.send('There are {} quotes with that phrase!'.format(count))
+                    output = output + row[2] + " | " + row[7] if row[6] is None else row[7] + " | " + row[8] + "\n"
+            output = output + "```"
+            await ctx.channel.send(output)
         except Error as e:
             print(e)
         finally:
