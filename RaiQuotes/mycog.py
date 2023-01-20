@@ -138,11 +138,8 @@ class Mycog(commands.Cog):
     async def random(self, ctx):
         """Shows a random quote"""
         print("Random started")
-        # allowing test server to use GRAL data store
-        dev = devServerID('{}'.format(ctx.message.guild.id))
+        random.seed(datetime.now())
         quoted = ctx.message.content
-        print('{}'.format(ctx.message.guild.id))
-        print(dev)
         quoted = quoted.replace(quoted[0],"")
         quoted = quoted.replace("random","")
         author = 0
@@ -215,7 +212,7 @@ class Mycog(commands.Cog):
                 cur.execute("SELECT * FROM quotes")
                 rows = cur.fetchall()
                 for row in rows:
-                    if row[1] == ctx.message.guild.id or row[1] == dev:
+                    if row[1] == ctx.message.guild.id:
                         count = count + 1
                         print(count)
                 randval = randint(0,count)
@@ -224,7 +221,7 @@ class Mycog(commands.Cog):
                 addedby = '?'
                 check = 0
                 for row in rows:
-                    if row[1] == ctx.message.guild.id or row[1] == dev:
+                    if row[1] == ctx.message.guild.id:
                         if '{}'.format(check) == '{}'.format(randval):
                             name = '{}'.format(row[7])
                             for member in ctx.message.guild.members:
