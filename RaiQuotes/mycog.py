@@ -24,7 +24,8 @@ class Mycog(commands.Cog):
             conn = sqlite3.connect(path)
 
             cur = conn.cursor()
-            cur.execute("SELECT * FROM quotes")
+            toEx = 'SELECT * FROM quotes where server_quote_id = {}'.format(word)
+            cur.execute(toEx)
             rows = cur.fetchall()
             found = 0
             
