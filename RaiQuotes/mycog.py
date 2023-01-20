@@ -361,7 +361,7 @@ class Mycog(commands.Cog):
 
             cur = conn.cursor()
             count = 0
-            sql = "SELECT * FROM quotes where quote like ? or ? or ?"
+            sql = "SELECT * FROM quotes where quote like ? or quote like ? or quote like ?"
             query = '% {} %'.format(word)
             left = '{} %'.format(word)
             right = '% {}'.format(word)
