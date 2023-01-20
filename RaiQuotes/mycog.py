@@ -365,7 +365,7 @@ class Mycog(commands.Cog):
             query = '% {} %'.format(word)
             left = '{} %'.format(word)
             right = '% {}'.format(word)
-            cur.execute(sql, (query,), (left,), (right,))
+            cur.execute(sql, (query,left,right,))
             rows = cur.fetchall()
             output = '```'
             if rows is not None:
