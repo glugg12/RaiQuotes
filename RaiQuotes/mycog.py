@@ -197,11 +197,13 @@ class Mycog(commands.Cog):
                 for row in rows:
                     if row[1] == ctx.message.guild.id:
                         count = count + 1
-                randval = randint(1,count)
+                randval = 0
+                if count != 0:
+                    randval = randint(1, count)  
                 name = 'Error'
                 url = ''
                 addedby = '?'
-                check = 0
+                check = 1
                 for row in rows:
                     if row[1] == ctx.message.guild.id:
                         if '{}'.format(check) == '{}'.format(randval):
@@ -219,6 +221,8 @@ class Mycog(commands.Cog):
                             emb.set_thumbnail(url='{}'.format(url))
                             await ctx.channel.send(embed=emb)
                         check = check + 1
+                if count == 0:
+                    await ctx.channel.send("Eh? Somethings gone tits up. Go grab a coffee and let Rai know.")
             except Error as e:
                 print(e)
             finally:
