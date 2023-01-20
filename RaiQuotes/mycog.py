@@ -141,7 +141,8 @@ class Mycog(commands.Cog):
         # allowing test server to use GRAL data store
         #ctx.message.guild.id = devServerID(ctx.message.guild.id)
         quoted = ctx.message.content
-        print(quoted)
+        a = 2
+        print(a)
         quoted = quoted.replace(quoted[0],"")
         quoted = quoted.replace("random","")
         author = 0
