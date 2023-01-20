@@ -303,6 +303,12 @@ class Mycog(commands.Cog):
         """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
         # Your code will go here
 
+        quoted = ctx.message.content
+        quoted = quoted.replace(word, "")
+        quoted = quoted.replace(quoted[0],"")
+        quoted = quoted.replace("addquote","")
+        quoted = quoted.replace("  ","")
+
         conn = None
         try:
             conn = sqlite3.connect(path)
@@ -310,7 +316,7 @@ class Mycog(commands.Cog):
             cur = conn.cursor()
             count = 0
             sql = "SELECT * FROM quotes where quote like ?"
-            query = '%{}%'.format(word)
+            query = '%{}%'.format(quoted)
             cur.execute(sql, (query,))
             rows = cur.fetchall()
             for row in rows:
@@ -335,7 +341,7 @@ class Mycog(commands.Cog):
             cur = conn.cursor()
             count = 0
             sql = "SELECT * FROM quotes where quote like ?"
-            query = '{}'.format(word)
+            query = '% {} %'.format(word)
             cur.execute(sql, (query,))
             rows = cur.fetchall()
             for row in rows:
