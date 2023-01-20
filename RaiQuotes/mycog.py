@@ -27,7 +27,7 @@ class Mycog(commands.Cog):
             toEx = 'SELECT * FROM quotes where server_quote_id = ? and server_id = ?'
             
             cur.execute(toEx,(word,ctx.message.guild.id))
-            row = cur.fetchone
+            row = cur.fetchone()
             print(row)
             found = 0
             if row is not None:
