@@ -27,11 +27,10 @@ class Mycog(commands.Cog):
             toEx = 'SELECT * FROM quotes where server_quote_id = ? and server_id = ?'
             
             cur.execute(toEx,(word,ctx.message.guild.id))
-            row = cur.fetchall()
+            row = cur.fetchone
             print(row)
             found = 0
-            print(cur.rowcount)
-            if cur.rowcount > 0:
+            if row is not None:
                 name = '{}'.format(row[7])
                 url = ''
                 addedby = '?'
