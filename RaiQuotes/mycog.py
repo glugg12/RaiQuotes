@@ -314,7 +314,7 @@ class Mycog(commands.Cog):
             rows = cur.fetchall()
             output = '```'
             if rows is not None:
-                output = output + "ID    | Name                 | Quote\n"
+                output = output + "**ID**    | **Name**                 | **Quote**\n"
                 for row in rows:
                     if row[1] == ctx.message.guild.id:
                         count = count + 1
@@ -369,7 +369,7 @@ class Mycog(commands.Cog):
             rows = cur.fetchall()
             output = '```'
             if rows is not None:
-                output = output + "ID    | Name                 | Quote\n"
+                output = output + "**ID**    | **Name**                 | **Quote**\n"
                 for row in rows:
                     if row[1] == ctx.message.guild.id:
                         count = count + 1
