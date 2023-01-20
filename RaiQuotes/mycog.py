@@ -15,6 +15,13 @@ def getConnection():
     conn = sqlite3.connect(path)
     return conn
 
+def devServerID(guildID):
+    if(guildID == 331960438113959950):
+        return 198685985234616320
+    else:
+        return guildID
+
+
 class Mycog(commands.Cog):
     """RaiQuotes Cog"""
 
@@ -27,7 +34,7 @@ class Mycog(commands.Cog):
             conn = getConnection()
 
             cur = conn.cursor()
-            cur.execute("SELECT * FROM quotes where ")
+            cur.execute("SELECT * FROM quotes")
             rows = cur.fetchall()
             found = 0
             
@@ -131,7 +138,8 @@ class Mycog(commands.Cog):
     async def random(self, ctx):
         """Shows a random quote"""
         print("Random started")
-        # Your code will go here
+        # allowing test server to use GRAL data store
+        ctx.message.guild.id = devServerID(ctx.message.guild.id)
         random.seed(datetime.now())
         quoted = ctx.message.content
         quoted = quoted.replace(quoted[0],"")
