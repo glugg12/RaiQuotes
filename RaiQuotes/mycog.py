@@ -16,8 +16,8 @@ def getConnection():
     return conn
 
 def devServerID(guildID):
-    if(guildID == 331960438113959950):
-        return 198685985234616320
+    if(guildID == '331960438113959950'):
+        return '198685985234616320'
     else:
         return guildID
 
