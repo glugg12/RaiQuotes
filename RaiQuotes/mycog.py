@@ -297,6 +297,30 @@ class Mycog(commands.Cog):
         finally:
             if conn:
                 conn.close()
+
+    @commands.command()
+    async def searchWithWord(self, ctx, word):
+        """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
+        # Your code will go here
+
+        conn = None
+        try:
+            conn = sqlite3.connect(path)
+
+            cur = conn.cursor()
+            count = 0
+            cur.execute("SELECT * FROM quotes where quote like ?")
+            query = "%" + word + "%"
+            rows = cur.fetchall()
+            for row in rows:
+                if row[1] == ctx.message.guild.id:
+                    count = count + 1
+            await ctx.channel.send('There are {} quotes with that phrase!'.format(count))
+        except Error as e:
+            print(e)
+        finally:
+            if conn:
+                conn.close()
                 
     @commands.command()
     async def raihepl(self, ctx):
