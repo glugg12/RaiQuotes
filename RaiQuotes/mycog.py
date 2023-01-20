@@ -299,7 +299,7 @@ class Mycog(commands.Cog):
                 conn.close()
 
     @commands.command()
-    async def searchWithWord(self, ctx, word):
+    async def searchWithWord(self, ctx):
         """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
         # Your code will go here
 
@@ -321,7 +321,7 @@ class Mycog(commands.Cog):
         finally:
             if conn:
                 conn.close()
-                
+
     @commands.command()
     async def raihepl(self, ctx):
         """More detailed help command"""
