@@ -320,7 +320,11 @@ class Mycog(commands.Cog):
                         if row[6] is None:
                             output = output + '{}'.format(row[2]) + ' | ' + row[7]
                         else:
-                            output = output + '{}'.format(row[2]) + ' | ' + '{}'.format(row[6])
+                            name = ""
+                            for member in ctx.message.guild.members:
+                                if row[6] == member.id:
+                                    name = '{}'.format(member.display_name)
+                            output = output + '{}'.format(row[2]) + ' | ' + '{}'.format(name)
                         output = output + ' | ' + row[8] + ' \n'
                 output = output + '```'
                 await ctx.channel.send(output)
