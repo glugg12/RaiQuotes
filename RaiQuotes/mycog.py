@@ -156,7 +156,7 @@ class Mycog(commands.Cog):
         if author == 1:
             conn = None
             try:
-                print("Attempt conn")
+                
                 conn = getConnection()
 
                 cur = conn.cursor()
@@ -222,7 +222,7 @@ class Mycog(commands.Cog):
                 addedby = '?'
                 check = 0
                 for row in rows:
-                    if row[1] == ctx.message.guild.id:
+                    if row[1] == ctx.message.guild.id or row[1] == dev:
                         if '{}'.format(check) == '{}'.format(randval):
                             name = '{}'.format(row[7])
                             for member in ctx.message.guild.members:
