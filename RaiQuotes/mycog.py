@@ -452,7 +452,7 @@ class Mycog(commands.Cog):
                     print("Server Hit")
                     print(row[2])
                     print(randval1)
-                    if row[2] == '{}'.format(randval1):
+                    if row[2] == randval1:
                         print("found 1")
                         n1 = '{}'.format(row[7])
                         q1 = '{}'.format(row[8])
