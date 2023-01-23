@@ -449,11 +449,7 @@ class Mycog(commands.Cog):
             id2 = 0
             for row in rows:
                 if row[1] == ctx.message.guild.id:
-                    print("Server Hit")
-                    print(row[2])
-                    print(randval1)
                     if row[2] == randval1:
-                        print("found 1")
                         n1 = '{}'.format(row[7])
                         q1 = '{}'.format(row[8])
                         print(row[8])
@@ -465,7 +461,6 @@ class Mycog(commands.Cog):
                             url='{}'.format(url)
 
                     if row[2] == randval2:
-                        print("found 2")
                         n2 = '{}'.format(row[7])
                         q2 = '{}'.format(row[8])
                         for member in ctx.message.guild.members:
@@ -475,8 +470,6 @@ class Mycog(commands.Cog):
                             url='{}'.format(row[10])
                             url='{}'.format(url)
                 check = check + 1
-            print(q1)
-            print(q2)
             remixed = ''
             if(len(q1) != 0):
                 chop = int(len(q1)/2)
