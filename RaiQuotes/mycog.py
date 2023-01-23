@@ -480,7 +480,7 @@ class Mycog(commands.Cog):
             remixed = ''
             if(len(q1) != 0):
                 chop = int(len(q1)/2)
-                while(q1[chop] != ' ' or chop != len(q1)):
+                while(q1[chop] != ' ' or chop != len(q1) - 1):
                     chop = chop + 1
                 
                 remixed = q1[:chop]
