@@ -454,7 +454,7 @@ class Mycog(commands.Cog):
             for row in rows:
                 if row[1] == ctx.message.guild.id:
                     print("Server Hit")
-                    if '{}'.format(check) == '{}'.format(randval1):
+                    if row[2] == '{}'.format(randval1):
                         print("found 1")
                         n1 = '{}'.format(row[7])
                         q1 = '{}'.format(row[8])
