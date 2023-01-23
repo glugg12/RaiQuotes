@@ -447,6 +447,9 @@ class Mycog(commands.Cog):
             check = 1
             id1 = 0
             id2 = 0
+            print(count)
+            print(randval1)
+            print(randval2)
             for row in rows:
                 if row[1] == ctx.message.guild.id:
                     if '{}'.format(check) == '{}'.format(randval1):
@@ -481,7 +484,7 @@ class Mycog(commands.Cog):
                     chop = chop - 1
                 
                 remixed = remixed + q2[chop:]
-            
+            print(remixed)
             emb = discord.Embed(title='{}'.format(n1 + ' + ' + n2), description='{}'.format(remixed), colour = 0x00ff00)
             emb.set_image(url = '{}'.format(url))
             emb.set_thumbnail(url = '{}'.format(url))
