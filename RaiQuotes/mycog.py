@@ -410,17 +410,29 @@ class Mycog(commands.Cog):
                 conn.close()
 
     @commands.command()
-    async def remix(self, ctx):
+    async def remix(self, ctx, author):
         """Remix baybeee"""
         random.seed(datetime.now())
+        author = author.replace("<", "")
+        author = author.replace(">", "")
+        author = author.replace("@", "")
+        author = author.replace("!", "")
+        limited = False
         conn = None
         quote1 = ""
         quote2 = ""
+        sql = ''
+        if(author != None):
+            sql = "SELECT * FROM quotes where server_id = ? and author_id = ?"
+            limited = True
         try:
             conn = sqlite3.connect(path)
             cur = conn.cursor()
             count = 0
-            cur.execute("SELECT * FROM quotes where server_id = ?", (ctx.message.guild.id,))
+            if(limited):
+                cur.execute(sql, (ctx.message.guild.id,author,))
+            else:
+                cur.execute(sql, (ctx.message.guild.id,))
             rows = cur.fetchall()
             for row in rows:
                 if row[1] == ctx.message.guild.id:
