@@ -464,7 +464,7 @@ class Mycog(commands.Cog):
                             url='{}'.format(row[10])
                             url='{}'.format(url)
 
-                    if '{}'.format(check) == '{}'.format(randval2):
+                    if row[2] == randval2:
                         print("found 2")
                         n2 = '{}'.format(row[7])
                         q2 = '{}'.format(row[8])
@@ -479,7 +479,7 @@ class Mycog(commands.Cog):
             print(q2)
             remixed = ''
             if(len(q1) != 0):
-                chop = len(q1)/2
+                chop = int(len(q1)/2)
                 while(q1[chop] != ' ' or chop != len(q1)):
                     chop = chop + 1
                 
