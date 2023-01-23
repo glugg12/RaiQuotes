@@ -415,7 +415,7 @@ class Mycog(commands.Cog):
         random.seed(datetime.now())
         quoted = ctx.message.content
         quoted = quoted.replace(quoted[0],"")
-        quoted = quoted.replace("random","")
+        quoted = quoted.replace("remix","")
         author = 0
         limited = False
         if quoted != "":
