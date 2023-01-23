@@ -480,13 +480,13 @@ class Mycog(commands.Cog):
             remixed = ''
             if(len(q1) != 0):
                 chop = int(len(q1)/2)
-                while(q1[chop] != ' ' and chop != len(q1)):
+                while(q1[chop] != ' ' and chop != len(q1) - 1):
                     chop = chop + 1
                 
                 remixed = q1[:chop]
             if(len(q2) != 0):
                 chop = int(len(q2)/2)
-                while(q2[chop] != ' ' and chop != 0):
+                while(q2[chop] != ' ' and chop != 1):
                     chop = chop - 1
                 
                 remixed = remixed + q2[chop:]
