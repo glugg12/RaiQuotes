@@ -410,6 +410,93 @@ class Mycog(commands.Cog):
                 conn.close()
 
     @commands.command()
+    async def remix(self, ctx):
+        """Remix baybeee"""
+        random.seed(datetime.now())
+        conn = None
+        quote1 = ""
+        quote2 = ""
+        try:
+            conn = sqlite3.connect(path)
+            cur = conn.cursor()
+            count = 0
+            cur.execute("SELECT * FROM quotes")
+            rows = cur.fetchall()
+            for row in rows:
+                if row[1] == ctx.message.guild.id:
+                    count = count + 1
+            randval1 = 0
+            randval2 = 0
+            if count != 0:
+                randval1 = randint(1, count)
+                randval2 = randint(1, count)
+                matched = True
+                while(matched):
+                    if(randval1 == randval2):
+                        matched = True
+                        randval2 = randint(1, count)
+                    else:
+                        matched = False  
+            name = 'Error'
+            n1 = ''
+            n2 = ''
+            q1 = ''
+            q2 = ''
+            url = ''
+            addedby = '?'
+            check = 1
+            id1 = 0
+            id2 = 0
+            for row in rows:
+                if row[1] == ctx.message.guild.id:
+                    if '{}'.format(check) == '{}'.format(randval1):
+                        n1 = '{}'.format(row[7])
+                        q1 = '{}'.format(row[8])
+                        for member in ctx.message.guild.members:
+                            if row[6] == member.id:
+                                n1 = '{}'.format(member.display_name)
+                        if row[10] != None and row[8] != None:
+                            url='{}'.format(row[10])
+                            url='{}'.format(url)
+                    if '{}'.format(check) == '{}'.format(randval2):
+                        n2 = '{}'.format(row[7])
+                        q1 = '{}'.format(row[8])
+                        for member in ctx.message.guild.members:
+                            if row[6] == member.id:
+                                n2 = '{}'.format(member.display_name)
+                        if row[10] != None:
+                            url='{}'.format(row[10])
+                            url='{}'.format(url)
+                check = check + 1
+            remixed = ''
+            if(len(q1) != 0):
+                chop = len(q1)/2
+                while(q1[chop] != ' ' or chop != len(q1)):
+                    chop = chop + 1
+                
+                remixed = q1[:chop]
+            if(len(q2) != 0):
+                chop = len(q2)/2
+                while(q2[chop] != ' ' or chop != 0):
+                    chop = chop - 1
+                
+                remixed = remixed + q2[chop:]
+            
+            emb = discord.Embed(title='{}'.format(n1 + ' + ' + n2), description='{}'.format(remixed), colour = 0x00ff00)
+            emb.set_image(url = '{}'.format(url))
+            emb.set_thumbnail(url = '{}'.format(url))
+            emb.set_footer(text = 'Quote IDs: {} + {}'.format(id1, id2))
+            await ctx.channel.send(embed=emb)
+                    
+            if count == 0:
+                await ctx.channel.send("Eh? Somethings gone tits up. Go grab a coffee and let Rai know.")
+        except Error as e:
+            print(e)
+        finally:
+            if conn:
+                conn.close()
+
+    @commands.command()
     async def raihepl(self, ctx):
         """More detailed help command"""
         await ctx.channel.send('```Here are the commands for RaiQuotes cog!\nquoteid[id]               | Show the quote at [id]\naddquote [author] [quote] | Add a new quote to the database/ Accepts discord @user for [author] too!\ndeleteid [id]             | Deletes quote at [id]. It will be gone.... forever....\nrandom                    | Shows a random quote\ntotal [author]            | Shows how many quotes [author] has in this server\ngrandtotal                | Shows the total quotes in the server```')
