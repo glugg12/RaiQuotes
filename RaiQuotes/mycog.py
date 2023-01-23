@@ -450,6 +450,7 @@ class Mycog(commands.Cog):
             print(count)
             print(randval1)
             print(randval2)
+            print(ctx.message.guild.id)
             for row in rows:
                 if row[1] == ctx.message.guild.id:
                     if '{}'.format(check) == '{}'.format(randval1):
