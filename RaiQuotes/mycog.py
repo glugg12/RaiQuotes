@@ -420,7 +420,7 @@ class Mycog(commands.Cog):
             conn = sqlite3.connect(path)
             cur = conn.cursor()
             count = 0
-            cur.execute("SELECT * FROM quotes where server_quote_id = ?", (ctx.message.guild.id,))
+            cur.execute("SELECT * FROM quotes where server_id = ?", (ctx.message.guild.id,))
             rows = cur.fetchall()
             for row in rows:
                 if row[1] == ctx.message.guild.id:
