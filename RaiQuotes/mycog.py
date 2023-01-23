@@ -456,6 +456,7 @@ class Mycog(commands.Cog):
                         print("found 1")
                         n1 = '{}'.format(row[7])
                         q1 = '{}'.format(row[8])
+                        print(row[8])
                         for member in ctx.message.guild.members:
                             if row[6] == member.id:
                                 n1 = '{}'.format(member.display_name)
