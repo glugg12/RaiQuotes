@@ -432,7 +432,7 @@ class Mycog(commands.Cog):
         quote1 = ""
         quote2 = ""
         sql = ''
-        if(quoted != None):
+        if(limited):
             sql = "SELECT * FROM quotes where server_id = ? and author_id = ?"
             limited = True
         else:
