@@ -410,19 +410,29 @@ class Mycog(commands.Cog):
                 conn.close()
 
     @commands.command()
-    async def remix(self, ctx, author):
+    async def remix(self, ctx):
         """Remix baybeee"""
         random.seed(datetime.now())
-        author = author.replace("<", "")
-        author = author.replace(">", "")
-        author = author.replace("@", "")
-        author = author.replace("!", "")
+        quoted = ctx.message.content
+        quoted = quoted.replace(quoted[0],"")
+        quoted = quoted.replace("random","")
+        author = 0
         limited = False
+        if quoted != "":
+            author = 1
+            quoted = quoted.replace(" ", "")
+            if quoted[0] == "<":
+                quoted = quoted.replace("<", "")
+                quoted = quoted.replace(">", "")
+                quoted = quoted.replace("@", "")
+                quoted = quoted.replace("!", "")
+                limited = True
+        
         conn = None
         quote1 = ""
         quote2 = ""
         sql = ''
-        if(author != None):
+        if(quoted != None):
             sql = "SELECT * FROM quotes where server_id = ? and author_id = ?"
             limited = True
         try:
@@ -430,7 +440,7 @@ class Mycog(commands.Cog):
             cur = conn.cursor()
             count = 0
             if(limited):
-                cur.execute(sql, (ctx.message.guild.id,author,))
+                cur.execute(sql, (ctx.message.guild.id,quoted,))
             else:
                 cur.execute(sql, (ctx.message.guild.id,))
             rows = cur.fetchall()
