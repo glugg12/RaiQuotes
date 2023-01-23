@@ -420,7 +420,7 @@ class Mycog(commands.Cog):
             conn = sqlite3.connect(path)
             cur = conn.cursor()
             count = 0
-            cur.execute("SELECT * FROM quotes")
+            cur.execute("SELECT * FROM quotes where server_quote_id = ?", '{}'.format(ctx.message.guild.id))
             rows = cur.fetchall()
             for row in rows:
                 if row[1] == ctx.message.guild.id:
@@ -449,7 +449,7 @@ class Mycog(commands.Cog):
             id2 = 0
             for row in rows:
                 if row[1] == ctx.message.guild.id:
-                    if row[2] == randval1:
+                    if check == randval1:
                         n1 = '{}'.format(row[7])
                         q1 = '{}'.format(row[8])
                         for member in ctx.message.guild.members:
@@ -459,7 +459,7 @@ class Mycog(commands.Cog):
                             url='{}'.format(row[10])
                             url='{}'.format(url)
 
-                    if row[2] == randval2:
+                    if check == randval2:
                         n2 = '{}'.format(row[7])
                         q2 = '{}'.format(row[8])
                         for member in ctx.message.guild.members:
@@ -486,7 +486,6 @@ class Mycog(commands.Cog):
                 remixed = remixed + q2[chop:]
             emb = discord.Embed(title='{}'.format(n1 + ' + ' + n2), description='{}'.format(remixed), colour = 0x00ff00)
             emb.set_image(url = '{}'.format(url))
-            emb.set_thumbnail(url = '{}'.format(url))
             emb.set_footer(text = 'Quote IDs: {} + {}'.format(randval1, randval2))
             await ctx.channel.send(embed=emb)
                     
