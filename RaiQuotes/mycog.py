@@ -9,7 +9,7 @@ from datetime import datetime
 client = discord.Client()
 path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
 #testing path
-#path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
+path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 
 class Mycog(commands.Cog):
@@ -316,7 +316,7 @@ class Mycog(commands.Cog):
             if rows is not None:
                 output = output + "ID    | Name                 | Quote\n"
                 for row in rows:
-                    if row[1] == ctx.message.guild.id:
+                    if row[1] == 198685985234616320:
                         count = count + 1
                         output = output + '{}'.format(row[2])
                         for i in range(0, (5 - len('{}'.format(row[2])))):
@@ -403,6 +403,97 @@ class Mycog(commands.Cog):
                 await ctx.channel.send(output)
             else:
                 await ctx.channel.send("No matches for that boss!")
+        except Error as e:
+            print(e)
+        finally:
+            if conn:
+                conn.close()
+
+    @commands.command()
+    async def remix(self, ctx):
+        """Remix baybeee"""
+        random.seed(datetime.now())
+        conn = None
+        quote1 = ""
+        quote2 = ""
+        try:
+            conn = sqlite3.connect(path)
+            cur = conn.cursor()
+            count = 0
+            cur.execute("SELECT * FROM quotes")
+            rows = cur.fetchall()
+            for row in rows:
+                if row[1] == ctx.message.guild.id:
+                    count = count + 1
+            randval1 = 0
+            randval2 = 0
+            if count != 0:
+                randval1 = randint(1, count)
+                randval2 = randint(1, count)
+                matched = True
+                while(matched):
+                    if(randval1 == randval2):
+                        matched = True
+                        randval2 = randint(1, count)
+                    else:
+                        matched = False  
+            name = 'Error'
+            n1 = ''
+            n2 = ''
+            q1 = ''
+            q2 = ''
+            url = ''
+            addedby = '?'
+            check = 1
+            id1 = 0
+            id2 = 0
+            for row in rows:
+                if row[1] == ctx.message.guild.id:
+                    if row[2] == randval1:
+                        n1 = '{}'.format(row[7])
+                        q1 = '{}'.format(row[8])
+                        print(row[8])
+                        for member in ctx.message.guild.members:
+                            if row[6] == member.id:
+                                n1 = '{}'.format(member.display_name)
+                        if row[10] != None and row[8] != None:
+                            url='{}'.format(row[10])
+                            url='{}'.format(url)
+
+                    if row[2] == randval2:
+                        n2 = '{}'.format(row[7])
+                        q2 = '{}'.format(row[8])
+                        for member in ctx.message.guild.members:
+                            if row[6] == member.id:
+                                n2 = '{}'.format(member.display_name)
+                        if row[10] != None:
+                            url='{}'.format(row[10])
+                            url='{}'.format(url)
+                check = check + 1
+            remixed = ''
+            if(len(q1) != 0):
+                chop = int(len(q1)/2)
+                while(q1[chop] != ' ' and chop != len(q1) - 1):
+                    chop = chop + 1
+                
+                remixed = q1[:chop]
+            if(len(q2) != 0):
+                chop = int(len(q2)/2)
+                while(q2[chop] != ' ' and chop != 0):
+                    chop = chop - 1
+                
+                if(chop == 0):
+                    remixed = remixed + ' '
+                remixed = remixed + q2[chop:]
+            print(remixed)
+            emb = discord.Embed(title='{}'.format(n1 + ' + ' + n2), description='{}'.format(remixed), colour = 0x00ff00)
+            emb.set_image(url = '{}'.format(url))
+            emb.set_thumbnail(url = '{}'.format(url))
+            emb.set_footer(text = 'Quote IDs: {} + {}'.format(randval1, randval2))
+            await ctx.channel.send(embed=emb)
+                    
+            if count == 0:
+                await ctx.channel.send("Eh? Somethings gone tits up. Go grab a coffee and let Rai know.")
         except Error as e:
             print(e)
         finally:
