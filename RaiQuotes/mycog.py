@@ -452,6 +452,7 @@ class Mycog(commands.Cog):
                     if check == randval1:
                         n1 = '{}'.format(row[7])
                         q1 = '{}'.format(row[8])
+                        id1 = row[2]
                         for member in ctx.message.guild.members:
                             if row[6] == member.id:
                                 n1 = '{}'.format(member.display_name)
@@ -462,6 +463,7 @@ class Mycog(commands.Cog):
                     if check == randval2:
                         n2 = '{}'.format(row[7])
                         q2 = '{}'.format(row[8])
+                        id2 = row[2]
                         for member in ctx.message.guild.members:
                             if row[6] == member.id:
                                 n2 = '{}'.format(member.display_name)
@@ -486,7 +488,7 @@ class Mycog(commands.Cog):
                 remixed = remixed + q2[chop:]
             emb = discord.Embed(title='{}'.format(n1 + ' + ' + n2), description='{}'.format(remixed), colour = 0x00ff00)
             emb.set_image(url = '{}'.format(url))
-            emb.set_footer(text = 'Quote IDs: {} + {}'.format(randval1, randval2))
+            emb.set_footer(text = 'Quote IDs: {} + {}'.format(id1, id2))
             await ctx.channel.send(embed=emb)
                     
             if count == 0:
