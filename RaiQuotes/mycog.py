@@ -447,13 +447,11 @@ class Mycog(commands.Cog):
             check = 1
             id1 = 0
             id2 = 0
-            print(count)
-            print(randval1)
-            print(randval2)
-            print(ctx.message.guild.id)
             for row in rows:
                 if row[1] == ctx.message.guild.id:
                     print("Server Hit")
+                    print(row[2])
+                    print(randval1)
                     if row[2] == '{}'.format(randval1):
                         print("found 1")
                         n1 = '{}'.format(row[7])
