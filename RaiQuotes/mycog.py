@@ -435,6 +435,8 @@ class Mycog(commands.Cog):
         if(quoted != None):
             sql = "SELECT * FROM quotes where server_id = ? and author_id = ?"
             limited = True
+        else:
+            sql = "SELECT * FROM quotes where server_id = ?"
         try:
             conn = sqlite3.connect(path)
             cur = conn.cursor()
