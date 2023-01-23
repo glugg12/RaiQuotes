@@ -482,6 +482,8 @@ class Mycog(commands.Cog):
                 while(q2[chop] != ' ' and chop != 1):
                     chop = chop - 1
                 
+                if(chop == 0):
+                    remixed = remixed + ' '
                 remixed = remixed + q2[chop:]
             print(remixed)
             emb = discord.Embed(title='{}'.format(n1 + ' + ' + n2), description='{}'.format(remixed), colour = 0x00ff00)
