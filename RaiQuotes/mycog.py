@@ -299,7 +299,7 @@ class Mycog(commands.Cog):
                 conn.close()
 
     @commands.command()
-    async def search(self, ctx, word):
+    async def searchQuotes(self, ctx, word):
         """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
         # Your code will go here
         conn = None
@@ -398,6 +398,8 @@ class Mycog(commands.Cog):
                                 output = output + ' '
                         output = output + ' | ' + row[8] + ' \n'
                 output = output + '```'
+                if len(output) > 2000:
+                    output = output[:1970] + "\nresults too long```"
                 await ctx.channel.send(output)
             else:
                 await ctx.channel.send("No matches for that boss!")
