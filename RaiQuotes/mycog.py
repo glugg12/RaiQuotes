@@ -524,6 +524,34 @@ class Mycog(commands.Cog):
         finally:
             if conn:
                 conn.close()
+    
+    @commands.command()
+    async def totalAdded(self, ctx, author):
+        """Counts how many quotes the requested author has added"""
+        # Your code will go here
+        author = author.replace("<", "")
+        author = author.replace(">", "")
+        author = author.replace("@", "")
+        author = author.replace("!", "")
+
+        conn = None
+        try:
+            conn = sqlite3.connect(path)
+
+            cur = conn.cursor()
+            count = 0
+            cur.execute("SELECT * FROM quotes")
+            rows = cur.fetchall()
+            for row in rows:
+                if row[1] == ctx.message.guild.id:
+                    if '{}'.format(row[5]) == '{}'.format(author):
+                        count = count + 1
+            await ctx.channel.send('<@!{}> has added {} quotes in this server!'.format(author, count))
+        except Error as e:
+            print(e)
+        finally:
+            if conn:
+                conn.close()
 
     @commands.command()
     async def raihepl(self, ctx):
