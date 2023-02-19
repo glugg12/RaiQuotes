@@ -567,7 +567,7 @@ class Mycog(commands.Cog):
             id2 = 0
             for row in rows:
                 if row[1] == ctx.message.guild.id:
-                    if check == id:
+                    if check == int(id):
                         n1 = '{}'.format(row[7])
                         q1 = '{}'.format(row[8])
                         id1 = row[2]
