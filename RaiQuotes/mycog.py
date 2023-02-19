@@ -526,7 +526,7 @@ class Mycog(commands.Cog):
                 conn.close()
     
     @commands.command()
-    async def remixId(self, ctx, id):
+    async def remixid(self, ctx, id):
         """Remix baybeee"""
         random.seed(datetime.now())
         conn = None
@@ -590,6 +590,17 @@ class Mycog(commands.Cog):
                             url='{}'.format(url)
                 check = check + 1
             remixed = ''
+            swap = randint(0,1)
+            if(swap == 1):
+                nSwap = n1
+                qSwap = q1
+                idSwap = id1
+                n1 = n2
+                q1 = q2
+                id1 = id2
+                n2 = nSwap
+                q2 = qSwap
+                id2 = idSwap
             if(len(q1) != 0):
                 chop = int(len(q1)/2)
                 while(q1[chop] != ' ' and chop != len(q1) - 1):
