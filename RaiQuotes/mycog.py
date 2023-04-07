@@ -52,7 +52,7 @@ class Mycog(commands.Cog):
                 await ctx.channel.send(embed=emb)
                         
             if found == 0:
-                await ctx.channel.send("Couldn't find that quote!")
+                await ctx.channel.send("I'm afraid I couldn't find that quote for you.")
         except Error as e:
             print(e)
         finally:
@@ -118,7 +118,7 @@ class Mycog(commands.Cog):
             for row in rows:
                 if '{}'.format(row[0]) == '{}'.format(lastid):
                     quoteid = row[2]
-            await ctx.channel.send('Added that quote at id {} for ya! :)'.format(quoteid))
+            await ctx.channel.send('I have saved that quote for you under ID {}, safe and sound ~'.format(quoteid))
         except Error as e:
             print(e)
         finally:
@@ -179,7 +179,7 @@ class Mycog(commands.Cog):
                                 await ctx.channel.send(embed=emb)
                             check = check + 1
                 if count == 0:
-                    await ctx.channel.send("That author does not have any quotes saved. :(")
+                    await ctx.channel.send("I'm afraid I couldn't find any quotes attributed to that author.")
             except Error as e:
                 print(e)
             finally:
@@ -221,7 +221,7 @@ class Mycog(commands.Cog):
                             await ctx.channel.send(embed=emb)
                         check = check + 1
                 if count == 0:
-                    await ctx.channel.send("Eh? Somethings gone tits up. Go grab a coffee and let Rai know.")
+                    await ctx.channel.send("Oh my, something appears to have gone wrong. Could you please let Rai know?")
             except Error as e:
                 print(e)
             finally:
@@ -240,7 +240,7 @@ class Mycog(commands.Cog):
             cur = conn.cursor()
             cur.execute(sql,(word,))
             conn.commit()
-            await ctx.channel.send('Quote {} should now be deleted! :)'.format(word))
+            await ctx.channel.send('The quote at ID {} is now gone for good.'.format(word))
         except Error as e:
             print(e)
         finally:
@@ -268,7 +268,7 @@ class Mycog(commands.Cog):
                 if row[1] == ctx.message.guild.id:
                     if '{}'.format(row[6]) == '{}'.format(author):
                         count = count + 1
-            await ctx.channel.send('<@!{}> has {} quotes saved in this server!'.format(author, count))
+            await ctx.channel.send('Oh my, <@!{}> has {} quotes saved for this server.'.format(author, count))
         except Error as e:
             print(e)
         finally:
@@ -291,7 +291,7 @@ class Mycog(commands.Cog):
             for row in rows:
                 if row[1] == ctx.message.guild.id:
                     count = count + 1
-            await ctx.channel.send('There are {} quotes saved in this server!'.format(count))
+            await ctx.channel.send('There are {} quotes saved in this server. Good work everyone ~'.format(count))
         except Error as e:
             print(e)
         finally:
@@ -345,7 +345,7 @@ class Mycog(commands.Cog):
                     output = output[:1970] + "\nresults too long```"
                 await ctx.channel.send(output)
             else:
-                await ctx.channel.send("No matches for that boss!")
+                await ctx.channel.send("I couldn't find any matches for that query.")
         except Error as e:
             print(e)
         finally:
@@ -402,7 +402,7 @@ class Mycog(commands.Cog):
                     output = output[:1970] + "\nresults too long```"
                 await ctx.channel.send(output)
             else:
-                await ctx.channel.send("No matches for that boss!")
+                await ctx.channel.send("I couldn't find any matches for that query.")
         except Error as e:
             print(e)
         finally:
@@ -518,7 +518,7 @@ class Mycog(commands.Cog):
             await ctx.channel.send(embed=emb)
                     
             if count == 0:
-                await ctx.channel.send("Eh? Somethings gone tits up. Go grab a coffee and let Rai know.")
+                await ctx.channel.send("Oh my, something appears to have gone wrong. Could you please let Rai know?")
         except Error as e:
             print(e)
         finally:
@@ -623,7 +623,7 @@ class Mycog(commands.Cog):
             await ctx.channel.send(embed=emb)
                     
             if count == 0:
-                await ctx.channel.send("Eh? Somethings gone tits up. Go grab a coffee and let Rai know.")
+                await ctx.channel.send("Oh my, something appears to have gone wrong. Could you please let Rai know?")
         except Error as e:
             print(e)
         finally:
@@ -651,7 +651,7 @@ class Mycog(commands.Cog):
                 if row[1] == ctx.message.guild.id:
                     if '{}'.format(row[5]) == '{}'.format(author):
                         count = count + 1
-            await ctx.channel.send('<@!{}> has added {} quotes in this server!'.format(author, count))
+            await ctx.channel.send('Ehehe, <@!{}> has added {} quotes in this server. Keep it up ~'.format(author, count))
         except Error as e:
             print(e)
         finally:
