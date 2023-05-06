@@ -212,7 +212,7 @@ class Mycog(commands.Cog):
                             for member in ctx.message.guild.members:
                                 if row[6] == member.id:
                                     name = '{}'.format(member.display_name)
-                                    url = member.avatar_url
+                                    url = member.display_avatar
                                 if row[5] == member.id:
                                     addedby = '{}'.format(member.display_name)
                             emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]), colour = 0x00ff00)
