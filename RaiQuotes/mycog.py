@@ -6,7 +6,9 @@ import random
 from random import seed
 from random import randint
 from datetime import datetime
-client = discord.Client()
+intents = discord.Intents.default()
+intents.message_content = True
+client = discord.Client(intents=intents)
 path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
 #testing path
 #path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
