@@ -130,7 +130,7 @@ class Mycog(commands.Cog):
     @commands.command()
     async def random(self, ctx):
         """Shows a random quote"""
-        random.seed(datetime.now())
+        random.seed(datetime.now().strftime("%m%d%y%h%m%s"))
         quoted = ctx.message.content
         quoted = quoted.replace(quoted[0],"")
         quoted = quoted.replace("random","")
