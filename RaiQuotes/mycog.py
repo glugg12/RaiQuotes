@@ -11,7 +11,7 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
 #testing path
-#path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
+path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 
 class Mycog(commands.Cog):
