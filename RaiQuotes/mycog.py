@@ -41,7 +41,7 @@ class Mycog(commands.Cog):
                 for member in ctx.message.guild.members:
                     if row[6] == member.id:
                         name = '{}'.format(member.display_name)
-                        url = member.avatar_url
+                        url = member.display_avatar
                     if row[5] ==member.id:
                             addedby = '{}'.format(member.display_name)
                 emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]), colour = 0x00ff00)
@@ -414,7 +414,7 @@ class Mycog(commands.Cog):
     @commands.command()
     async def remix(self, ctx):
         """Remix baybeee"""
-        random.seed(datetime.now())
+        random.seed(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
         quoted = ctx.message.content
         quoted = quoted.replace(quoted[0],"")
         quoted = quoted.replace("remix","")
@@ -530,7 +530,7 @@ class Mycog(commands.Cog):
     @commands.command()
     async def remixid(self, ctx, id):
         """Remix baybeee"""
-        random.seed(datetime.now())
+        random.seed(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
         conn = None
         quote1 = ""
         quote2 = ""
