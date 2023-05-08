@@ -6,7 +6,7 @@ import random
 from random import seed
 from random import randint
 from datetime import datetime
-from requests import Session
+import requests
 from ApiConfig import *
 intents = discord.Intents.default()
 intents.message_content = True
