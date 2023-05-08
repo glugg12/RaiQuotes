@@ -7,11 +7,14 @@ from random import seed
 from random import randint
 from datetime import datetime
 import requests
-import ApiConfig
+import configparser
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
+config = configparser.Configparser()
+config.read('ApiConfig.ini')
+apiUrl = config['DEFAULT']['Api']
 
 
 # testing path
@@ -694,5 +697,5 @@ class Mycog(commands.Cog):
     async def DevTest(self):
         session = requests.Session()
         print("Testing response....")
-        response = session.get(url= ApiConfig.api)
+        response = session.get(url=apiUrl)
         print(response.text)
