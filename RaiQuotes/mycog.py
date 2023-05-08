@@ -698,5 +698,5 @@ class Mycog(commands.Cog):
     async def DevTest(self, ctx):
         session = requests.Session()
         print("Testing response....")
-        await response = session.get(url=apiUrl)
+        response = session.get(url=apiUrl)
         print(response.text)
