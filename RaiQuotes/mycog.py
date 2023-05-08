@@ -6,13 +6,22 @@ import random
 from random import seed
 from random import randint
 from datetime import datetime
+import requests
+import configparser
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
-#testing path
-#path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
+configPath = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
+config = configparser.ConfigParser()
 
+
+
+# testing path
+# path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
+#configPath = r"C:\Users\olijo\Documents\discordRedbot\ApiConfig.ini"
+config.read(configPath)
+apiUrl = config['DEFAULT']['Api']
 
 class Mycog(commands.Cog):
     """RaiQuotes Cog"""
@@ -29,8 +38,8 @@ class Mycog(commands.Cog):
 
             cur = conn.cursor()
             toEx = 'SELECT * FROM quotes where server_quote_id = ? and server_id = ?'
-            
-            cur.execute(toEx,(word,ctx.message.guild.id))
+
+            cur.execute(toEx, (word, ctx.message.guild.id))
             row = cur.fetchone()
             found = 0
             if row is not None:
@@ -42,17 +51,17 @@ class Mycog(commands.Cog):
                     if row[6] == member.id:
                         name = '{}'.format(member.display_name)
                         url = member.display_avatar
-                    if row[5] ==member.id:
-                            addedby = '{}'.format(member.display_name)
-                emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]), colour = 0x00ff00)
-                emb.set_footer(text = 'Added by: {}'.format(addedby))
+                    if row[5] == member.id:
+                        addedby = '{}'.format(member.display_name)
+                emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]), colour=0x00ff00)
+                emb.set_footer(text='Added by: {}'.format(addedby))
                 if row[10] != None:
                     emb.set_image(url='{}'.format(row[10]))
-                
+
                 emb.set_thumbnail(url='{}'.format(url))
                 found = 1
                 await ctx.channel.send(embed=emb)
-                        
+
             if found == 0:
                 await ctx.channel.send("I'm afraid I couldn't find that quote for you.")
         except Error as e:
@@ -67,18 +76,18 @@ class Mycog(commands.Cog):
         # Your code will go here
         quoted = ctx.message.content
         quoted = quoted.replace(author, "")
-        quoted = quoted.replace(quoted[0],"")
-        quoted = quoted.replace("addquote","")
-        quoted = quoted.replace("  ","")
+        quoted = quoted.replace(quoted[0], "")
+        quoted = quoted.replace("addquote", "")
+        quoted = quoted.replace("  ", "")
         linked = 0
-        if(quoted.find("https") != -1):
+        if (quoted.find("https") != -1):
             linked = 1
-            if(quoted.find(" ", quoted.index("https"), len(quoted)) != -1):
+            if (quoted.find(" ", quoted.index("https"), len(quoted)) != -1):
                 link = quoted[quoted.index("https"):quoted.index(" ", quoted.index("https"), len(quoted))]
-                quoted = quoted.replace(link,"")
+                quoted = quoted.replace(link, "")
             else:
                 link = quoted[quoted.index("https"):]
-                quoted = quoted.replace(link,"")
+                quoted = quoted.replace(link, "")
         mention = 0
         if author[0] == "<":
             mention = 1
@@ -92,26 +101,42 @@ class Mycog(commands.Cog):
             if mention == 1:
                 if len(ctx.message.attachments) > 0:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
-                    inputString = ('{}'.format(ctx.message.guild.id),'{}'.format(ctx.message.author.id), '{}'.format(author), '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id), '{}'.format(ctx.message.attachments[0].url))
+                    inputString = (
+                    '{}'.format(ctx.message.guild.id), '{}'.format(ctx.message.author.id), '{}'.format(author),
+                    '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id),
+                    '{}'.format(ctx.message.attachments[0].url))
                 elif linked == 1:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
-                    inputString = ('{}'.format(ctx.message.guild.id),'{}'.format(ctx.message.author.id), '{}'.format(author), '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id), '{}'.format(link))
+                    inputString = (
+                    '{}'.format(ctx.message.guild.id), '{}'.format(ctx.message.author.id), '{}'.format(author),
+                    '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id),
+                    '{}'.format(link))
                 else:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
-                    inputString = ('{}'.format(ctx.message.guild.id),'{}'.format(ctx.message.author.id), '{}'.format(author), '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id))
-                
+                    inputString = (
+                    '{}'.format(ctx.message.guild.id), '{}'.format(ctx.message.author.id), '{}'.format(author),
+                    '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id))
+
             if mention == 0:
                 if len(ctx.message.attachments) > 0:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_name,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
-                    inputString = ('{}'.format(ctx.message.guild.id),'{}'.format(ctx.message.author.id), '{}'.format(author), '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id), '{}'.format(ctx.message.attachments[0].url))
+                    inputString = (
+                    '{}'.format(ctx.message.guild.id), '{}'.format(ctx.message.author.id), '{}'.format(author),
+                    '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id),
+                    '{}'.format(ctx.message.attachments[0].url))
                 elif linked == 1:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_name,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
-                    inputString = ('{}'.format(ctx.message.guild.id),'{}'.format(ctx.message.author.id), '{}'.format(author), '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id), '{}'.format(link))
+                    inputString = (
+                    '{}'.format(ctx.message.guild.id), '{}'.format(ctx.message.author.id), '{}'.format(author),
+                    '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id),
+                    '{}'.format(link))
                 else:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_name,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
-                    inputString = ('{}'.format(ctx.message.guild.id),'{}'.format(ctx.message.author.id), '{}'.format(author), '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id))
+                    inputString = (
+                    '{}'.format(ctx.message.guild.id), '{}'.format(ctx.message.author.id), '{}'.format(author),
+                    '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id))
             cur = conn.cursor()
-            cur.execute(sql,inputString)
+            cur.execute(sql, inputString)
             conn.commit()
             lastid = cur.lastrowid
             cur.execute("SELECT * FROM quotes")
@@ -132,8 +157,8 @@ class Mycog(commands.Cog):
         """Shows a random quote"""
         random.seed(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
         quoted = ctx.message.content
-        quoted = quoted.replace(quoted[0],"")
-        quoted = quoted.replace("random","")
+        quoted = quoted.replace(quoted[0], "")
+        quoted = quoted.replace("random", "")
         author = 0
         if quoted != "":
             author = 1
@@ -161,7 +186,7 @@ class Mycog(commands.Cog):
                 check = 1
                 randval = 0
                 if count != 0:
-                    randval = randint(1, count)            
+                    randval = randint(1, count)
                 name = '{}'.format(row[7])
                 for row in rows:
                     if row[1] == ctx.message.guild.id:
@@ -173,8 +198,9 @@ class Mycog(commands.Cog):
                                         url = member.display_avatar
                                     if row[5] == member.id:
                                         addedby = '{}'.format(member.display_name)
-                                emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]), colour = 0x00ff00)
-                                emb.set_footer(text = 'Added by: {} | Quote ID: {}'.format(addedby, row[2]))
+                                emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]),
+                                                    colour=0x00ff00)
+                                emb.set_footer(text='Added by: {} | Quote ID: {}'.format(addedby, row[2]))
                                 if row[10] != None:
                                     emb.set_image(url='{}'.format(row[10]))
                                 emb.set_thumbnail(url='{}'.format(url))
@@ -200,7 +226,7 @@ class Mycog(commands.Cog):
                         count = count + 1
                 randval = 0
                 if count != 0:
-                    randval = randint(1, count)  
+                    randval = randint(1, count)
                 name = 'Error'
                 url = ''
                 addedby = '?'
@@ -215,32 +241,34 @@ class Mycog(commands.Cog):
                                     url = member.display_avatar
                                 if row[5] == member.id:
                                     addedby = '{}'.format(member.display_name)
-                            emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]), colour = 0x00ff00)
-                            emb.set_footer(text = 'Added by: {} | Quote ID: {}'.format(addedby, row[2]))
+                            emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]),
+                                                colour=0x00ff00)
+                            emb.set_footer(text='Added by: {} | Quote ID: {}'.format(addedby, row[2]))
                             if row[10] != None:
                                 emb.set_image(url='{}'.format(row[10]))
                             emb.set_thumbnail(url='{}'.format(url))
                             await ctx.channel.send(embed=emb)
                         check = check + 1
                 if count == 0:
-                    await ctx.channel.send("Oh my, something appears to have gone wrong. Could you please let Rai know?")
+                    await ctx.channel.send(
+                        "Oh my, something appears to have gone wrong. Could you please let Rai know?")
             except Error as e:
                 print(e)
             finally:
                 if conn:
                     conn.close()
-                
+
     @commands.command()
     async def deleteid(self, ctx, word):
         """Deletes a quote at the requested id"""
         # Your code will go here
-        
+
         conn = None
         try:
             conn = sqlite3.connect(path)
             sql = 'DELETE FROM quotes WHERE server_quote_id=?'
             cur = conn.cursor()
-            cur.execute(sql,(word,))
+            cur.execute(sql, (word,))
             conn.commit()
             await ctx.channel.send('The quote at ID {} is now gone for good.'.format(word))
         except Error as e:
@@ -248,7 +276,7 @@ class Mycog(commands.Cog):
         finally:
             if conn:
                 conn.close()
-        
+
     @commands.command()
     async def total(self, ctx, author):
         """Counts how many quotes the requested author has"""
@@ -328,7 +356,7 @@ class Mycog(commands.Cog):
                             name = row[7]
                             if len(name) > 20:
                                 name = name[:20]
-                            output = output  + name
+                            output = output + name
                             for i in range(0, (20 - len(name))):
                                 output = output + ' '
                         else:
@@ -369,7 +397,7 @@ class Mycog(commands.Cog):
             query = '% {} %'.format(word)
             left = '{} %'.format(word)
             right = '% {}'.format(word)
-            cur.execute(sql, (query,left,right,word,))
+            cur.execute(sql, (query, left, right, word,))
             rows = cur.fetchall()
             output = '```'
             if rows is not None:
@@ -385,7 +413,7 @@ class Mycog(commands.Cog):
                             name = row[7]
                             if len(name) > 20:
                                 name = name[:20]
-                            output = output  + name
+                            output = output + name
                             for i in range(0, (20 - len(name))):
                                 output = output + ' '
                         else:
@@ -416,8 +444,8 @@ class Mycog(commands.Cog):
         """Remix baybeee"""
         random.seed(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
         quoted = ctx.message.content
-        quoted = quoted.replace(quoted[0],"")
-        quoted = quoted.replace("remix","")
+        quoted = quoted.replace(quoted[0], "")
+        quoted = quoted.replace("remix", "")
         author = 0
         limited = False
         if quoted != "":
@@ -429,12 +457,12 @@ class Mycog(commands.Cog):
                 quoted = quoted.replace("@", "")
                 quoted = quoted.replace("!", "")
                 limited = True
-        
+
         conn = None
         quote1 = ""
         quote2 = ""
         sql = ''
-        if(limited):
+        if (limited):
             sql = "SELECT * FROM quotes where server_id = ? and author_id = ?"
             limited = True
         else:
@@ -443,8 +471,8 @@ class Mycog(commands.Cog):
             conn = sqlite3.connect(path)
             cur = conn.cursor()
             count = 0
-            if(limited):
-                cur.execute(sql, (ctx.message.guild.id,quoted,))
+            if (limited):
+                cur.execute(sql, (ctx.message.guild.id, quoted,))
             else:
                 cur.execute(sql, (ctx.message.guild.id,))
             rows = cur.fetchall()
@@ -457,12 +485,12 @@ class Mycog(commands.Cog):
                 randval1 = randint(1, count)
                 randval2 = randint(1, count)
                 matched = True
-                while(matched):
-                    if(randval1 == randval2):
+                while (matched):
+                    if (randval1 == randval2):
                         matched = True
                         randval2 = randint(1, count)
                     else:
-                        matched = False  
+                        matched = False
             name = 'Error'
             n1 = ''
             n2 = ''
@@ -483,8 +511,8 @@ class Mycog(commands.Cog):
                             if row[6] == member.id:
                                 n1 = '{}'.format(member.display_name)
                         if row[10] != None and row[8] != None:
-                            url='{}'.format(row[10])
-                            url='{}'.format(url)
+                            url = '{}'.format(row[10])
+                            url = '{}'.format(url)
 
                     if check == randval2:
                         n2 = '{}'.format(row[7])
@@ -494,31 +522,31 @@ class Mycog(commands.Cog):
                             if row[6] == member.id:
                                 n2 = '{}'.format(member.display_name)
                         if row[10] != None:
-                            url='{}'.format(row[10])
-                            url='{}'.format(url)
+                            url = '{}'.format(row[10])
+                            url = '{}'.format(url)
                 check = check + 1
             remixed = ''
-            if(len(q1) != 0):
-                chop = int(len(q1)/2)
-                while(q1[chop] != ' ' and chop != len(q1) - 1):
+            if (len(q1) != 0):
+                chop = int(len(q1) / 2)
+                while (q1[chop] != ' ' and chop != len(q1) - 1):
                     chop = chop + 1
-                if(chop < len(q1)):
+                if (chop < len(q1)):
                     remixed = q1[:chop]
                 else:
                     remixed = q1
-            if(len(q2) != 0):
-                chop = int(len(q2)/2)
-                while(q2[chop] != ' ' and chop != 0):
+            if (len(q2) != 0):
+                chop = int(len(q2) / 2)
+                while (q2[chop] != ' ' and chop != 0):
                     chop = chop - 1
-                
-                if(chop == 0):
+
+                if (chop == 0):
                     remixed = remixed + ' '
                 remixed = remixed + q2[chop:]
-            emb = discord.Embed(title='{}'.format(n1 + ' + ' + n2), description='{}'.format(remixed), colour = 0x00ff00)
-            emb.set_image(url = '{}'.format(url))
-            emb.set_footer(text = 'Quote IDs: {} + {}'.format(id1, id2))
+            emb = discord.Embed(title='{}'.format(n1 + ' + ' + n2), description='{}'.format(remixed), colour=0x00ff00)
+            emb.set_image(url='{}'.format(url))
+            emb.set_footer(text='Quote IDs: {} + {}'.format(id1, id2))
             await ctx.channel.send(embed=emb)
-                    
+
             if count == 0:
                 await ctx.channel.send("Oh my, something appears to have gone wrong. Could you please let Rai know?")
         except Error as e:
@@ -526,7 +554,7 @@ class Mycog(commands.Cog):
         finally:
             if conn:
                 conn.close()
-    
+
     @commands.command()
     async def remixid(self, ctx, id):
         """Remix baybeee"""
@@ -551,12 +579,12 @@ class Mycog(commands.Cog):
                 randval1 = randint(1, count)
                 randval2 = randint(1, count)
                 matched = True
-                while(matched):
-                    if(randval1 == randval2):
+                while (matched):
+                    if (randval1 == randval2):
                         matched = True
                         randval2 = randint(1, count)
                     else:
-                        matched = False  
+                        matched = False
             name = 'Error'
             n1 = ''
             n2 = ''
@@ -577,8 +605,8 @@ class Mycog(commands.Cog):
                             if row[6] == member.id:
                                 n1 = '{}'.format(member.display_name)
                         if row[10] != None and row[8] != None:
-                            url='{}'.format(row[10])
-                            url='{}'.format(url)
+                            url = '{}'.format(row[10])
+                            url = '{}'.format(url)
 
                     if check == randval2:
                         n2 = '{}'.format(row[7])
@@ -588,12 +616,12 @@ class Mycog(commands.Cog):
                             if row[6] == member.id:
                                 n2 = '{}'.format(member.display_name)
                         if row[10] != None:
-                            url='{}'.format(row[10])
-                            url='{}'.format(url)
+                            url = '{}'.format(row[10])
+                            url = '{}'.format(url)
                 check = check + 1
             remixed = ''
-            swap = randint(0,1)
-            if(swap == 1):
+            swap = randint(0, 1)
+            if (swap == 1):
                 nSwap = n1
                 qSwap = q1
                 idSwap = id1
@@ -603,27 +631,27 @@ class Mycog(commands.Cog):
                 n2 = nSwap
                 q2 = qSwap
                 id2 = idSwap
-            if(len(q1) != 0):
-                chop = int(len(q1)/2)
-                while(q1[chop] != ' ' and chop != len(q1) - 1):
+            if (len(q1) != 0):
+                chop = int(len(q1) / 2)
+                while (q1[chop] != ' ' and chop != len(q1) - 1):
                     chop = chop + 1
-                if(chop < len(q1)):
+                if (chop < len(q1)):
                     remixed = q1[:chop]
                 else:
                     remixed = q1
-            if(len(q2) != 0):
-                chop = int(len(q2)/2)
-                while(q2[chop] != ' ' and chop != 0):
+            if (len(q2) != 0):
+                chop = int(len(q2) / 2)
+                while (q2[chop] != ' ' and chop != 0):
                     chop = chop - 1
-                
-                if(chop == 0):
+
+                if (chop == 0):
                     remixed = remixed + ' '
                 remixed = remixed + q2[chop:]
-            emb = discord.Embed(title='{}'.format(n1 + ' + ' + n2), description='{}'.format(remixed), colour = 0x00ff00)
-            emb.set_image(url = '{}'.format(url))
-            emb.set_footer(text = 'Quote IDs: {} + {}'.format(id1, id2))
+            emb = discord.Embed(title='{}'.format(n1 + ' + ' + n2), description='{}'.format(remixed), colour=0x00ff00)
+            emb.set_image(url='{}'.format(url))
+            emb.set_footer(text='Quote IDs: {} + {}'.format(id1, id2))
             await ctx.channel.send(embed=emb)
-                    
+
             if count == 0:
                 await ctx.channel.send("Oh my, something appears to have gone wrong. Could you please let Rai know?")
         except Error as e:
@@ -631,7 +659,7 @@ class Mycog(commands.Cog):
         finally:
             if conn:
                 conn.close()
-                
+
     @commands.command()
     async def totalAdded(self, ctx, author):
         """Counts how many quotes the requested author has added"""
@@ -653,7 +681,8 @@ class Mycog(commands.Cog):
                 if row[1] == ctx.message.guild.id:
                     if '{}'.format(row[5]) == '{}'.format(author):
                         count = count + 1
-            await ctx.channel.send('Ehehe, <@!{}> has added {} quotes in this server. Keep it up ~'.format(author, count))
+            await ctx.channel.send(
+                'Ehehe, <@!{}> has added {} quotes in this server. Keep it up ~'.format(author, count))
         except Error as e:
             print(e)
         finally:
@@ -663,4 +692,12 @@ class Mycog(commands.Cog):
     @commands.command()
     async def raihepl(self, ctx):
         """More detailed help command"""
-        await ctx.channel.send('```Here are the commands for RaiQuotes cog!\nquoteid[id]               | Show the quote at [id]\naddquote [author] [quote] | Add a new quote to the database/ Accepts discord @user for [author] too!\ndeleteid [id]             | Deletes quote at [id]. It will be gone.... forever....\nrandom                    | Shows a random quote\ntotal [author]            | Shows how many quotes [author] has in this server\ngrandtotal                | Shows the total quotes in the server```')
+        await ctx.channel.send(
+            '```Here are the commands for RaiQuotes cog!\nquoteid[id]               | Show the quote at [id]\naddquote [author] [quote] | Add a new quote to the database/ Accepts discord @user for [author] too!\ndeleteid [id]             | Deletes quote at [id]. It will be gone.... forever....\nrandom                    | Shows a random quote\ntotal [author]            | Shows how many quotes [author] has in this server\ngrandtotal                | Shows the total quotes in the server```')
+
+    @commands.command()
+    async def DevTest(self, ctx):
+        session = requests.Session()
+        print("Testing response....")
+        response = session.get(url=apiUrl)
+        print(response.text)
