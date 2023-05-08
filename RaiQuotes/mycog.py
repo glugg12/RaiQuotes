@@ -20,7 +20,7 @@ config = configparser.ConfigParser()
 # path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 configPath = r"C:\Users\olijo\Documents\discordRedbot\ApiConfig.ini"
 config.read(configPath)
-#apiUrl = config['DEFAULT']['Api']
+apiUrl = config['DEFAULT']['Api']
 
 class Mycog(commands.Cog):
     """RaiQuotes Cog"""
