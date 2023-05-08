@@ -692,7 +692,7 @@ class Mycog(commands.Cog):
 
     @commands.command()
     async def DevTest(self):
-        session = Session()
+        session = requests.Session()
         print("Testing response....")
         response = session.get(url= api-url)
         print(response.text)
