@@ -13,13 +13,14 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
 config = configparser.ConfigParser()
-config.read('ApiConfig.ini')
-apiUrl = config['DEFAULT']['Api']
+
 
 
 # testing path
 # path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
-
+configPath = r"C:\Users\olijo\Documents\discordRedbot\ApiConfig.ini"
+config.read(configPath)
+#apiUrl = config['DEFAULT']['Api']
 
 class Mycog(commands.Cog):
     """RaiQuotes Cog"""
