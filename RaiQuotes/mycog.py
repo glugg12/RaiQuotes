@@ -7,7 +7,7 @@ from random import seed
 from random import randint
 from datetime import datetime
 import requests
-from ApiConfig import *
+import ApiConfig
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
@@ -694,5 +694,5 @@ class Mycog(commands.Cog):
     async def DevTest(self):
         session = requests.Session()
         print("Testing response....")
-        response = session.get(url= api-url)
+        response = session.get(url= ApiConfig.api)
         print(response.text)
