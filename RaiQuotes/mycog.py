@@ -12,7 +12,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
-config = configparser.Configparser()
+config = configparser.ConfigParser()
 config.read('ApiConfig.ini')
 apiUrl = config['DEFAULT']['Api']
 
