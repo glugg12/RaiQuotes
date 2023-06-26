@@ -17,7 +17,7 @@ RENPY_SEARCH_API_KEY = 'AIzaSyCZy_pdZOF5mPMoa7p3ydULxj5bMwEs-SM'
 SEARCH_ENGINE_ID = '40078de84708240a1'
 googleapi_link = 'https://www.googleapis.com/customsearch/v1/siterestrict'
 last_query = None
-illegal_characters = '\/|:.?^*&%.#[]{}<>+="\'`„“_~'
+illegal_characters = '/|:.?^*&%.#[]{}<>+="\'`„“_~'
 
 class Searchcog(commands.Cog):
     """RaiSearch Cog"""
@@ -42,6 +42,7 @@ class Searchcog(commands.Cog):
 
     @commands.command()
     async def docs(ctx, query, index=0):
+        print("here")
         print(query)
         print (index)
         # Setting global variables for the next() command to use
@@ -53,15 +54,15 @@ class Searchcog(commands.Cog):
         result = renpy_docs_query(query, index)
 
         if result == 'no_result':
-            await ctx.send("0 results found for this query.")
+            await ctx.channel.send("0 results found for this query.")
             return
         elif result == 'illegal_query':
-            await ctx.send("Query includes illegal character. Alphanumerical characters are recommended.")
+            await ctx.channel.send("Query includes illegal character. Alphanumerical characters are recommended.")
             return
     
         # For the next() command - If there are no more results at this index position
         if not result:
-            await ctx.send(f"Reached end of results for last query! Issue a `{bot.command_prefix}docs <query>` command first.")
+            await ctx.channel.send(f"Reached end of results for last query! Issue a `{bot.command_prefix}docs <query>` command first.")
             return
 
         title = result['title']
@@ -72,7 +73,7 @@ class Searchcog(commands.Cog):
         embed.add_field(name='', value=snippet)
         embed.set_footer(text=f'Result #{index+1}')
 
-        await ctx.send(embed=embed)
+        await ctx.channel.send(embed=embed)
 
     @commands.command()
     async def next(ctx, message):
@@ -82,4 +83,4 @@ class Searchcog(commands.Cog):
             await ctx.invoke(command, *last_query, index=last_index+1)
 
         else:
-            await ctx.send(f"Issue a `{bot.command_prefix}docs <query>` command first!")
+            await ctx.channel.send(f"Issue a `{bot.command_prefix}docs <query>` command first!")
