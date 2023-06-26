@@ -41,7 +41,7 @@ class Searchcog(commands.Cog):
         return result
 
     @commands.command()
-    async def docs(ctx, *query, index=0):
+    async def docs(ctx, query, index=0):
         print(query)
         print (index)
         # Setting global variables for the next() command to use
