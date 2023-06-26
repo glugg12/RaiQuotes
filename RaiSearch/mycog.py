@@ -19,12 +19,6 @@ googleapi_link = 'https://www.googleapis.com/customsearch/v1/siterestrict'
 last_query = None
 illegal_characters = '\/|:.?^*&%.#[]{}<>+="\'`„“_~'
 
-# testing path
-# path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
-#configPath = r"C:\Users\olijo\Documents\discordRedbot\ApiConfig.ini"
-config.read(configPath)
-apiUrl = config['DEFAULT']['Api']
-
 class Mycog(commands.Cog):
     """RaiSearch Cog"""
     def renpy_docs_query(query, index):
@@ -45,7 +39,7 @@ class Mycog(commands.Cog):
             result = None
 
         return result
-        
+
     @commands.command()
     async def docs(ctx, *query, index=0):
 
