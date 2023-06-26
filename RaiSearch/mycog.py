@@ -41,7 +41,7 @@ class Searchcog(commands.Cog):
         return result
 
     @commands.command()
-    async def docs(ctx, query, index=0):
+    async def docs(self, ctx, query, index=0):
         print("here")
         print(query)
         print (index)
@@ -76,7 +76,7 @@ class Searchcog(commands.Cog):
         await ctx.channel.send(embed=embed)
 
     @commands.command()
-    async def next(ctx, message):
+    async def next(self, ctx):
 
         if last_query:
             command = bot.get_command('docs')
