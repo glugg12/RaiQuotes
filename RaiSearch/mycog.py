@@ -19,26 +19,27 @@ googleapi_link = 'https://www.googleapis.com/customsearch/v1/siterestrict'
 last_query = None
 illegal_characters = '/|:.?^*&%.#[]{}<>+="\'`„“_~'
 
+def renpy_docs_query(query, index):
+
+    if any(char in illegal_characters for string in query for char in string):
+        return 'illegal_query'
+
+    url = f"{googleapi_link}?key={RENPY_SEARCH_API_KEY}&cx={SEARCH_ENGINE_ID}&q={'+'.join(query)}"
+    r = requests.get(url)
+    results = r.json()
+    
+    if results['searchInformation']['totalResults'] == 0:
+        return 'no_result'
+
+    try:
+        result = results['items'][index]
+    except IndexError:
+        result = None
+
+    return result
+
 class Searchcog(commands.Cog):
     """RaiSearch Cog"""
-    def renpy_docs_query(query, index):
-
-        if any(char in illegal_characters for string in query for char in string):
-            return 'illegal_query'
-
-        url = f"{googleapi_link}?key={RENPY_SEARCH_API_KEY}&cx={SEARCH_ENGINE_ID}&q={'+'.join(query)}"
-        r = requests.get(url)
-        results = r.json()
-    
-        if results['searchInformation']['totalResults'] == 0:
-            return 'no_result'
-
-        try:
-            result = results['items'][index]
-        except IndexError:
-            result = None
-
-        return result
 
     @commands.command()
     async def docs(self, ctx, query, index=0):
