@@ -80,8 +80,8 @@ class Searchcog(commands.Cog):
     async def next(self, ctx):
 
         if last_query:
-            command = docs
+            command = get_command('docs')
             await ctx.invoke(command, *last_query, index=last_index+1)
 
         else:
-            await ctx.channel.send(f"Issue a `{bot.command_prefix}docs <query>` command first!")
+            await ctx.channel.send(f"Issue a `docs <query>` command first!")
