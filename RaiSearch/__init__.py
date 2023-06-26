@@ -4,4 +4,4 @@ from sqlite3 import Error
 
 async def setup(bot):
     
-    await bot.add_cog(Mycog())
+    await bot.add_cog(Searchcog())
