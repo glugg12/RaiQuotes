@@ -74,7 +74,7 @@ class Mycog(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
-    async def next(ctx):
+    async def next(ctx, message):
 
         if last_query:
             command = bot.get_command('docs')
