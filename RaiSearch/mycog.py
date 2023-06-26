@@ -63,7 +63,7 @@ class Searchcog(commands.Cog):
     
         # For the next() command - If there are no more results at this index position
         if not result:
-            await ctx.channel.send(f"Reached end of results for last query! Issue a `{bot.command_prefix}docs <query>` command first.")
+            await ctx.channel.send(f"Reached end of results for last query! Issue a `docs <query>` command first.")
             return
 
         title = result['title']
@@ -80,7 +80,7 @@ class Searchcog(commands.Cog):
     async def next(self, ctx):
 
         if last_query:
-            command = bot.get_command('docs')
+            command = docs
             await ctx.invoke(command, *last_query, index=last_index+1)
 
         else:
