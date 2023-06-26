@@ -73,7 +73,7 @@ class Mycog(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @bot.command()
+    @commands.command()
     async def next(ctx):
 
         if last_query:
