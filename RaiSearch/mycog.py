@@ -80,7 +80,7 @@ class Searchcog(commands.Cog):
     async def next(self, ctx):
 
         if last_query:
-            command = get_command('docs')
+            command = self.get_command('docs')
             await ctx.invoke(command, *last_query, index=last_index+1)
 
         else:
