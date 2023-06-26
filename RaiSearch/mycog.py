@@ -19,7 +19,7 @@ googleapi_link = 'https://www.googleapis.com/customsearch/v1/siterestrict'
 last_query = None
 illegal_characters = '\/|:.?^*&%.#[]{}<>+="\'`„“_~'
 
-class Mycog(commands.Cog):
+class Searchcog(commands.Cog):
     """RaiSearch Cog"""
     def renpy_docs_query(query, index):
 
