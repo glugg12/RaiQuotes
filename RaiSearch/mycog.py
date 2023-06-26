@@ -42,7 +42,7 @@ class Searchcog(commands.Cog):
     """RaiSearch Cog"""
 
     @commands.command()
-    async def docs(self, ctx, query, index=0):
+    async def docs(self, ctx, *query, index=0):
         print("here")
         print(query)
         print (index)
