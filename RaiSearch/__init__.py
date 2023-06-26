@@ -1,4 +1,4 @@
-from .mycog import Mycog
+from .mycog import Searchcog
 import sqlite3
 from sqlite3 import Error
 
