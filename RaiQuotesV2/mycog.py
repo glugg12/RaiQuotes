@@ -29,16 +29,17 @@ class Mycog(commands.Cog):
         """Finds a quote at the requested id"""
         server_id = ctx.message.guild.id
         print('begin')
-        if isinstance(quote_id, int):
-            print('not int')
-            await ctx.channel.send("That is not a valid integer")
-            return
-        else:
+        try:
+            int(quote_id)
             print('int')
             url = apiUrl + "quotes/server/{}/{}".format(server_id, quote_id)
             response = requests.get(url)
             print(json.loads(response.content))
             await ctx.channel.send(json.loads(response.content))
+        except ValueError:
+            print('not int')
+            await ctx.channel.send("That is not a valid integer")
+            return
 
     @commands.command()
     async def addquote(self, ctx, author):
