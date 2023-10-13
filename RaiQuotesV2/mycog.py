@@ -46,7 +46,7 @@ class Mycog(commands.Cog):
                 else:
                     emb = discord.Embed(title='{}'.format(content["authorName"]),
                                         description='{}'.format(content["quote"]), colour=0x00ff00)
-                emb.set_footer(text='Added by: {}'.format(added_by.display_name))
+                emb.set_footer(text='Added by: {} | {}'.format(added_by.display_name, content["dateAdded"]))
 
                 if content["imageUrl"] is not None:
                     emb.set_image(url='{}'.format(content["imageUrl"]))
