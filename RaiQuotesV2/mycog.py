@@ -94,7 +94,13 @@ class Mycog(commands.Cog):
             "imageUrl": link,
             "date": date.today().strftime("%Y/%m/%d"),
         }
-        await ctx.channel.send(request)
+        url = apiUrl + "quotes"
+        response = requests.post(url, json.dumps(request))
+        if response.status_code == 200:
+            content = json.loads(response.content)
+            await ctx.channel.send('I have saved that quote for you under ID {}, safe and sound ~'.format(content["serverQuoteId"]))
+        else:
+            await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
     @commands.command()
     async def random(self, ctx):
         """Shows a random quote"""
