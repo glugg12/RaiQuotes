@@ -38,8 +38,9 @@ class Mycog(commands.Cog):
             if response.status_code == 200:
                 content = json.loads(response.content)
                 user = ctx.guild.get_member(int(content["authorId"]))
-                await ctx.send(user.display_name)
-                await ctx.channel.send(content["quote"])
+                added_by = ctx.guild.get_member(int(content["addedBy"]))
+                emb = discord.Embed(title='{}'.format(user.display_name), description='{}'.format(content["quote"]), colour=0x00ff00)
+                emb.set_footer(text='Added by: {}'.format(added_by.display_name))
             elif response.status_code == 404:
                 await ctx.channel.send("I'm afraid I couldn't find that quote for you.")
         except ValueError:
