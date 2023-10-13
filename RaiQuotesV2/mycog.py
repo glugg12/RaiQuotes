@@ -71,7 +71,7 @@ class Mycog(commands.Cog):
             for char in replace_list:
                 mentioned = mentioned.replace(char, "")
 
-        author = ctx.guild.get_member(int(args[0]))
+        author = ctx.guild.get_member(int(mentioned))
         if author is None:
             author = args[0]
         quote = " ".join(args[1:])
