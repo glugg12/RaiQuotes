@@ -37,7 +37,7 @@ class Mycog(commands.Cog):
             response = requests.get(url)
             if response.status_code == 200:
                 content = json.loads(response.content)
-                user = client.get_member(content["authorId"])
+                user = client.get_user(content["authorId"])
                 await ctx.send(user.display_name())
                 await ctx.channel.send(content["quote"])
             elif response.status_code == 404:
