@@ -12,6 +12,7 @@ import configparser
 
 intents = discord.Intents.default()
 intents.message_content = True
+intents.members = True
 client = discord.Client(intents=intents)
 configPath = r"D:\Springfield\cogs\RaiQuotesV2\ApiConfig.ini"
 config = configparser.ConfigParser()
