@@ -46,6 +46,7 @@ class Mycog(commands.Cog):
                     emb = discord.Embed(title='{}'.format(content["authorName"]),
                                         description='{}'.format(content["quote"]), colour=0x00ff00)
                 emb.set_footer(text='Added by: {}'.format(added_by.display_name))
+                await ctx.channel.send(embed=emb)
             elif response.status_code == 404:
                 await ctx.channel.send("I'm afraid I couldn't find that quote for you.")
         except ValueError:
