@@ -32,7 +32,7 @@ class Mycog(commands.Cog):
             await ctx.channel.send("That is not a valid integer")
             return
         else:
-            url = "localhost:8080/quotes/server/{}/{}".format(server_id, quote_id)
+            url = apiUrl + "quotes/server/{}/{}".format(server_id, quote_id)
             response = requests.post(url)
             await ctx.channel.send(json.loads(response.content)["quote"])
 
