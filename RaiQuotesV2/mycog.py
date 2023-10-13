@@ -59,9 +59,15 @@ class Mycog(commands.Cog):
             return
 
     @commands.command()
-    async def addquote(self, ctx, author):
+    async def addquote(self, ctx, *args):
         """Adds a quote to the database"""
-
+    #   command should be issued with <@author/author name> <quote>, so we can grab the first arg, see if it's an @ or
+    #   not, then collect the message afterward
+        author = ctx.guild.get_member(int(args[0]))
+        if author is None:
+            author = args[0]
+        quote = " ".join(args[1:])
+        await ctx.channel.send(quote)
     @commands.command()
     async def random(self, ctx):
         """Shows a random quote"""
