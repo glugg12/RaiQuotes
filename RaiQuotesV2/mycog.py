@@ -93,7 +93,7 @@ class Mycog(commands.Cog):
             "addedBy": ctx.message.author.id,
             "authorId": author,
             "authorName": author_name,
-            "date": date.today(),
+            "date": date.today().strftime("%Y/%m/%d"),
             "imageUrl": link,
         }
         await ctx.channel.send(request)
