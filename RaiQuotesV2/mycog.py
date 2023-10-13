@@ -11,16 +11,11 @@ import configparser
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
-path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
-configPath = r"D:\Springfield\cogs\RaiQuotes\ApiConfig.ini"
+configPath = r"D:\Springfield\cogs\RaiQuotesV2\ApiConfig.ini"
 config = configparser.ConfigParser()
 
-
-
-# testing path
-# path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
-#configPath = r"C:\Users\olijo\Documents\discordRedbot\ApiConfig.ini"
 config.read(configPath)
+
 apiUrl = config['DEFAULT']['Api']
 
 class Mycog(commands.Cog):
