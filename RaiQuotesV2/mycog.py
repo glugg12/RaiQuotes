@@ -42,10 +42,14 @@ class Mycog(commands.Cog):
                 if user is not None:
                     emb = discord.Embed(title='{}'.format(user.display_name), description='{}'.format(content["quote"]),
                                         colour=0x00ff00)
+                    emb.set_thumbnail(url='{}'.format(user.dsiplay_avatar))
                 else:
                     emb = discord.Embed(title='{}'.format(content["authorName"]),
                                         description='{}'.format(content["quote"]), colour=0x00ff00)
                 emb.set_footer(text='Added by: {}'.format(added_by.display_name))
+
+                if content["imageUrl"] is not None:
+                    emb.set_image(url='{}'.format(content["imageUrl"]))
                 await ctx.channel.send(embed=emb)
             elif response.status_code == 404:
                 await ctx.channel.send("I'm afraid I couldn't find that quote for you.")
