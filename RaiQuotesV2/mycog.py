@@ -104,7 +104,7 @@ class Mycog(commands.Cog):
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
 
     @commands.command()
-    async def random(self, ctx, author):
+    async def random(self, ctx, author=None):
         """Shows a random quote"""
         final_author = None
         if author is not None:
