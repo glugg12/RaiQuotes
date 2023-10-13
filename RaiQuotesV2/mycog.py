@@ -102,6 +102,7 @@ class Mycog(commands.Cog):
             await ctx.channel.send('I have saved that quote for you under ID {}, safe and sound ~'.format(content["serverQuoteId"]))
         else:
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
+
     @commands.command()
     async def random(self, ctx):
         """Shows a random quote"""
