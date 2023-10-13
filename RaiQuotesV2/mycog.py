@@ -35,7 +35,7 @@ class Mycog(commands.Cog):
             url = apiUrl + "quotes/server/{}/{}".format(server_id, quote_id)
             response = requests.get(url)
             print(json.loads(response.content))
-            await ctx.channel.send(json.loads(response))
+            await ctx.channel.send(response.status)
         except ValueError:
             print('not int')
             await ctx.channel.send("That is not a valid integer")
