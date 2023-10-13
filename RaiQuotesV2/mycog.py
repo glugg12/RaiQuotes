@@ -67,7 +67,7 @@ class Mycog(commands.Cog):
         if author is None:
             author = args[0]
         quote = " ".join(args[1:])
-        await ctx.channel.send(quote)
+        await ctx.channel.send(author.display_name)
     @commands.command()
     async def random(self, ctx):
         """Shows a random quote"""
