@@ -71,8 +71,10 @@ class Mycog(commands.Cog):
             replace_list = ["<", ">", "@", "!"]
             for char in replace_list:
                 mentioned = mentioned.replace(char, "")
-
-        author = ctx.guild.get_member(int(mentioned))
+        try:
+            author = ctx.guild.get_member(int(mentioned))
+        except ValueError:
+            author = None
         author_name = None
         link = None
         quoted_words = list(args)
