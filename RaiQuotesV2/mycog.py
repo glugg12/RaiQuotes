@@ -63,7 +63,7 @@ class Mycog(commands.Cog):
         """Adds a quote to the database"""
     #   command should be issued with <@author/author name> <quote>, so we can grab the first arg, see if it's an @ or
     #   not, then collect the message afterward
-        author = ctx.guild.get_member(int(args[0]))
+        author = ctx.guild.get_member(args[0])
         if author is None:
             author = args[0]
         quote = " ".join(args[1:])
