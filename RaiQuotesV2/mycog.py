@@ -3,7 +3,8 @@ import json
 from redbot.core import commands
 import discord
 import pip
-
+import json
+from datetime import date
 try:
     import requests
 except ImportError:
@@ -72,10 +73,26 @@ class Mycog(commands.Cog):
                 mentioned = mentioned.replace(char, "")
 
         author = ctx.guild.get_member(int(mentioned))
+        author_name = None
+        link = None
+        quoted_words = list(args)
         if author is None:
-            author = args[0]
-        quote = " ".join(args[1:])
-        await ctx.channel.send(author.display_name)
+            author_name = args[0]
+        for location, partial in enumerate(args[1:]):
+            if partial.find("https") != -1:
+                link = partial
+                del quoted_words[location]
+        quote = " ".join(quoted_words)
+        request = {
+            "quote": quote,
+            "serverId": ctx.guild.id,
+            "addedBy": ctx.message.author.id,
+            "authorId": author,
+            "authorName": author_name,
+            "date": date.today(),
+            "imageUrl": link
+        }
+        await ctx.channel.send(request)
     @commands.command()
     async def random(self, ctx):
         """Shows a random quote"""
