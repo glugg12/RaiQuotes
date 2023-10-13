@@ -37,7 +37,8 @@ class Mycog(commands.Cog):
             print('int')
             url = apiUrl + "quotes/server/{}/{}".format(server_id, quote_id)
             response = requests.post(url)
-            await ctx.channel.send(json.loads(response.content)["quote"])
+            print(json.loads(response.content))
+            await ctx.channel.send(json.loads(response.content))
 
     @commands.command()
     async def addquote(self, ctx, author):
