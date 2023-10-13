@@ -3,8 +3,10 @@ import json
 from redbot.core import commands
 import discord
 import pip
-pip.main(['install', 'requests'])
-import requests
+try:
+    import requests
+except ImportError:
+    pip.main(['install', 'requests'])
 import configparser
 intents = discord.Intents.default()
 intents.message_content = True
