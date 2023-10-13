@@ -104,8 +104,26 @@ class Mycog(commands.Cog):
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
 
     @commands.command()
-    async def random(self, ctx):
+    async def random(self, ctx, author):
         """Shows a random quote"""
+        final_author = None
+        if author is not None:
+            try:
+                if author[0] == "<":
+                    replace_list = ["<", ">", "@", "!"]
+                    for char in replace_list:
+                        author = author.replace(char, "")
+                    final_author = ctx.guild.get_member(int(author))
+                    if final_author is not None:
+                        final_author = final_author.id
+                    else:
+                        final_author = author
+            except ValueError:
+    #         search for string literal
+                final_author = author
+
+        await ctx.channel.send(final_author)
+
 
     @commands.command()
     async def deleteid(self, ctx, word):
