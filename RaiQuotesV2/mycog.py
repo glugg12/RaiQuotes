@@ -82,7 +82,8 @@ class Mycog(commands.Cog):
             if partial.find("https") != -1:
                 link = partial
                 del quoted_words[location]
-        print(quoted_words)
+        for word in quoted_words:
+            print(word)
         quote = " ".join(quoted_words)
         request = {
             "quote": quote,
