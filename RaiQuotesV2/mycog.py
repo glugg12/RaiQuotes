@@ -77,7 +77,7 @@ class Mycog(commands.Cog):
             author = None
         author_name = None
         link = None
-        quoted_words = list(args)
+        quoted_words = list(args[1:])
         if author is None:
             author_name = args[0]
         for location, partial in enumerate(args[1:]):
