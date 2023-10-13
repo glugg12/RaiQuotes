@@ -104,12 +104,13 @@ class Mycog(commands.Cog):
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
 
     @commands.command()
-    async def random(self, ctx, author=None):
+    async def random(self, ctx, *args):
         """Shows a random quote"""
         final_author = None
-        if author is not None:
+        if args[0] is not None:
             try:
-                if author[0] == "<":
+                if args[0][0] == "<":
+                    author = args[0]
                     replace_list = ["<", ">", "@", "!"]
                     for char in replace_list:
                         author = author.replace(char, "")
@@ -117,12 +118,12 @@ class Mycog(commands.Cog):
                     if final_author is not None:
                         final_author = final_author.id
                     else:
-                        final_author = author
+                        final_author = " ".join(args)
                 else:
-                    final_author = author
+                    final_author = " ".join(args)
             except ValueError:
     #         search for string literal
-                final_author = author
+                final_author = " ".join(args)
 
         await ctx.channel.send(final_author)
 
