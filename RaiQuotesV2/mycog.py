@@ -94,7 +94,7 @@ class Mycog(commands.Cog):
             "authorId": author,
             "authorName": author_name,
             "date": date.today(),
-            "imageUrl": link
+            "imageUrl": link,
         }
         await ctx.channel.send(request)
     @commands.command()
