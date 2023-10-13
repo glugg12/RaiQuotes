@@ -36,7 +36,7 @@ class Mycog(commands.Cog):
         else:
             print('int')
             url = apiUrl + "quotes/server/{}/{}".format(server_id, quote_id)
-            response = requests.post(url)
+            response = requests.get(url)
             print(json.loads(response.content))
             await ctx.channel.send(json.loads(response.content))
 
