@@ -37,7 +37,7 @@ class Mycog(commands.Cog):
             if response.status_code == 200:
                 content = json.loads(response.content)
                 user = ctx.guild.get_member(content["authorId"])
-                await ctx.send(user.display_name)
+                await ctx.send(user.display_name())
                 await ctx.channel.send(content["quote"])
             elif response.status_code == 404:
                 await ctx.channel.send("I'm afraid I couldn't find that quote for you.")
