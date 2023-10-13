@@ -73,7 +73,7 @@ class Mycog(commands.Cog):
                 mentioned = mentioned.replace(char, "")
         try:
             author = ctx.guild.get_member(int(mentioned))
-            author = author.display_name
+            author = author.id
         except ValueError:
             author = None
         author_name = None
