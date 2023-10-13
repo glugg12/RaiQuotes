@@ -42,7 +42,7 @@ class Mycog(commands.Cog):
                 if user is not None:
                     emb = discord.Embed(title='{}'.format(user.display_name), description='{}'.format(content["quote"]),
                                         colour=0x00ff00)
-                    emb.set_thumbnail(url='{}'.format(user.dsiplay_avatar))
+                    emb.set_thumbnail(url='{}'.format(user.display_avatar))
                 else:
                     emb = discord.Embed(title='{}'.format(content["authorName"]),
                                         description='{}'.format(content["quote"]), colour=0x00ff00)
