@@ -92,7 +92,7 @@ class Mycog(commands.Cog):
             "authorId": author,
             "authorName": author_name,
             "imageUrl": link,
-            "date": date.today().strftime("%Y/%m/%d"),
+            "date": date.today().strftime("%Y-%m-%d"),
         }
         url = apiUrl + "quotes"
         response = requests.post(url, json=request)
