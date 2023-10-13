@@ -2,12 +2,8 @@ import json
 
 from redbot.core import commands
 import discord
-import sqlite3
-from sqlite3 import Error
-import random
-from random import seed
-from random import randint
-from datetime import datetime
+import pip
+pip.main(['install', 'requests'])
 import requests
 import configparser
 intents = discord.Intents.default()
