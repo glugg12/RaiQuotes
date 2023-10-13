@@ -63,7 +63,15 @@ class Mycog(commands.Cog):
         """Adds a quote to the database"""
     #   command should be issued with <@author/author name> <quote>, so we can grab the first arg, see if it's an @ or
     #   not, then collect the message afterward
-        author = ctx.guild.get_member(args[0])
+    #   Is there a nicer to convert <@id> to a member?
+        mentioned = ""
+        if args[0][0] == "<":
+            mentioned = args[0]
+            replace_list = ["<", ">", "@", "!"]
+            for char in replace_list:
+                mentioned = mentioned.replace(char, "")
+
+        author = ctx.guild.get_member(int(args[0]))
         if author is None:
             author = args[0]
         quote = " ".join(args[1:])
