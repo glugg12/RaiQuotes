@@ -118,6 +118,8 @@ class Mycog(commands.Cog):
                         final_author = final_author.id
                     else:
                         final_author = author
+                else:
+                    final_author = author
             except ValueError:
     #         search for string literal
                 final_author = author
