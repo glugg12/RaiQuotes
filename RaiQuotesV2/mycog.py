@@ -18,7 +18,7 @@ config = configparser.ConfigParser()
 
 config.read(configPath)
 # need to run api alongside this
-apiUrl = 'https://localhost:8080/'
+apiUrl = 'api:8080/'
 
 
 class Mycog(commands.Cog):
