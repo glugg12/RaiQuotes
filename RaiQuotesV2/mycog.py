@@ -95,7 +95,7 @@ class Mycog(commands.Cog):
             "date": date.today().strftime("%Y/%m/%d"),
         }
         url = apiUrl + "quotes"
-        response = requests.post(url, json.dumps(request))
+        response = requests.post(url, json=request)
         if response.status_code == 200:
             content = json.loads(response.content)
             await ctx.channel.send('I have saved that quote for you under ID {}, safe and sound ~'.format(content["serverQuoteId"]))
