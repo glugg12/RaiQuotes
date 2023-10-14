@@ -111,7 +111,10 @@ class Mycog(commands.Cog):
         author_id = None
         author_name = None
         response = None
-        if args[0] is not None:
+        if not args:
+            #     no author passed
+            url = apiUrl + "quotes/server/{}/random".format(ctx.guild.id)
+        else:
             try:
                 if args[0][0] == "<":
                     author = args[0]
@@ -137,9 +140,6 @@ class Mycog(commands.Cog):
             else:
                 #   should never occur, but just in case
                 url = apiUrl + "quotes/server/{}/random".format(ctx.guild.id)
-        else:
-            #     no author passed
-            url = apiUrl + "quotes/server/{}/random".format(ctx.guild.id)
 
         response = requests.get(url)
         if response.status_code == 200:
