@@ -5,6 +5,7 @@ import discord
 import pip
 import json
 from datetime import date
+
 try:
     import requests
 except ImportError:
@@ -62,9 +63,9 @@ class Mycog(commands.Cog):
     @commands.command()
     async def addquote(self, ctx, *args):
         """Adds a quote to the database"""
-    #   command should be issued with <@author/author name> <quote>, so we can grab the first arg, see if it's an @ or
-    #   not, then collect the message afterward
-    #   Is there a nicer to convert <@id> to a member?
+        #   command should be issued with <@author/author name> <quote>, so we can grab the first arg, see if it's an @ or
+        #   not, then collect the message afterward
+        #   Is there a nicer to convert <@id> to a member?
         mentioned = ""
         if args[0][0] == "<":
             mentioned = args[0]
@@ -99,14 +100,17 @@ class Mycog(commands.Cog):
         response = requests.post(url, json=request)
         if response.status_code == 200:
             content = json.loads(response.content)
-            await ctx.channel.send('I have saved that quote for you under ID {}, safe and sound ~'.format(content["serverQuoteId"]))
+            await ctx.channel.send(
+                'I have saved that quote for you under ID {}, safe and sound ~'.format(content["serverQuoteId"]))
         else:
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
 
     @commands.command()
     async def random(self, ctx, *args):
         """Shows a random quote"""
-        final_author = None
+        author_id = None
+        author_name = None
+        response = None
         if args[0] is not None:
             try:
                 if args[0][0] == "<":
@@ -114,19 +118,35 @@ class Mycog(commands.Cog):
                     replace_list = ["<", ">", "@", "!"]
                     for char in replace_list:
                         author = author.replace(char, "")
-                    final_author = ctx.guild.get_member(int(author))
-                    if final_author is not None:
-                        final_author = final_author.id
+                    member = ctx.guild.get_member(int(author))
+                    if member is not None:
+                        author_id = member.id
                     else:
-                        final_author = " ".join(args)
+                        author_name = " ".join(args)
                 else:
-                    final_author = " ".join(args)
+                    author_name = " ".join(args)
             except ValueError:
-    #         search for string literal
-                final_author = " ".join(args)
+                #         search for string literal
+                author_name = " ".join(args)
 
-        await ctx.channel.send(final_author)
+            #     should have final_author here now
+            if author_id is not None:
+                url = apiUrl + "quotes/server/{}/random?authorId={}".format(ctx.guild.id, author_id)
+            elif author_name is not None:
+                url = apiUrl + "quotes/server/{}/random?authorName={}".format(ctx.guild.id, author_name)
+            else:
+                #   should never occur, but just in case
+                url = apiUrl + "quotes/server/{}/random".format(ctx.guild.id)
+        else:
+            #     no author passed
+            url = apiUrl + "quotes/server/{}/random".format(ctx.guild.id)
 
+        response = requests.get(url)
+        if response.status_code == 200:
+            content = json.loads(response.content)
+            await ctx.channel.send(content)
+        else:
+            await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
 
     @commands.command()
     async def deleteid(self, ctx, word):
