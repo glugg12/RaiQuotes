@@ -110,7 +110,6 @@ class Mycog(commands.Cog):
         """Shows a random quote"""
         author_id = None
         author_name = None
-        response = None
         if not args:
             #     no author passed
             url = apiUrl + "quotes/server/{}/random".format(ctx.guild.id)
@@ -131,7 +130,6 @@ class Mycog(commands.Cog):
             except ValueError:
                 #         search for string literal
                 author_name = " ".join(args)
-
             #     should have final_author here now
             if author_id is not None:
                 url = apiUrl + "quotes/server/{}/random?authorId={}".format(ctx.guild.id, author_id)
