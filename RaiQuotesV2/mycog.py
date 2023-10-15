@@ -313,7 +313,7 @@ class Mycog(commands.Cog):
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
 
     @commands.command()
-    async def setSplits(selfself, ctx, quote_id, *, left=None, right=None):
+    async def setSplits(self, ctx, quote_id, *, left=None, right=None):
         """Set the splits for the quote"""
         try:
             int(quote_id)
