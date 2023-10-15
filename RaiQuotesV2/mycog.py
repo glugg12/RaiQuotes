@@ -338,15 +338,15 @@ class Mycog(commands.Cog):
                 if left_split.count(formatter) > 0:
                     if formatter.find("*") != -1:
                         if not skip_ast:
-                            left = left + (int(left_split.count(format)) * len(formatter))
-                            print("adding {}".format((left_split.count(format) * len(formatter))))
+                            left = left + (left_split.count(formatter) * len(formatter))
+                            print("adding {}".format((left_split.count(formatter) * len(formatter))))
                             skip_ast = True
                     elif formatter.find("_") != -1:
                         if not skip_und:
-                            left = left + (int(left_split.count(format)) * len(formatter))
+                            left = left + (left_split.count(formatter) * len(formatter))
                             skip_und = True
                     else:
-                        left = left + (int(left_split.count(format)) * len(formatter))
+                        left = left + (left_split.count(formatter) * len(formatter))
             right_split = content["quote"][right:]
             skip_ast = False
             skip_und = False
@@ -354,14 +354,14 @@ class Mycog(commands.Cog):
                 if right_split.count(formatter) > 0:
                     if formatter.find("*") != -1:
                         if not skip_ast:
-                            right = right + (int(right_split.count(format)) * len(formatter))
+                            right = right + (right_split.count(formatter) * len(formatter))
                             skip_ast = True
                     elif formatter.find("_") != -1:
                         if not skip_und:
-                            right = right + (int(right_split.count(format)) * len(formatter))
+                            right = right + (right_split.count(formatter) * len(formatter))
                             skip_und = True
                     else:
-                        right = right + (int(right_split.count(format)) * len(formatter))
+                        right = right + (right_split.count(formatter) * len(formatter))
 
         else:
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
