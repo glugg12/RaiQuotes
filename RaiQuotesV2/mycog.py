@@ -420,11 +420,11 @@ class Mycog(commands.Cog):
                         if right_split.count(formatter) > 0:
                             if formatter.find("*") != -1:
                                 if not skip_ast:
-                                    right = right + (right_split.count(formatter) * len(formatter))
+                                    right = right - (right_split.count(formatter) * len(formatter))
                                     skip_ast = True
                             elif formatter.find("_") != -1:
                                 if not skip_und:
-                                    right = right + (right_split.count(formatter) * len(formatter))
+                                    right = right - (right_split.count(formatter) * len(formatter))
                                     skip_und = True
                             else:
                                 right = right + (right_split.count(formatter) * len(formatter))
