@@ -293,15 +293,21 @@ class Mycog(commands.Cog):
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
 
     @commands.command()
-    async def remixid(self, ctx, id):
-        """Remix baybeee"""
-
-    @commands.command()
-    async def totalAdded(self, ctx, author):
-        """Counts how many quotes the requested author has added"""
-
-    @commands.command()
-    async def raihepl(self, ctx):
-        """More detailed help command"""
-        await ctx.channel.send(
-            '```Here are the commands for RaiQuotes cog!\nquoteid[id]               | Show the quote at [id]\naddquote [author] [quote] | Add a new quote to the database/ Accepts discord @user for [author] too!\ndeleteid [id]             | Deletes quote at [id]. It will be gone.... forever....\nrandom                    | Shows a random quote\ntotal [author]            | Shows how many quotes [author] has in this server\ngrandtotal                | Shows the total quotes in the server```')
+    async def getSplits(self, ctx, quote_id):
+        """Get the splits for the quote"""
+        try:
+            int(quote_id)
+        except ValueError:
+            await ctx.channel.send("I'm sorry, but {} is not a value I can use for a quote ID".format(quote_id))
+            return
+        url = apiUrl + "quotes/server/{}/{}/split".format(ctx.guild.id, quote_id)
+        response = requests.get(url)
+        content = json.loads(response.content)
+        if response.status_code == 200:
+            emb = discord.Embed(title='Split Data',
+                                description='{}'.format("{}\n Left split ends at: {}\n Right split starts at: {}}".format(content["fullQuote"], content["splitLeftPosition"], content["splitRightPosition"])),
+                                colour=0x00ff00)
+            emb.set_footer(text="Please remember that these values are INCLUDING the formatting characters. Setting your own splits, you should ignore the formatting characters for counting")
+            await ctx.channel.send(embed=emb)
+        else:
+            await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
