@@ -335,7 +335,7 @@ class Mycog(commands.Cog):
                 while last_char_formatter:
                     left_split = content["quote"][:left]
                     print(left_split[-1])
-                    if left_split[-1] == "*" or "_" or "~":
+                    if left_split[-1] == "*" or left_split[-1] == "_" or left_split[-1] == "~":
                         left = left + 1
                     else:
                         break
