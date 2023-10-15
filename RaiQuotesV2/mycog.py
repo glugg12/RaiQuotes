@@ -335,33 +335,33 @@ class Mycog(commands.Cog):
             skip_ast = False
             skip_und = False
             for formatter in formatters:
-                if left_split.find(formatter) > 0:
-                    if formatter.find("*"):
+                if left_split.count(formatter) > 0:
+                    if formatter.find("*") != -1:
                         if not skip_ast:
-                            left = left + (left_split.find(format) * len(formatter))
-                            print("adding {}".format((left_split.find(format) * len(formatter))))
+                            left = left + (left_split.count(format) * len(formatter))
+                            print("adding {}".format((left_split.count(format) * len(formatter))))
                             skip_ast = True
-                    elif formatter.find("_"):
+                    elif formatter.find("_") != -1:
                         if not skip_und:
-                            left = left + (left_split.find(format) * len(formatter))
+                            left = left + (left_split.count(format) * len(formatter))
                             skip_und = True
                     else:
-                        left = left + (left_split.find(format) * len(formatter))
+                        left = left + (left_split.count(format) * len(formatter))
             right_split = content["quote"][right:]
             skip_ast = False
             skip_und = False
             for formatter in formatters:
-                if right_split.find(formatter) > 0:
-                    if formatter.find("*"):
+                if right_split.count(formatter) > 0:
+                    if formatter.find("*") != -1:
                         if not skip_ast:
-                            right = right + (right_split.find(format) * len(formatter))
+                            right = right + (right_split.count(format) * len(formatter))
                             skip_ast = True
-                    elif formatter.find("_"):
+                    elif formatter.find("_") != -1:
                         if not skip_und:
-                            right = right + (right_split.find(format) * len(formatter))
+                            right = right + (right_split.count(format) * len(formatter))
                             skip_und = True
                     else:
-                        right = right + (right_split.find(format) * len(formatter))
+                        right = right + (right_split.count(format) * len(formatter))
 
         else:
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
