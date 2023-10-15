@@ -337,15 +337,13 @@ class Mycog(commands.Cog):
                     print(left_split[-1])
                     if left_split[-1] == "*" or "_" or "~":
                         left = left + 1
-                        break
                     else:
-                        last_char_formatter = False
+                        break
                 for formatter in formatters:
                     if left_split.count(formatter) > 0:
                         if formatter.find("*") != -1:
                             if not skip_ast:
                                 left = left + (left_split.count(formatter) * len(formatter))
-                                print("adding {}".format((left_split.count(formatter) * len(formatter))))
                                 skip_ast = True
                         elif formatter.find("_") != -1:
                             if not skip_und:
