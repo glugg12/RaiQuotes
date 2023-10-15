@@ -330,6 +330,7 @@ class Mycog(commands.Cog):
         if response.status_code == 200:
             content = json.loads(response.content)
             left_split = content["quote"][:left]
+            print(left_split)
             formatters = ["***", "**", "*", "__", "_", "~~"]
             skip_ast = False
             skip_und = False
