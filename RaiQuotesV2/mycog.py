@@ -317,8 +317,12 @@ class Mycog(commands.Cog):
         """Set the splits for the quote"""
         try:
             int(quote_id)
-            left = kwargs["left"]
-            right = kwargs["right"]
+            left = None
+            right = None
+            if 'left' in kwargs:
+                left = kwargs.get('left')
+            if 'right' in kwargs:
+                right = kwargs.get('right')
             if left is not None:
                 left = int(left)
             if right is not None:
