@@ -327,6 +327,8 @@ class Mycog(commands.Cog):
                 left = int(left)
             if right is not None:
                 right = int(right)
+            print(left)
+            print(right)
         except ValueError:
             await ctx.channel.send("I'm sorry, but one of your input values is not an integer")
             return
