@@ -355,6 +355,7 @@ class Mycog(commands.Cog):
                             left = left + (left_split.count(formatter) * len(formatter))
             if right is not None:
                 right_split = content["quote"][:right]
+                print(right_split)
                 skip_ast = False
                 skip_und = False
                 for formatter in formatters:
