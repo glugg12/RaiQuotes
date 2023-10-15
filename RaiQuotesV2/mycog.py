@@ -339,6 +339,7 @@ class Mycog(commands.Cog):
                     if formatter.find("*"):
                         if not skip_ast:
                             left = left + (left_split.find(format) * len(formatter))
+                            print("adding {}".format((left_split.find(format) * len(formatter))))
                             skip_ast = True
                     elif formatter.find("_"):
                         if not skip_und:
