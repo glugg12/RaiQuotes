@@ -175,7 +175,7 @@ class Mycog(commands.Cog):
             await ctx.channel.send("Would you please provide a quote ID for me to use with the command?")
 
     @commands.command()
-    async def stats(self, ctx, author):
+    async def stats(self, ctx, author=None):
         """Get various stats"""
         if author is not None:
             try:
