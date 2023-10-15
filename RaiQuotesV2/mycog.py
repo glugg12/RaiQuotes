@@ -243,15 +243,21 @@ class Mycog(commands.Cog):
     async def remix(self, ctx, remix_request=None):
         """Remix baybeee"""
         if remix_request is not None:
-            try:
-                temp = remix_request
-                replace_list = ["<", ">", "@", "!"]
-                for char in replace_list:
-                    temp = temp.replace(char, "")
-                int(temp)
-                member = ctx.guild.get_member(int(temp))
-                url = apiUrl + "quotes/server/{}/remix?authorId={}".format(ctx.guild.id, member.id)
-            except ValueError:
+            if remix_request[0] == "<":
+                try:
+                    temp = remix_request
+                    replace_list = ["<", ">", "@", "!"]
+                    for char in replace_list:
+                        temp = temp.replace(char, "")
+                    int(temp)
+                    member = ctx.guild.get_member(int(temp))
+                    url = apiUrl + "quotes/server/{}/remix?authorId={}".format(ctx.guild.id, member.id)
+                except ValueError:
+                    await ctx.channel.send(
+                        "I'm sorry, but {} is not a value I can use for a user or a quote ID. At this time, I can only use mentioned users and quote IDs (or nothing) for this command.".format(
+                            remix_request))
+                    return
+            else:
                 #             we do not tend to use plain string for authors anymore - if we wanted to here is where we would do it. Though we need to check if whole string is int
                 try:
                     int(remix_request)
