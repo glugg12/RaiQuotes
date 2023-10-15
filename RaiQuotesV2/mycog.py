@@ -325,6 +325,45 @@ class Mycog(commands.Cog):
             await ctx.channel.send("I'm sorry, but one of your input values is not an integer")
             return
         url = apiUrl + "quotes/server/{}/{}/split".format(ctx.guild.id, quote_id)
+        quote_url = apiUrl + "quotes/server/{}/{}".format(ctx.guild.id, quote_id)
+        response = requests.get(quote_url)
+        if response.status_code == 200:
+            content = json.loads(response.content)
+            left_split = content["quote"][:left]
+            formatters = ["***", "**", "*", "__", "_", "~~"]
+            skip_ast = False
+            skip_und = False
+            for formatter in formatters:
+                if left_split.find(formatter) > 0:
+                    if formatter.find("*"):
+                        if not skip_ast:
+                            left = left + (left_split.find(format) * len(formatter))
+                            skip_ast = True
+                    elif formatter.find("_"):
+                        if not skip_und:
+                            left = left + (left_split.find(format) * len(formatter))
+                            skip_und = True
+                    else:
+                        left = left + (left_split.find(format) * len(formatter))
+            right_split = content["quote"][right:]
+            skip_ast = False
+            skip_und = False
+            for formatter in formatters:
+                if right_split.find(formatter) > 0:
+                    if formatter.find("*"):
+                        if not skip_ast:
+                            right = right + (right_split.find(format) * len(formatter))
+                            skip_ast = True
+                    elif formatter.find("_"):
+                        if not skip_und:
+                            right = right + (right_split.find(format) * len(formatter))
+                            skip_und = True
+                    else:
+                        right = right + (right_split.find(format) * len(formatter))
+
+        else:
+            await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
+            return
         request = {
             "splitLeftPosition": left,
             "splitRightPosition": right,
