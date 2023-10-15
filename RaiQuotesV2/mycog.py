@@ -272,7 +272,17 @@ class Mycog(commands.Cog):
         response = requests.get(url)
         content = json.loads(response.content)
         if response.status_code == 200:
-            emb = discord.Embed(title='{} + {}'.format(ctx.guild.get_member(int(content["author1"])).display_name, ctx.guild.get_member(int(content["author2"])).display_name),
+            try:
+                int(content["author1"])
+                name1 = ctx.guild.get_member(int(content["author1"])).display_name
+            except ValueError:
+                name1 = content["author1"]
+            try:
+                int(content["author2"])
+                name2 = ctx.guild.get_member(int(content["author2"])).display_name
+            except ValueError:
+                name2 = content["author2"]
+            emb = discord.Embed(title='{} + {}'.format(name1, name2),
                                 description='{}'.format("{}".format(content["quote"])),
                                 colour=0x00ff00)
             emb.set_footer(text="Quote IDs {} + {}".format(content["quoteId1"], content["quoteId2"]))
