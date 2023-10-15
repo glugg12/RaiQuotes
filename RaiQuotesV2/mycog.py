@@ -436,6 +436,8 @@ class Mycog(commands.Cog):
                             right = right - 1
                         else:
                             break
+                if right < 0:
+                    right = 0
         else:
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
             return
