@@ -313,22 +313,12 @@ class Mycog(commands.Cog):
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
 
     @commands.command()
-    async def setSplits(self, ctx, quote_id, **kwargs):
+    async def setLeftSplit(self, ctx, quote_id, left):
         """Set the splits for the quote"""
         try:
             int(quote_id)
-            left = None
-            right = None
-            if 'left' in kwargs:
-                left = kwargs.get('left')
-            if 'right' in kwargs:
-                right = kwargs.get('right')
             if left is not None:
                 left = int(left)
-            if right is not None:
-                right = int(right)
-            print(left)
-            print(right)
         except ValueError:
             await ctx.channel.send("I'm sorry, but one of your input values is not an integer")
             return
@@ -355,11 +345,44 @@ class Mycog(commands.Cog):
                                 skip_und = True
                         else:
                             left = left + (left_split.count(formatter) * len(formatter))
+        else:
+            await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
+            return
+        request = {
+            "splitLeftPosition": left,
+        }
+        response = requests.post(url, json=request)
+        content = json.loads(response.content)
+        if response.status_code == 200:
+            emb = discord.Embed(title='Split Data',
+                                description='{}'.format("{}\n Left split ends at: {}\n Right split starts at: {}".format(content["fullQuote"], content["splitLeftPosition"], content["splitRightPosition"])),
+                                colour=0x00ff00)
+            emb.set_footer(text="Please remember that these values are INCLUDING the formatting characters. Setting your own splits, you should ignore the formatting characters when counting")
+            await ctx.channel.send(embed=emb)
+        else:
+            await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
+
+    @commands.command()
+    async def setRightSplit(self, ctx, quote_id, right):
+        """Set the splits for the quote"""
+        try:
+            int(quote_id)
+            if right is not None:
+                right = int(right)
+        except ValueError:
+            await ctx.channel.send("I'm sorry, but one of your input values is not an integer")
+            return
+        url = apiUrl + "quotes/server/{}/{}/split".format(ctx.guild.id, quote_id)
+        quote_url = apiUrl + "quotes/server/{}/{}".format(ctx.guild.id, quote_id)
+        response = requests.get(quote_url)
+        if response.status_code == 200:
+            content = json.loads(response.content)
+            formatters = ["***", "**", "*", "__", "_", "~~"]
+            skip_ast = False
+            skip_und = False
             if right is not None:
                 right_split = content["quote"][:right]
                 print(right_split)
-                skip_ast = False
-                skip_und = False
                 for formatter in formatters:
                     if right_split.count(formatter) > 0:
                         if formatter.find("*") != -1:
@@ -376,7 +399,6 @@ class Mycog(commands.Cog):
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
             return
         request = {
-            "splitLeftPosition": left,
             "splitRightPosition": right,
         }
         response = requests.post(url, json=request)
