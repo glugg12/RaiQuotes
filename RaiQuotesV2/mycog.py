@@ -318,9 +318,9 @@ class Mycog(commands.Cog):
         try:
             int(quote_id)
             if left is not None:
-                int(left)
+                left = int(left)
             if right is not None:
-                int(right)
+                right = int(right)
         except ValueError:
             await ctx.channel.send("I'm sorry, but one of your input values is not an integer")
             return
