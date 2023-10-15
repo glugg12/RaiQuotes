@@ -354,7 +354,7 @@ class Mycog(commands.Cog):
                         else:
                             left = left + (left_split.count(formatter) * len(formatter))
             if right is not None:
-                right_split = content["quote"][right:]
+                right_split = content["quote"][:right]
                 skip_ast = False
                 skip_und = False
                 for formatter in formatters:
@@ -368,7 +368,7 @@ class Mycog(commands.Cog):
                                 right = right + (right_split.count(formatter) * len(formatter))
                                 skip_und = True
                         else:
-                            right = right - (right_split.count(formatter) * len(formatter))
+                            right = right + (right_split.count(formatter) * len(formatter))
         else:
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
             return
