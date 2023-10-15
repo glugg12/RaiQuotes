@@ -44,7 +44,8 @@ class Mycog(commands.Cog):
                     user = ctx.guild.get_member(int(content["authorId"]))
                     added_by = ctx.guild.get_member(int(content["addedBy"]))
                     if user is not None:
-                        emb = discord.Embed(title='{}'.format(user.display_name), description='{}'.format(content["quote"]),
+                        emb = discord.Embed(title='{}'.format(user.display_name),
+                                            description='{}'.format(content["quote"]),
                                             colour=0x00ff00)
                         emb.set_thumbnail(url='{}'.format(user.display_avatar))
                     else:
@@ -149,7 +150,8 @@ class Mycog(commands.Cog):
             content = json.loads(response.content)
             await ctx.channel.send(content)
         elif response.status_code == 412:
-            await ctx.channel.send("I'm sorry, there appears to not be any quotes I can use for your request right now.")
+            await ctx.channel.send(
+                "I'm sorry, there appears to not be any quotes I can use for your request right now.")
         else:
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
 
@@ -184,7 +186,9 @@ class Mycog(commands.Cog):
                     author = author.replace(char, "")
                 int(author)
             except ValueError:
-                await ctx.channel.send("I'm sorry, but {} is not a value I can use for a user ID. At this time, I can only use mentioned users for this command.".format(author))
+                await ctx.channel.send(
+                    "I'm sorry, but {} is not a value I can use for a user ID. At this time, I can only use mentioned users for this command.".format(
+                        author))
                 return
             member = ctx.guild.get_member(int(author))
             if member is not None:
@@ -194,17 +198,23 @@ class Mycog(commands.Cog):
                 if response.status_code == 200:
                     random.seed(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
                     emb = discord.Embed(title='{}'.format(member.display_name),
-                                        description='{}'.format("Quotes added: {}\nTimes quoted: {}\n Total swag: {}".format(
-                                            content["totalTimesQuoted"], content["totalQuotesAdded"], randint(1, 1000)
-                                        )),
+                                        description='{}'.format(
+                                            "Quotes added: {}\nTimes quoted: {}\n Total swag: {}".format(
+                                                content["totalTimesQuoted"], content["totalQuotesAdded"],
+                                                randint(1, 1000)
+                                            )),
                                         colour=0x00ff00)
-                    emb.set_footer(text="Remember, nothing's ever a competition! Your quotes and contributions are loved regardless of these statistics. <3")
+                    emb.set_footer(
+                        text="Remember, nothing's ever a competition! Your quotes and contributions are loved regardless of these statistics. <3")
                     emb.set_thumbnail(url='{}'.format(member.display_avatar))
                     await ctx.channel.send(embed=emb)
                 else:
-                    await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
+                    await ctx.channel.send(
+                        'I have encountered a problem: Response code: {}'.format(response.status_code))
             else:
-                await ctx.channel.send("I'm sorry, but {} is not a value I can use for a user ID. At this time, I can only use mentioned users for this command.".format(author))
+                await ctx.channel.send(
+                    "I'm sorry, but {} is not a value I can use for a user ID. At this time, I can only use mentioned users for this command.".format(
+                        author))
         else:
             url = apiUrl + "quotes/server/{}/stats".format(ctx.guild.id)
             response = requests.get(url)
@@ -220,21 +230,49 @@ class Mycog(commands.Cog):
             else:
                 await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
 
-    @commands.command()
-    async def grandtotal(self, ctx):
-        """Counts how many quotes are in the server"""
+    # todo: reimplement when a better search solution is developed in the api
+    # @commands.command()
+    # async def searchQuotes(self, ctx, word):
+    #     """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
+    #
+    # @commands.command()
+    # async def searchQuotesStrict(self, ctx, word):
+    #     """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
 
     @commands.command()
-    async def searchQuotes(self, ctx, word):
-        """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
-
-    @commands.command()
-    async def searchQuotesStrict(self, ctx, word):
-        """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
-
-    @commands.command()
-    async def remix(self, ctx):
+    async def remix(self, ctx, remix_request=None):
         """Remix baybeee"""
+        if remix_request is not None:
+            try:
+                temp = remix_request
+                replace_list = ["<", ">", "@", "!"]
+                for char in replace_list:
+                    temp = temp.replace(char, "")
+                int(temp)
+                member = ctx.guild.get_member(temp)
+                url = apiUrl + "quotes/server/{}/remix?authorId={}".format(ctx.guild.id, member.id)
+            except ValueError:
+                #             we do not tend to use plain string for authors anymore - if we wanted to here is where we would do it. Though we need to check if whole string is int
+                try:
+                    int(remix_request)
+                    url = apiUrl + "quotes/server/{}/remix?quoteId={}".format(ctx.guild.id, remix_request)
+                except ValueError:
+                    await ctx.channel.send(
+                        "I'm sorry, but {} is not a value I can use for a user or a quote ID. At this time, I can only use mentioned users and quote IDs (or nothing) for this command.".format(
+                            remix_request))
+                    return
+        else:
+            url = apiUrl + "quotes/server/{}/remix".format(ctx.guild.id)
+        response = requests.get(url)
+        content = json.loads(response.content)
+        if response.status_code == 200:
+            emb = discord.Embed(title='{} + {}'.format(content["author1"], content["author2"]),
+                                description='{}'.format("{}".format(content["quote"])),
+                                colour=0x00ff00)
+            emb.set_footer(text="Quote IDs {} + {}".format(content["quoteId1"], content["quoteId2"]))
+            await ctx.channel.send(embed=emb)
+        else:
+            await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
 
     @commands.command()
     async def remixid(self, ctx, id):
