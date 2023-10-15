@@ -322,6 +322,9 @@ class Mycog(commands.Cog):
         except ValueError:
             await ctx.channel.send("I'm sorry, but one of your input values is not an integer")
             return
+        if left == 0:
+            await ctx.channel.send("You cannot set the left split to 0, as that is where it starts.")
+            return
         url = apiUrl + "quotes/server/{}/{}/split".format(ctx.guild.id, quote_id)
         quote_url = apiUrl + "quotes/server/{}/{}".format(ctx.guild.id, quote_id)
         response = requests.get(quote_url)
@@ -354,6 +357,14 @@ class Mycog(commands.Cog):
                                     skip_und = True
                             else:
                                 left = left + (left_split.count(formatter) * len(formatter))
+                if left_split[-1] == "*" or left_split[-1] == "_" or left_split[-1] == "~":
+                    while True:
+                        left_split = content["quote"][:left]
+                        print(left_split[-1])
+                        if left_split[-1] == "*" or left_split[-1] == "_" or left_split[-1] == "~":
+                            left = left + 1
+                        else:
+                            break
         else:
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
             return
