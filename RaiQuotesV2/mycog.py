@@ -332,14 +332,15 @@ class Mycog(commands.Cog):
             skip_und = False
             if left is not None:
                 left_split = content["quote"][:left]
-                if left_split[-1] == "*" or left_split[-1] == "_" or left_split[-1] == "~":
-                    while True:
-                        left_split = content["quote"][:left]
-                        print(left_split[-1])
-                        if left_split[-1] == "*" or left_split[-1] == "_" or left_split[-1] == "~":
-                            left = left + 1
-                        else:
-                            break
+                if left <= 3:
+                    if left_split[-1] == "*" or left_split[-1] == "_" or left_split[-1] == "~":
+                        while True:
+                            left_split = content["quote"][:left]
+                            print(left_split[-1])
+                            if left_split[-1] == "*" or left_split[-1] == "_" or left_split[-1] == "~":
+                                left = left + 1
+                            else:
+                                break
                 else:
                     for formatter in formatters:
                         if left_split.count(formatter) > 0:
