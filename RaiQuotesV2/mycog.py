@@ -368,7 +368,7 @@ class Mycog(commands.Cog):
                                 right = right + (right_split.count(formatter) * len(formatter))
                                 skip_und = True
                         else:
-                            right = right + (right_split.count(formatter) * len(formatter))
+                            right = right - (right_split.count(formatter) * len(formatter))
         else:
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
             return
