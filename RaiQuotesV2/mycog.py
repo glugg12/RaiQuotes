@@ -307,7 +307,35 @@ class Mycog(commands.Cog):
             emb = discord.Embed(title='Split Data',
                                 description='{}'.format("{}\n Left split ends at: {}\n Right split starts at: {}".format(content["fullQuote"], content["splitLeftPosition"], content["splitRightPosition"])),
                                 colour=0x00ff00)
-            emb.set_footer(text="Please remember that these values are INCLUDING the formatting characters. Setting your own splits, you should ignore the formatting characters for counting")
+            emb.set_footer(text="Please remember that these values are INCLUDING the formatting characters. Setting your own splits, you should ignore the formatting characters when counting")
+            await ctx.channel.send(embed=emb)
+        else:
+            await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
+
+    @commands.command()
+    async def setSplits(selfself, ctx, quote_id, *, left=None, right=None):
+        """Set the splits for the quote"""
+        try:
+            int(quote_id)
+            if left is not None:
+                int(left)
+            if right is not None:
+                int(right)
+        except ValueError:
+            await ctx.channel.send("I'm sorry, but one of your input values is not an integer")
+            return
+        url = apiUrl + "quotes/server/{}/{}/split".format(ctx.guild.id, quote_id)
+        request = {
+            "splitLeftPosition": left,
+            "splitRightPosition": right,
+        }
+        response = requests.post(url, json=request)
+        content = json.loads(response.content)
+        if response.status_code == 200:
+            emb = discord.Embed(title='Split Data',
+                                description='{}'.format("{}\n Left split ends at: {}\n Right split starts at: {}".format(content["fullQuote"], content["splitLeftPosition"], content["splitRightPosition"])),
+                                colour=0x00ff00)
+            emb.set_footer(text="Please remember that these values are INCLUDING the formatting characters. Setting your own splits, you should ignore the formatting characters when counting")
             await ctx.channel.send(embed=emb)
         else:
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
