@@ -305,7 +305,7 @@ class Mycog(commands.Cog):
         content = json.loads(response.content)
         if response.status_code == 200:
             emb = discord.Embed(title='Split Data',
-                                description='{}'.format("{}\n Left split ends at: {}\n Right split starts at: {}}".format(content["fullQuote"], content["splitLeftPosition"], content["splitRightPosition"])),
+                                description='{}'.format("{}\n Left split ends at: {}\n Right split starts at: {}".format(content["fullQuote"], content["splitLeftPosition"], content["splitRightPosition"])),
                                 colour=0x00ff00)
             emb.set_footer(text="Please remember that these values are INCLUDING the formatting characters. Setting your own splits, you should ignore the formatting characters for counting")
             await ctx.channel.send(embed=emb)
