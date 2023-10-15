@@ -5,6 +5,9 @@ import discord
 import pip
 import json
 from datetime import date
+import random
+from datetime import datetime
+from random import randint
 
 try:
     import requests
@@ -31,34 +34,34 @@ class Mycog(commands.Cog):
     async def quoteid(self, ctx, quote_id):
         """Finds a quote at the requested id"""
         server_id = ctx.message.guild.id
-        print('begin')
-        try:
-            int(quote_id)
-            print('int')
-            url = apiUrl + "quotes/server/{}/{}".format(server_id, quote_id)
-            response = requests.get(url)
-            if response.status_code == 200:
-                content = json.loads(response.content)
-                user = ctx.guild.get_member(int(content["authorId"]))
-                added_by = ctx.guild.get_member(int(content["addedBy"]))
-                if user is not None:
-                    emb = discord.Embed(title='{}'.format(user.display_name), description='{}'.format(content["quote"]),
-                                        colour=0x00ff00)
-                    emb.set_thumbnail(url='{}'.format(user.display_avatar))
-                else:
-                    emb = discord.Embed(title='{}'.format(content["authorName"]),
-                                        description='{}'.format(content["quote"]), colour=0x00ff00)
-                emb.set_footer(text='Added by: {} | {}'.format(added_by.display_name, content["dateAdded"]))
+        if quote_id is not None:
+            try:
+                int(quote_id)
+                url = apiUrl + "quotes/server/{}/{}".format(server_id, quote_id)
+                response = requests.get(url)
+                if response.status_code == 200:
+                    content = json.loads(response.content)
+                    user = ctx.guild.get_member(int(content["authorId"]))
+                    added_by = ctx.guild.get_member(int(content["addedBy"]))
+                    if user is not None:
+                        emb = discord.Embed(title='{}'.format(user.display_name), description='{}'.format(content["quote"]),
+                                            colour=0x00ff00)
+                        emb.set_thumbnail(url='{}'.format(user.display_avatar))
+                    else:
+                        emb = discord.Embed(title='{}'.format(content["authorName"]),
+                                            description='{}'.format(content["quote"]), colour=0x00ff00)
+                    emb.set_footer(text='Added by: {} | {}'.format(added_by.display_name, content["dateAdded"]))
 
-                if content["imageUrl"] is not None:
-                    emb.set_image(url='{}'.format(content["imageUrl"]))
-                await ctx.channel.send(embed=emb)
-            elif response.status_code == 404:
-                await ctx.channel.send("I'm afraid I couldn't find that quote for you.")
-        except ValueError:
-            print('not int')
-            await ctx.channel.send("That is not a valid integer")
-            return
+                    if content["imageUrl"] is not None:
+                        emb.set_image(url='{}'.format(content["imageUrl"]))
+                    await ctx.channel.send(embed=emb)
+                elif response.status_code == 404:
+                    await ctx.channel.send("I'm afraid I couldn't find that quote for you.")
+            except ValueError:
+                await ctx.channel.send("I'm sorry, but {} is not a value I can use for a quote ID".format(quote_id))
+                return
+        else:
+            await ctx.channel.send("Would you please provide a quote ID for me to use with the command?")
 
     @commands.command()
     async def addquote(self, ctx, *args):
@@ -102,6 +105,8 @@ class Mycog(commands.Cog):
             content = json.loads(response.content)
             await ctx.channel.send(
                 'I have saved that quote for you under ID {}, safe and sound ~'.format(content["serverQuoteId"]))
+        elif response.status_code == 404:
+            await ctx.channel.send("I'm afraid I couldn't find that quote for you.")
         else:
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
 
@@ -143,17 +148,73 @@ class Mycog(commands.Cog):
         if response.status_code == 200:
             content = json.loads(response.content)
             await ctx.channel.send(content)
+        elif response.status_code == 412:
+            await ctx.channel.send("I'm sorry, there appears to not be any quotes I can use for your request right now.")
         else:
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
 
     @commands.command()
-    async def deleteid(self, ctx, word):
+    async def delete(self, ctx, quote_id):
         """Deletes a quote at the requested id"""
+        if quote_id is not None:
+            try:
+                int(quote_id)
+            except ValueError:
+                await ctx.channel.send("I'm sorry, but {} is not a value I can use for a quote ID".format(quote_id))
+                return
+            url = apiUrl + "quotes/server/{}/{}".format(ctx.guild.id, quote_id)
+            response = requests.delete(url)
+            content = json.loads(response.content)
+            if response.status_code == 200:
+                await ctx.channel.send('The quote at ID {} is now gone for good.'.format(quote_id))
+            elif response.status_code == 404:
+                await ctx.channel.send("I'm afraid I couldn't find that quote for you.")
+            else:
+                await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
+        else:
+            await ctx.channel.send("Would you please provide a quote ID for me to use with the command?")
 
     @commands.command()
-    async def total(self, ctx, author):
-        """Counts how many quotes the requested author has"""
-
+    async def stats(self, ctx, author):
+        """Get various stats"""
+        if author is not None:
+            try:
+                replace_list = ["<", ">", "@", "!"]
+                for char in replace_list:
+                    author = author.replace(char, "")
+                int(author)
+            except ValueError:
+                await ctx.channel.send("I'm sorry, but {} is not a value I can use for a user ID. At this time, I can only use mentioned users for this command.".format(author))
+                return
+            member = ctx.guild.get_member(int(author))
+            if member is not None:
+                url = apiUrl + "quotes/server/{}/stats/{}".format(ctx.guild.id, member.id)
+                response = requests.get(url)
+                content = json.loads(response.content)
+                if response.status_code == 200:
+                    random.seed(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+                    emb = discord.Embed(title='{}'.format(member.display_name),
+                                        description='{}'.format("Quotes added: {}\nTimes quoted: {}\n Total swag: {}".format(
+                                            content["totalTimesQuoted"], content["totalQuotesAdded"], randint(1, 1000)
+                                        )),
+                                        colour=0x00ff00)
+                    emb.set_footer(text="Remember, nothing's ever a competition! Your quotes and contributions are loved regardless of these statistics. <3")
+                else:
+                    await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
+            else:
+                await ctx.channel.send("I'm sorry, but {} is not a value I can use for a user ID. At this time, I can only use mentioned users for this command.".format(author))
+        else:
+            url = apiUrl + "quotes/server/{}/stats".format(ctx.guild.id)
+            response = requests.get(url)
+            content = json.loads(response.content)
+            if response.status_code == 200:
+                random.seed(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+                emb = discord.Embed(title='{}'.format(ctx.guild.name),
+                                    description='{}'.format("Total Quotes: {}".format(content["totalQuotes"])),
+                                    colour=0x00ff00)
+                emb.set_footer(text="You're making so many memories together!")
+            else:
+                await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
     @commands.command()
     async def grandtotal(self, ctx):
         """Counts how many quotes are in the server"""

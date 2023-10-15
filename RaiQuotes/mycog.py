@@ -6,7 +6,6 @@ import random
 from random import seed
 from random import randint
 from datetime import datetime
-import requests
 import configparser
 intents = discord.Intents.default()
 intents.message_content = True
