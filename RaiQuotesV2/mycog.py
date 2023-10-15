@@ -331,26 +331,28 @@ class Mycog(commands.Cog):
             skip_ast = False
             skip_und = False
             if left is not None:
-                last_char_formatter = True
-                while last_char_formatter:
-                    left_split = content["quote"][:left]
-                    print(left_split[-1])
-                    if left_split[-1] == "*" or left_split[-1] == "_" or left_split[-1] == "~":
-                        left = left + 1
-                    else:
-                        break
-                for formatter in formatters:
-                    if left_split.count(formatter) > 0:
-                        if formatter.find("*") != -1:
-                            if not skip_ast:
-                                left = left + (left_split.count(formatter) * len(formatter))
-                                skip_ast = True
-                        elif formatter.find("_") != -1:
-                            if not skip_und:
-                                left = left + (left_split.count(formatter) * len(formatter))
-                                skip_und = True
+                left_split = content["quote"][:left]
+                if left_split[-1] == "*" or left_split[-1] == "_" or left_split[-1] == "~":
+                    while True:
+                        left_split = content["quote"][:left]
+                        print(left_split[-1])
+                        if left_split[-1] == "*" or left_split[-1] == "_" or left_split[-1] == "~":
+                            left = left + 1
                         else:
-                            left = left + (left_split.count(formatter) * len(formatter))
+                            break
+                else:
+                    for formatter in formatters:
+                        if left_split.count(formatter) > 0:
+                            if formatter.find("*") != -1:
+                                if not skip_ast:
+                                    left = left + (left_split.count(formatter) * len(formatter))
+                                    skip_ast = True
+                            elif formatter.find("_") != -1:
+                                if not skip_und:
+                                    left = left + (left_split.count(formatter) * len(formatter))
+                                    skip_und = True
+                            else:
+                                left = left + (left_split.count(formatter) * len(formatter))
         else:
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
             return
