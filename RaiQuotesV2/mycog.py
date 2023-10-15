@@ -427,7 +427,7 @@ class Mycog(commands.Cog):
                                     right = right - (right_split.count(formatter) * len(formatter))
                                     skip_und = True
                             else:
-                                right = right + (right_split.count(formatter) * len(formatter))
+                                right = right - (right_split.count(formatter) * len(formatter))
                 right_split = content["quote"][right:]
                 if right_split[0] == "*" or right_split[0] == "_" or right_split[0] == "~":
                     while True:
