@@ -402,20 +402,40 @@ class Mycog(commands.Cog):
             skip_ast = False
             skip_und = False
             if right is not None:
-                right_split = content["quote"][:right]
-                print(right_split)
-                for formatter in formatters:
-                    if right_split.count(formatter) > 0:
-                        if formatter.find("*") != -1:
-                            if not skip_ast:
+                right_split = content["quote"][right:]
+                if (len(right_split) - right) <= 3:
+                    if right_split[-1] == "*" or right_split[-1] == "_" or right_split[-1] == "~":
+                        while True:
+                            right_split = content["quote"][right:]
+                            print(right_split[-1])
+                            if right_split[-1] == "*" or right_split[-1] == "_" or right_split[-1] == "~":
+                                right = right - 1
+                                if right >= len(right_split):
+                                    break
+                            else:
+                                break
+                else:
+                    print(right_split)
+                    for formatter in formatters:
+                        if right_split.count(formatter) > 0:
+                            if formatter.find("*") != -1:
+                                if not skip_ast:
+                                    right = right + (right_split.count(formatter) * len(formatter))
+                                    skip_ast = True
+                            elif formatter.find("_") != -1:
+                                if not skip_und:
+                                    right = right + (right_split.count(formatter) * len(formatter))
+                                    skip_und = True
+                            else:
                                 right = right + (right_split.count(formatter) * len(formatter))
-                                skip_ast = True
-                        elif formatter.find("_") != -1:
-                            if not skip_und:
-                                right = right + (right_split.count(formatter) * len(formatter))
-                                skip_und = True
+                right_split = content["quote"][right:]
+                if right_split[0] == "*" or right_split[0] == "_" or right_split[0] == "~":
+                    while True:
+                        right_split = content["quote"][right:]
+                        if right_split[0] == "*" or right_split[0] == "_" or right_split[0] == "~":
+                            right = right - 1
                         else:
-                            right = right + (right_split.count(formatter) * len(formatter))
+                            break
         else:
             await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
             return
