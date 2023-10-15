@@ -249,7 +249,7 @@ class Mycog(commands.Cog):
                 for char in replace_list:
                     temp = temp.replace(char, "")
                 int(temp)
-                member = ctx.guild.get_member(temp)
+                member = ctx.guild.get_member(int(temp))
                 url = apiUrl + "quotes/server/{}/remix?authorId={}".format(ctx.guild.id, member.id)
             except ValueError:
                 #             we do not tend to use plain string for authors anymore - if we wanted to here is where we would do it. Though we need to check if whole string is int
@@ -266,7 +266,7 @@ class Mycog(commands.Cog):
         response = requests.get(url)
         content = json.loads(response.content)
         if response.status_code == 200:
-            emb = discord.Embed(title='{} + {}'.format(content["author1"], content["author2"]),
+            emb = discord.Embed(title='{} + {}'.format(ctx.guild.get_member(int(content["author1"].display_avatar)), ctx.guild.get_member(int(content["author2"].display_avatar))),
                                 description='{}'.format("{}".format(content["quote"])),
                                 colour=0x00ff00)
             emb.set_footer(text="Quote IDs {} + {}".format(content["quoteId1"], content["quoteId2"]))
