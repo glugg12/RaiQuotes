@@ -337,6 +337,7 @@ class Mycog(commands.Cog):
                     print(left_split[-1])
                     if left_split[-1] == "*" or "_" or "~":
                         left = left + 1
+                        break
                     else:
                         last_char_formatter = False
                 for formatter in formatters:
