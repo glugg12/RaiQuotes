@@ -331,7 +331,13 @@ class Mycog(commands.Cog):
             skip_ast = False
             skip_und = False
             if left is not None:
-                left_split = content["quote"][:left]
+                last_char_formatter = True
+                while last_char_formatter:
+                    left_split = content["quote"][:left]
+                    if left_split[-1] == "*" or "_" or "~":
+                        left = left + 1
+                    else:
+                        last_char_formatter = False
                 for formatter in formatters:
                     if left_split.count(formatter) > 0:
                         if formatter.find("*") != -1:
