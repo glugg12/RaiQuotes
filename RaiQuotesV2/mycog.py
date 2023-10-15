@@ -199,6 +199,7 @@ class Mycog(commands.Cog):
                                         )),
                                         colour=0x00ff00)
                     emb.set_footer(text="Remember, nothing's ever a competition! Your quotes and contributions are loved regardless of these statistics. <3")
+                    await ctx.channel.send(emb)
                 else:
                     await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
             else:
@@ -213,8 +214,10 @@ class Mycog(commands.Cog):
                                     description='{}'.format("Total Quotes: {}".format(content["totalQuotes"])),
                                     colour=0x00ff00)
                 emb.set_footer(text="You're making so many memories together!")
+                await ctx.channel.send(emb)
             else:
                 await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
+
     @commands.command()
     async def grandtotal(self, ctx):
         """Counts how many quotes are in the server"""
