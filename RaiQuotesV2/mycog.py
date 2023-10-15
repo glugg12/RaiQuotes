@@ -199,6 +199,7 @@ class Mycog(commands.Cog):
                                         )),
                                         colour=0x00ff00)
                     emb.set_footer(text="Remember, nothing's ever a competition! Your quotes and contributions are loved regardless of these statistics. <3")
+                    emb.set_thumbnail(url='{}'.format(member.display_avatar))
                     await ctx.channel.send(embed=emb)
                 else:
                     await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
@@ -214,6 +215,7 @@ class Mycog(commands.Cog):
                                     description='{}'.format("Total Quotes: {}".format(content["totalQuotes"])),
                                     colour=0x00ff00)
                 emb.set_footer(text="You're making so many memories together!")
+                emb.set_thumbnail(url='{}'.format(ctx.guild.icon))
                 await ctx.channel.send(embed=emb)
             else:
                 await ctx.channel.send('I have encountered a problem: Response code: {}'.format(response.status_code))
