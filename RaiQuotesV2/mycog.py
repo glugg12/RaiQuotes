@@ -433,9 +433,9 @@ class Mycog(commands.Cog):
                     while True:
                         right_split = content["quote"][right:]
                         if right_split[0] == "*" or right_split[0] == "_" or right_split[0] == "~":
-                            right = right - 1
-                        else:
                             right = right + 1
+                        else:
+                            right = right - 1
                             break
                 if right < 0:
                     right = 0
