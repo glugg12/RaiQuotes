@@ -41,7 +41,9 @@ class Mycog(commands.Cog):
                 response = requests.get(url)
                 if response.status_code == 200:
                     content = json.loads(response.content)
-                    user = ctx.guild.get_member(int(content["authorId"]))
+                    user = None
+                    if content["authorId"] is not None:
+                        user = ctx.guild.get_member(int(content["authorId"]))
                     added_by = ctx.guild.get_member(int(content["addedBy"]))
                     if user is not None:
                         emb = discord.Embed(title='{}'.format(user.display_name),
