@@ -24,6 +24,7 @@ def insert_quote(server_id, added_by, author_id, quote, channel_id, message_id, 
         conn.commit()
         last_id = cur.lastrowid
         cur.execute("SELECT * FROM quotes")
+        conn.commit()
         rows = cur.fetchall()
         quote_id = 0
         for row in rows:
