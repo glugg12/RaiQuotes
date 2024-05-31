@@ -108,36 +108,17 @@ class Mycog(commands.Cog):
         databaseUtility.delete_quote(interaction.guild_id, quote_id)
         await interaction.response.send_message('The quote at ID {} is now gone for good.'.format(quote_id))
 
-    @commands.command()
-    async def total(self, ctx, author):
+    @quotes.command(name="total")
+    async def total(self, interaction: discord.Interaction, member: discord.Member = None):
         """Counts how many quotes the requested author has"""
-        # Your code will go here
-        author = author.replace("<", "")
-        author = author.replace(">", "")
-        author = author.replace("@", "")
-        author = author.replace("!", "")
-
-        conn = None
-        try:
-            conn = sqlite3.connect(path)
-
-            cur = conn.cursor()
-            count = 0
-            cur.execute("SELECT * FROM quotes")
-            rows = cur.fetchall()
-            for row in rows:
-                if row[1] == ctx.message.guild.id:
-                    if '{}'.format(row[6]) == '{}'.format(author):
-                        count = count + 1
-            await ctx.channel.send('Oh my, <@!{}> has {} quotes saved for this server.'.format(author, count))
-        except Error as e:
-            print(e)
-        finally:
-            if conn:
-                conn.close()
+        if member is None:
+            member = interaction.user
+        rows = databaseUtility.get_all_quotes(interaction.guild_id, member)
+        total = len(rows)
+        await interaction.response.send_message('Oh my, <@!{}> has {} quotes saved for this server.'.format(member.id, total))
 
     @commands.command()
-    async def grandtotal(self, ctx):
+    async def server_total(self, ctx):
         """Counts how many quotes are in the server"""
         # Your code will go here
 
