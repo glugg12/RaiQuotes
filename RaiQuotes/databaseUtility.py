@@ -44,10 +44,11 @@ def get_quote(quote_id, server_id):
         conn = sqlite3.connect(path)
 
         cur = conn.cursor()
-        to_ex = 'SELECT * FROM quotes where server_quote_id = ? and server_id = ?'
+        to_ex = '''SELECT * FROM quotes where server_quote_id = ? and server_id = ?'''
 
         cur.execute(to_ex, (server_id, quote_id))
         conn.commit()
+        print(cur.fetchall())
         row = cur.fetchone()
         print(server_id)
         print(quote_id)
