@@ -22,6 +22,8 @@ path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 class Mycog(commands.Cog):
     """RaiQuotes Cog"""
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.command()
     async def quoteid(self, ctx, word):
