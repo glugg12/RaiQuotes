@@ -81,7 +81,7 @@ def get_quotes_added_by(server_id, member):
     try:
         conn = sqlite3.connect(path)
         cur = conn.cursor()
-        to_ex = '''SELECT * FROM quotes where server_id = ? and added_id = ?'''
+        to_ex = '''SELECT * FROM quotes where server_id = ? and added_by = ?'''
         cur.execute(to_ex, (server_id, member.id))
         rows = cur.fetchall()
         return rows

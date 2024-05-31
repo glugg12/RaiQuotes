@@ -330,7 +330,7 @@ class Mycog(commands.Cog):
         # Your code will go here
         if author is None:
             author = interaction.user
-        rows = databaseUtility.get_all_quotes(interaction.guild_id, author)
+        rows = databaseUtility.get_quotes_added_by(interaction.guild_id, author)
         total = len(rows)
         await interaction.response.send_message(
                 '<@!{}> has added {} quotes in this server. Keep it up ~'.format(author.id, total))
