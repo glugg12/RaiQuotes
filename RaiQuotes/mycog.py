@@ -26,53 +26,40 @@ class Mycog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    quotecommands = app_commands.Group(name="quotecommands", description="Rai quotes commands")
+    quotes = app_commands.Group(name="quotecommands", description="Rai quotes commands")
 
-    @commands.command()
-    async def quoteid(self, ctx, word):
+    @quotes.command(name="Get Quote")
+    async def quote_id(self, interaction: discord.Interaction, quote_id: int):
         """Finds a quote at the requested id"""
         # originally pulls down all quotes and searches them in code
         # now does a conditional select all on the db instead. In theory, should be slightly faster, but won't be noticable regardless.
         # this also just makes more sense to do.
-        conn = None
-        try:
-            conn = sqlite3.connect(path)
+        row = databaseUtility.get_quote(quote_id, interaction.guild_id)
+        found = 0
+        if row is not None:
+            name = '{}'.format(row[7])
+            url = ''
+            added_by = '?'
+            img = ''
+            for member in interaction.guild.members:
+                if row[6] == member.id:
+                    name = '{}'.format(member.display_name)
+                    url = member.display_avatar
+                if row[5] == member.id:
+                    added_by = '{}'.format(member.display_name)
+            emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]), colour=0x00ff00)
+            emb.set_footer(text='Added by: {}'.format(added_by))
+            if row[10] is not None:
+                emb.set_image(url='{}'.format(row[10]))
 
-            cur = conn.cursor()
-            toEx = 'SELECT * FROM quotes where server_quote_id = ? and server_id = ?'
+            emb.set_thumbnail(url='{}'.format(url))
+            found = 1
+            await interaction.response.send_message(embed=emb)
 
-            cur.execute(toEx, (word, ctx.message.guild.id))
-            row = cur.fetchone()
-            found = 0
-            if row is not None:
-                name = '{}'.format(row[7])
-                url = ''
-                addedby = '?'
-                img = ''
-                for member in ctx.message.guild.members:
-                    if row[6] == member.id:
-                        name = '{}'.format(member.display_name)
-                        url = member.display_avatar
-                    if row[5] == member.id:
-                        addedby = '{}'.format(member.display_name)
-                emb = discord.Embed(title='{}'.format(name), description='{}'.format(row[8]), colour=0x00ff00)
-                emb.set_footer(text='Added by: {}'.format(addedby))
-                if row[10] != None:
-                    emb.set_image(url='{}'.format(row[10]))
+        if found == 0:
+            await interaction.response.send_message("I'm afraid I couldn't find that quote for you.")
 
-                emb.set_thumbnail(url='{}'.format(url))
-                found = 1
-                await ctx.channel.send(embed=emb)
-
-            if found == 0:
-                await ctx.channel.send("I'm afraid I couldn't find that quote for you.")
-        except Error as e:
-            print(e)
-        finally:
-            if conn:
-                conn.close()
-
-    @quotecommands.command()
+    @quotes.command(name="Add Quote")
     async def add_quote(self, interaction: discord.Interaction, quote_author: discord.Member, quote: str):
         """Adds a quote to the database"""
         server_id = interaction.guild_id
@@ -82,8 +69,10 @@ class Mycog(commands.Cog):
         channel_id = interaction.channel_id
         message_id = interaction.id
         quote_id = databaseUtility.insert_quote(server_id, added_by, author_id, quote_text, channel_id, message_id)
-        await interaction.response.send_message('I have saved that quote for you under ID {}, safe and sound ~'.format(quote_id))
-
+        if quote_id is not None:
+            await interaction.response.send_message('I have saved that quote for you under ID {}, safe and sound ~'.format(quote_id))
+        else:
+            await interaction.response.send_message('I have encountered an error when adding that quote. insert_quote returned None.')
     @commands.command()
     async def random(self, ctx):
         """Shows a random quote"""
@@ -621,7 +610,7 @@ class Mycog(commands.Cog):
             if conn:
                 conn.close()
 
-    @quotecommands.command()
+    @quotes.command()
     async def raihepl(self, interaction: discord.Interaction):
         """More detailed help command"""
         await interaction.response.send_message(

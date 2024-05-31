@@ -36,3 +36,20 @@ def insert_quote(server_id, added_by, author_id, quote, channel_id, message_id, 
         if conn:
             conn.close()
 
+
+def get_quote(quote_id, server_id):
+    conn = None
+    try:
+        conn = sqlite3.connect(path)
+
+        cur = conn.cursor()
+        to_ex = 'SELECT * FROM quotes where server_quote_id = ? and server_id = ?'
+
+        cur.execute(to_ex, (server_id, quote_id))
+        row = cur.fetchone()
+        return row
+    except Error as e:
+        print(e)
+    finally:
+        if conn:
+            conn.close()
