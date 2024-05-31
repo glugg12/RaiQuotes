@@ -25,6 +25,8 @@ class Mycog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    quoteCommands = app_commands.Group(name="quoteCommands", description="Rai quotes commands")
+
     @commands.command()
     async def quoteid(self, ctx, word):
         """Finds a quote at the requested id"""
@@ -69,28 +71,29 @@ class Mycog(commands.Cog):
             if conn:
                 conn.close()
 
-    @commands.command()
-    async def addquote(self, ctx, author):
+    @quoteCommands.command()
+    async def addquote(self, interaction: discord.Interaction, member: discord.Memeber, quote: str):
         """Adds a quote to the database"""
         # Your code will go here
-        quoted = ctx.message.content
-        quoted = quoted.replace(author, "")
-        quoted = quoted.replace(quoted[0], "")
-        quoted = quoted.replace("addquote", "")
-        quoted = quoted.replace("  ", "")
+        # quoted = ctx.message.content
+        # quoted = quoted.replace(author, "")
+        # quoted = quoted.replace(quoted[0], "")
+        # quoted = quoted.replace("addquote", "")
+        # quoted = quoted.replace("  ", "")
+        quoted = quote
         linked = 0
-        if (quoted.find("https") != -1):
+        if quoted.find("https") != -1:
             linked = 1
-            if (quoted.find(" ", quoted.index("https"), len(quoted)) != -1):
+            if quoted.find(" ", quoted.index("https"), len(quoted)) != -1:
                 link = quoted[quoted.index("https"):quoted.index(" ", quoted.index("https"), len(quoted))]
                 quoted = quoted.replace(link, "")
             else:
                 link = quoted[quoted.index("https"):]
                 quoted = quoted.replace(link, "")
         mention = 0
-        if author[0] == "<":
+        if member[0] == "<":
             mention = 1
-            author = author.replace("<", "")
+            author = member.replace("<", "")
             author = author.replace(">", "")
             author = author.replace("@", "")
             author = author.replace("!", "")
@@ -98,42 +101,42 @@ class Mycog(commands.Cog):
         try:
             conn = sqlite3.connect(path)
             if mention == 1:
-                if len(ctx.message.attachments) > 0:
+                if len(interaction.message.attachments) > 0:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
                     inputString = (
-                    '{}'.format(ctx.message.guild.id), '{}'.format(ctx.message.author.id), '{}'.format(author),
-                    '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id),
-                    '{}'.format(ctx.message.attachments[0].url))
+                    '{}'.format(interaction.guild.id), '{}'.format(interaction.user.id), '{}'.format(author),
+                    '{}'.format(quoted), '{}'.format(interaction.channel.id), '{}'.format(interaction.message.id),
+                    '{}'.format(interaction.message.attachments[0].url))
                 elif linked == 1:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
                     inputString = (
-                    '{}'.format(ctx.message.guild.id), '{}'.format(ctx.message.author.id), '{}'.format(author),
-                    '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id),
+                    '{}'.format(interaction.guild.id), '{}'.format(interaction.user.id), '{}'.format(author),
+                    '{}'.format(quoted), '{}'.format(interaction.channel.id), '{}'.format(interaction.message.id),
                     '{}'.format(link))
                 else:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
                     inputString = (
-                    '{}'.format(ctx.message.guild.id), '{}'.format(ctx.message.author.id), '{}'.format(author),
-                    '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id))
+                    '{}'.format(interaction.guild.id), '{}'.format(interaction.user.id), '{}'.format(author),
+                    '{}'.format(quoted), '{}'.format(interaction.channel.id), '{}'.format(interaction.message.id))
 
             if mention == 0:
-                if len(ctx.message.attachments) > 0:
+                if len(interaction.message.attachments) > 0:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_name,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
                     inputString = (
-                    '{}'.format(ctx.message.guild.id), '{}'.format(ctx.message.author.id), '{}'.format(author),
-                    '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id),
-                    '{}'.format(ctx.message.attachments[0].url))
+                    '{}'.format(interaction.guild.id), '{}'.format(interaction.user.id), '{}'.format(author),
+                    '{}'.format(quoted), '{}'.format(interaction.channel.id), '{}'.format(interaction.message.id),
+                    '{}'.format(interaction.message.attachments[0].url))
                 elif linked == 1:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_name,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
                     inputString = (
-                    '{}'.format(ctx.message.guild.id), '{}'.format(ctx.message.author.id), '{}'.format(author),
-                    '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id),
+                    '{}'.format(interaction.guild.id), '{}'.format(interaction.user.id), '{}'.format(author),
+                    '{}'.format(quoted), '{}'.format(interaction.channel.id), '{}'.format(interaction.message.id),
                     '{}'.format(link))
                 else:
                     sql = '''INSERT INTO quotes(server_id,added_by,author_name,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
                     inputString = (
-                    '{}'.format(ctx.message.guild.id), '{}'.format(ctx.message.author.id), '{}'.format(author),
-                    '{}'.format(quoted), '{}'.format(ctx.message.channel.id), '{}'.format(ctx.message.id))
+                    '{}'.format(interaction.guild.id), '{}'.format(interaction.user.id), '{}'.format(author),
+                    '{}'.format(quoted), '{}'.format(interaction.channel.id), '{}'.format(interaction.message.id))
             cur = conn.cursor()
             cur.execute(sql, inputString)
             conn.commit()
@@ -144,7 +147,7 @@ class Mycog(commands.Cog):
             for row in rows:
                 if '{}'.format(row[0]) == '{}'.format(lastid):
                     quoteid = row[2]
-            await ctx.channel.send('I have saved that quote for you under ID {}, safe and sound ~'.format(quoteid))
+            await interaction.response.send('I have saved that quote for you under ID {}, safe and sound ~'.format(quoteid))
         except Error as e:
             print(e)
         finally:
@@ -688,11 +691,11 @@ class Mycog(commands.Cog):
             if conn:
                 conn.close()
 
-    @app_commands.command()
+    @quoteCommands.command()
     async def raihepl(self, interaction: discord.Interaction):
         """More detailed help command"""
         await interaction.response.send_message(
-            '```Here are the commands for RaiQuotes cog!\nquoteid[id]               | Show the quote at [id]\naddquote [author] [quote] | Add a new quote to the database/ Accepts discord @user for [author] too!\ndeleteid [id]             | Deletes quote at [id]. It will be gone.... forever....\nrandom                    | Shows a random quote\ntotal [author]            | Shows how many quotes [author] has in this server\ngrandtotal                | Shows the total quotes in the server```')
+            '```Here are the commands for RaiQuotes cog!\nquoteid[id]               | Show the quote at [id]\naddquote [author] [quote] | Add a new quote to the database/ Accepts discord @user for [author] too!\ndeleteid [id]             | Deletes quote at [id]. It will be gone.... forever....\nrandom                    | Shows a random quote\ntotal [author]            | Shows how many quotes [author] has in this server\ngrandtotal                | Shows the total quotes in the server```', ephemeral=True)
 
     # @commands.command()
     # async def DevTest(self, ctx):
