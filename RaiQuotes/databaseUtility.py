@@ -22,14 +22,14 @@ def insert_quote(server_id, added_by, author_id, quote, channel_id, message_id, 
         cur = conn.cursor()
         cur.execute(sql, inputString)
         conn.commit()
-        lastid = cur.lastrowid
+        last_id = cur.lastrowid
         cur.execute("SELECT * FROM quotes")
         rows = cur.fetchall()
-        quoteid = 0
+        quote_id = 0
         for row in rows:
-            if '{}'.format(row[0]) == '{}'.format(lastid):
-                quoteid = row[2]
-        return quoteid
+            if '{}'.format(row[0]) == '{}'.format(last_id):
+                quote_id = row[2]
+        return quote_id
     except Error as e:
         print(e)
     finally:
@@ -46,6 +46,7 @@ def get_quote(quote_id, server_id):
         to_ex = 'SELECT * FROM quotes where server_quote_id = ? and server_id = ?'
 
         cur.execute(to_ex, (server_id, quote_id))
+        conn.commit()
         row = cur.fetchone()
         print(server_id)
         print(quote_id)
