@@ -235,11 +235,14 @@ class Mycog(commands.Cog):
                 conn.close()
 
     @quotes.command(name="remix")
-    async def remix(self, interaction: discord.Interaction, quote_author: discord.Member = None):
+    async def remix(self, interaction: discord.Interaction, quote_author: discord.Member = None, remix_id: int = None):
         """Remixes quotes from the server."""
         random.seed(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
         rows = databaseUtility.get_all_quotes(interaction.guild_id, quote_author)
         length = len(rows)
+        if quote_author is not None and remix_id is not None:
+            await interaction.response.send_message("I cannot remix within an author's quote and with a requested ID. Please chose one or the other.")
+            return
         if length > 1:
             randval1 = randint(0, length - 1)
             randval2 = randint(0, length - 1)
@@ -252,17 +255,29 @@ class Mycog(commands.Cog):
                     matched = False
             url = ''
             remixed = ''
-
-            n1 = '{}'.format(rows[randval1][7])
-            q1 = '{}'.format(rows[randval1][8])
-            id1 = rows[randval1][2]
-            for member in interaction.guild.members:
-                if rows[randval1][6] == member.id:
-                    n1 = '{}'.format(member.display_name)
-            if rows[randval1][10] is not None and rows[randval1][8] is not None:
-                url = '{}'.format(rows[randval1][10])
-                url = '{}'.format(url)
-
+            # quote 1 or requested id
+            if remix_id is not None:
+                row = databaseUtility.get_quote(remix_id, interaction.guild_id)
+                n1 = '{}'.format(row[7])
+                q1 = '{}'.format(row[8])
+                id1 = row[2]
+                for member in interaction.guild.members:
+                    if row[6] == member.id:
+                        n1 = '{}'.format(member.display_name)
+                if row[10] is not None and row[8] is not None:
+                    url = '{}'.format(rows[randval1][10])
+                    url = '{}'.format(url)
+            else:
+                n1 = '{}'.format(rows[randval1][7])
+                q1 = '{}'.format(rows[randval1][8])
+                id1 = rows[randval1][2]
+                for member in interaction.guild.members:
+                    if rows[randval1][6] == member.id:
+                        n1 = '{}'.format(member.display_name)
+                if rows[randval1][10] is not None and rows[randval1][8] is not None:
+                    url = '{}'.format(rows[randval1][10])
+                    url = '{}'.format(url)
+            # quote 2
             n2 = '{}'.format(rows[randval2][7])
             q2 = '{}'.format(rows[randval2][8])
             id2 = rows[randval2][2]
@@ -272,6 +287,19 @@ class Mycog(commands.Cog):
             if rows[randval2][10] is not None and rows[randval2][8] is not None and url != '':
                 url = '{}'.format(rows[randval1][10])
                 url = '{}'.format(url)
+
+            # check if it should swap quote order
+            swap = randint(0, 1)
+            if swap == 1:
+                n_swap = n1
+                q_swap = q1
+                id_swap = id1
+                n1 = n2
+                q1 = q2
+                id1 = id2
+                n2 = n_swap
+                q2 = q_swap
+                id2 = id_swap
 
             if len(q1) != 0:
                 chop = int(len(q1) / 2)
@@ -295,111 +323,6 @@ class Mycog(commands.Cog):
             await interaction.response.send_message(embed=emb)
         else:
             await interaction.response.send_message("I did not find enough quotes to remix for your request.")
-
-    @commands.command()
-    async def remixid(self, ctx, id):
-        """Remix baybeee"""
-        random.seed(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
-        conn = None
-        quote1 = ""
-        quote2 = ""
-        sql = ''
-        sql = "SELECT * FROM quotes where server_id = ?"
-        try:
-            conn = sqlite3.connect(path)
-            cur = conn.cursor()
-            count = 0
-            cur.execute(sql, (ctx.message.guild.id,))
-            rows = cur.fetchall()
-            for row in rows:
-                if row[1] == ctx.message.guild.id:
-                    count = count + 1
-            randval1 = 0
-            randval2 = 0
-            if count != 0:
-                randval1 = randint(1, count)
-                randval2 = randint(1, count)
-                matched = True
-                while (matched):
-                    if (randval1 == randval2):
-                        matched = True
-                        randval2 = randint(1, count)
-                    else:
-                        matched = False
-            name = 'Error'
-            n1 = ''
-            n2 = ''
-            q1 = ''
-            q2 = ''
-            url = ''
-            addedby = '?'
-            check = 1
-            id1 = 0
-            id2 = 0
-            for row in rows:
-                if row[1] == ctx.message.guild.id:
-                    if int(row[2]) == int(id):
-                        n1 = '{}'.format(row[7])
-                        q1 = '{}'.format(row[8])
-                        id1 = row[2]
-                        for member in ctx.message.guild.members:
-                            if row[6] == member.id:
-                                n1 = '{}'.format(member.display_name)
-                        if row[10] != None and row[8] != None:
-                            url = '{}'.format(row[10])
-                            url = '{}'.format(url)
-
-                    if check == randval2:
-                        n2 = '{}'.format(row[7])
-                        q2 = '{}'.format(row[8])
-                        id2 = row[2]
-                        for member in ctx.message.guild.members:
-                            if row[6] == member.id:
-                                n2 = '{}'.format(member.display_name)
-                        if row[10] != None:
-                            url = '{}'.format(row[10])
-                            url = '{}'.format(url)
-                check = check + 1
-            remixed = ''
-            swap = randint(0, 1)
-            if (swap == 1):
-                nSwap = n1
-                qSwap = q1
-                idSwap = id1
-                n1 = n2
-                q1 = q2
-                id1 = id2
-                n2 = nSwap
-                q2 = qSwap
-                id2 = idSwap
-            if (len(q1) != 0):
-                chop = int(len(q1) / 2)
-                while (q1[chop] != ' ' and chop != len(q1) - 1):
-                    chop = chop + 1
-                if (chop < len(q1)):
-                    remixed = q1[:chop]
-                else:
-                    remixed = q1
-            if (len(q2) != 0):
-                chop = int(len(q2) / 2)
-                while (q2[chop] != ' ' and chop != 0):
-                    chop = chop - 1
-
-                if (chop == 0):
-                    remixed = remixed + ' '
-                remixed = remixed + q2[chop:]
-            emb = discord.Embed(title='{}'.format(n1 + ' + ' + n2), description='{}'.format(remixed), colour=0x00ff00)
-            emb.set_image(url='{}'.format(url))
-            emb.set_footer(text='Quote IDs: {} + {}'.format(id1, id2))
-            await ctx.channel.send(embed=emb)
-
-            if count == 0:
-                await ctx.channel.send("Oh my, something appears to have gone wrong. Could you please let Rai know?")
-        except Error as e:
-            print(e)
-        finally:
-            if conn:
-                conn.close()
 
     @commands.command()
     async def totalAdded(self, ctx, author):
