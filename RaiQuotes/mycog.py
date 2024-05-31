@@ -100,8 +100,6 @@ class Mycog(commands.Cog):
         if selected_row[10] is not None:
             emb.set_image(url='{}'.format(selected_row[10]))
         emb.set_thumbnail(url='{}'.format(url))
-        print(url)
-        print(selected_row[10])
         await interaction.response.send_message(embed=emb)
 
     @commands.command()
