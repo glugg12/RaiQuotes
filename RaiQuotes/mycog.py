@@ -71,7 +71,7 @@ class Mycog(commands.Cog):
             if conn:
                 conn.close()
 
-    @quoteCommands.command()
+    @quotecommands.command()
     async def addquote(self, interaction: discord.Interaction, member: discord.Memeber, quote: str):
         """Adds a quote to the database"""
         # Your code will go here
@@ -691,7 +691,7 @@ class Mycog(commands.Cog):
             if conn:
                 conn.close()
 
-    @quoteCommands.command()
+    @quotecommands.command()
     async def raihepl(self, interaction: discord.Interaction):
         """More detailed help command"""
         await interaction.response.send_message(
