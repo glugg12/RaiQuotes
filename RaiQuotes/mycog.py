@@ -326,6 +326,7 @@ class Mycog(commands.Cog):
             emb = discord.Embed(title='{}'.format(n1 + ' + ' + n2), description='{}'.format(remixed), colour=0x00ff00)
             emb.set_image(url='{}'.format(url))
             emb.set_footer(text='Quote IDs: {} + {}'.format(id1, id2))
+            print(url)
             await interaction.response.send_message(embed=emb)
         else:
             await interaction.response.send_message("I did not find enough quotes to remix for your request.")
