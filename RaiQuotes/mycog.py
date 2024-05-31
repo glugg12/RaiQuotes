@@ -72,7 +72,7 @@ class Mycog(commands.Cog):
                 conn.close()
 
     @quotecommands.command()
-    async def addquote(self, interaction: discord.Interaction, member: discord.Memeber, quote: str):
+    async def addquote(self, interaction: discord.Interaction, member: discord.Member, quote: str):
         """Adds a quote to the database"""
         # Your code will go here
         # quoted = ctx.message.content
