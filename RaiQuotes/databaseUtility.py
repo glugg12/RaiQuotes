@@ -54,3 +54,23 @@ def get_quote(quote_id, server_id):
     finally:
         if conn:
             conn.close()
+
+def get_all_quotes(server_id, member = None):
+    conn = None
+    try:
+        conn = sqlite3.connect(path)
+        cur = conn.cursor()
+        to_ex = ''
+        if member is not None:
+            to_ex = '''SELECT * FROM quotes where server_id = ? and author_id = ?'''
+            cur.execute(to_ex, (server_id, member.id))
+        else:
+            to_ex = '''SELECT * FROM quotes where server_id = ?'''
+            cur.execute(to_ex, server_id)
+        rows = cur.fetchall()
+        return rows
+    except Error as e:
+        print(e)
+    finally:
+        if conn:
+            conn.close()
