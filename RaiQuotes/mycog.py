@@ -1,4 +1,5 @@
 from redbot.core import commands, app_commands
+import databaseUtility
 import discord
 import sqlite3
 from sqlite3 import Error
@@ -72,87 +73,16 @@ class Mycog(commands.Cog):
                 conn.close()
 
     @quotecommands.command()
-    async def addquote(self, interaction: discord.Interaction, member: discord.Member, quote: str):
+    async def add_quote(self, interaction: discord.Interaction, member: discord.Member, quote: str):
         """Adds a quote to the database"""
-        # Your code will go here
-        # quoted = ctx.message.content
-        # quoted = quoted.replace(author, "")
-        # quoted = quoted.replace(quoted[0], "")
-        # quoted = quoted.replace("addquote", "")
-        # quoted = quoted.replace("  ", "")
-        quoted = quote
-        linked = 0
-        if quoted.find("https") != -1:
-            linked = 1
-            if quoted.find(" ", quoted.index("https"), len(quoted)) != -1:
-                link = quoted[quoted.index("https"):quoted.index(" ", quoted.index("https"), len(quoted))]
-                quoted = quoted.replace(link, "")
-            else:
-                link = quoted[quoted.index("https"):]
-                quoted = quoted.replace(link, "")
-        mention = 0
-        if member[0] == "<":
-            mention = 1
-            author = member.replace("<", "")
-            author = author.replace(">", "")
-            author = author.replace("@", "")
-            author = author.replace("!", "")
-        conn = None
-        try:
-            conn = sqlite3.connect(path)
-            if mention == 1:
-                if len(interaction.message.attachments) > 0:
-                    sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
-                    inputString = (
-                    '{}'.format(interaction.guild.id), '{}'.format(interaction.user.id), '{}'.format(author),
-                    '{}'.format(quoted), '{}'.format(interaction.channel.id), '{}'.format(interaction.message.id),
-                    '{}'.format(interaction.message.attachments[0].url))
-                elif linked == 1:
-                    sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
-                    inputString = (
-                    '{}'.format(interaction.guild.id), '{}'.format(interaction.user.id), '{}'.format(author),
-                    '{}'.format(quoted), '{}'.format(interaction.channel.id), '{}'.format(interaction.message.id),
-                    '{}'.format(link))
-                else:
-                    sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
-                    inputString = (
-                    '{}'.format(interaction.guild.id), '{}'.format(interaction.user.id), '{}'.format(author),
-                    '{}'.format(quoted), '{}'.format(interaction.channel.id), '{}'.format(interaction.message.id))
-
-            if mention == 0:
-                if len(interaction.message.attachments) > 0:
-                    sql = '''INSERT INTO quotes(server_id,added_by,author_name,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
-                    inputString = (
-                    '{}'.format(interaction.guild.id), '{}'.format(interaction.user.id), '{}'.format(author),
-                    '{}'.format(quoted), '{}'.format(interaction.channel.id), '{}'.format(interaction.message.id),
-                    '{}'.format(interaction.message.attachments[0].url))
-                elif linked == 1:
-                    sql = '''INSERT INTO quotes(server_id,added_by,author_name,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
-                    inputString = (
-                    '{}'.format(interaction.guild.id), '{}'.format(interaction.user.id), '{}'.format(author),
-                    '{}'.format(quoted), '{}'.format(interaction.channel.id), '{}'.format(interaction.message.id),
-                    '{}'.format(link))
-                else:
-                    sql = '''INSERT INTO quotes(server_id,added_by,author_name,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
-                    inputString = (
-                    '{}'.format(interaction.guild.id), '{}'.format(interaction.user.id), '{}'.format(author),
-                    '{}'.format(quoted), '{}'.format(interaction.channel.id), '{}'.format(interaction.message.id))
-            cur = conn.cursor()
-            cur.execute(sql, inputString)
-            conn.commit()
-            lastid = cur.lastrowid
-            cur.execute("SELECT * FROM quotes")
-            rows = cur.fetchall()
-            quoteid = 0
-            for row in rows:
-                if '{}'.format(row[0]) == '{}'.format(lastid):
-                    quoteid = row[2]
-            await interaction.response.send('I have saved that quote for you under ID {}, safe and sound ~'.format(quoteid))
-        except Error as e:
-            print(e)
-        finally:
-            if conn:
-                conn.close()
+        server_id = interaction.guild_id
+        added_by = interaction.user.id
+        author_id = member.id
+        quote_text = quote
+        channel_id = interaction.channel_id
+        message_id = interaction.id
+        quote_id = databaseUtility.insert_quote(server_id, added_by, author_id, quote_text, channel_id, message_id)
+        interaction.response.send_message('I have saved that quote for you under ID {}, safe and sound ~'.format(quote_id))
 
     @commands.command()
     async def random(self, ctx):
