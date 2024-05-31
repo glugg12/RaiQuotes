@@ -333,7 +333,7 @@ class Mycog(commands.Cog):
         rows = databaseUtility.get_all_quotes(interaction.guild_id, author)
         total = len(rows)
         await interaction.response.send_message(
-                '<@!{}> has added {} quotes in this server. Keep it up ~'.format(author, total))
+                '<@!{}> has added {} quotes in this server. Keep it up ~'.format(author.id, total))
 
 
     @quotes.command()
