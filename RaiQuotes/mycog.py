@@ -271,7 +271,7 @@ class Mycog(commands.Cog):
                     if row[6] == member.id:
                         n1 = '{}'.format(member.display_name)
                 if row[10] is not None and row[8] is not None:
-                    url = '{}'.format(rows[randval1][10])
+                    url = '{}'.format(row[10])
                     url = '{}'.format(url)
             else:
                 n1 = '{}'.format(rows[randval1][7])
@@ -291,7 +291,7 @@ class Mycog(commands.Cog):
                 if rows[randval2][6] == member.id:
                     n2 = '{}'.format(member.display_name)
             if rows[randval2][10] is not None and rows[randval2][8] is not None and url != '':
-                url = '{}'.format(rows[randval1][10])
+                url = '{}'.format(rows[randval2][10])
                 url = '{}'.format(url)
 
             # check if it should swap quote order
