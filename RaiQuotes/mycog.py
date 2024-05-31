@@ -29,7 +29,7 @@ class Mycog(commands.Cog):
     quotes = app_commands.Group(name="quotes", description="Rai quotes commands")
 
     @quotes.command(name="get_quote")
-    @app_commands.describe(quote_id="The id of the quote you want to find")
+    @app_commands.describe(quote_id="The id of the quote you want to find.")
     async def quote_id(self, interaction: discord.Interaction, quote_id: int):
         """Finds a quote at the requested id"""
         # originally pulls down all quotes and searches them in code
@@ -61,7 +61,7 @@ class Mycog(commands.Cog):
             await interaction.response.send_message("I'm afraid I couldn't find that quote for you.")
 
     @quotes.command(name="add_quote")
-    @app_commands.describe(quote_author="The person who said what you are quoting", quote="The quote")
+    @app_commands.describe(quote_author="The person who said what you are quoting.", quote="The quote.")
     async def add_quote(self, interaction: discord.Interaction, quote_author: discord.Member, quote: str):
         """Adds a quote to the database"""
         server_id = interaction.guild_id
@@ -77,6 +77,7 @@ class Mycog(commands.Cog):
             await interaction.response.send_message('I have encountered an error when adding that quote. insert_quote returned None.')
 
     @quotes.command(name="random")
+    @app_commands.describe(quote_author="Optional, A user that you would like to randomly choose a quote from.")
     async def random(self, interaction: discord.Interaction, quote_author: discord.Member = None):
         """Shows a random quote"""
         random.seed(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
@@ -105,19 +106,21 @@ class Mycog(commands.Cog):
         await interaction.response.send_message(embed=emb)
 
     @quotes.command(name="delete_quote")
+    @app_commands.describe(quote_id="The ID of the quote to delete.")
     async def deleteid(self, interaction: discord.Interaction, quote_id: int):
         """Deletes a quote at the requested id"""
         databaseUtility.delete_quote(interaction.guild_id, quote_id)
         await interaction.response.send_message('The quote at ID {} is now gone for good.'.format(quote_id))
 
     @quotes.command(name="total")
-    async def total(self, interaction: discord.Interaction, member: discord.Member = None):
+    @app_commands.describe(author="Optional, the author who you would like to see the total of.")
+    async def total(self, interaction: discord.Interaction, author: discord.Member = None):
         """Counts how many quotes the requested author has"""
-        if member is None:
-            member = interaction.user
-        rows = databaseUtility.get_all_quotes(interaction.guild_id, member)
+        if author is None:
+            author = interaction.user
+        rows = databaseUtility.get_all_quotes(interaction.guild_id, author)
         total = len(rows)
-        await interaction.response.send_message('Oh my, <@!{}> has {} quotes saved for this server.'.format(member.id, total))
+        await interaction.response.send_message('Oh my, <@!{}> has {} quotes saved for this server.'.format(author.id, total))
 
     @quotes.command(name="server_total")
     async def server_total(self, interaction: discord.Interaction):
@@ -237,6 +240,7 @@ class Mycog(commands.Cog):
                 conn.close()
 
     @quotes.command(name="remix")
+    @app_commands.describe(quote_author="Optional, cannot be used with remix_id. The author that you want the remix quotes to pull from.", remix_id="Optional, cannot be used with quote_author. The ID of the quote to include in the remix.")
     async def remix(self, interaction: discord.Interaction, quote_author: discord.Member = None, remix_id: int = None):
         """Remixes quotes from the server."""
         random.seed(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
@@ -327,8 +331,9 @@ class Mycog(commands.Cog):
             await interaction.response.send_message("I did not find enough quotes to remix for your request.")
 
     @quotes.command(name="total_added")
+    @app_commands.describe(author="Optional, the user who's total number of quotes they've added.")
     async def total_added(self, interaction: discord.Interaction, author: discord.Member = None):
-        """Counts how many quotes the requested author has added"""
+        """Counts how many quotes the requested member has added"""
         # Your code will go here
         if author is None:
             author = interaction.user
@@ -337,11 +342,11 @@ class Mycog(commands.Cog):
         await interaction.response.send_message(
                 '<@!{}> has added {} quotes in this server. Keep it up ~'.format(author.id, total))
 
-    @quotes.command()
-    async def raihepl(self, interaction: discord.Interaction):
-        """More detailed help command"""
-        await interaction.response.send_message(
-            '```Here are the commands for RaiQuotes cog!\nquoteid[id]               | Show the quote at [id]\naddquote [author] [quote] | Add a new quote to the database/ Accepts discord @user for [author] too!\ndeleteid [id]             | Deletes quote at [id]. It will be gone.... forever....\nrandom                    | Shows a random quote\ntotal [author]            | Shows how many quotes [author] has in this server\ngrandtotal                | Shows the total quotes in the server```', ephemeral=True)
+    # @quotes.command()
+    # async def raihepl(self, interaction: discord.Interaction):
+    #     """More detailed help command"""
+    #     await interaction.response.send_message(
+    #         '```Here are the commands for RaiQuotes cog!\nquoteid[id]               | Show the quote at [id]\naddquote [author] [quote] | Add a new quote to the database/ Accepts discord @user for [author] too!\ndeleteid [id]             | Deletes quote at [id]. It will be gone.... forever....\nrandom                    | Shows a random quote\ntotal [author]            | Shows how many quotes [author] has in this server\ngrandtotal                | Shows the total quotes in the server```', ephemeral=True)
 
     # @commands.command()
     # async def DevTest(self, ctx):
