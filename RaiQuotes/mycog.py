@@ -239,9 +239,8 @@ class Mycog(commands.Cog):
         """Remixes quotes from the server."""
         random.seed(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
         rows = databaseUtility.get_all_quotes(interaction.guild_id, quote_author)
-        print(rows)
         length = len(rows)
-        if length != 0:
+        if length > 1:
             randval1 = randint(0, length - 1)
             randval2 = randint(0, length - 1)
             matched = True
@@ -294,6 +293,8 @@ class Mycog(commands.Cog):
             emb.set_image(url='{}'.format(url))
             emb.set_footer(text='Quote IDs: {} + {}'.format(id1, id2))
             await interaction.response.send_message(embed=emb)
+        else:
+            await interaction.response.send_message("I did not find enough quotes to remix for your request.")
 
     @commands.command()
     async def remixid(self, ctx, id):
