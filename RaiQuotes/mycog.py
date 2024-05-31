@@ -14,13 +14,12 @@ path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
 configPath = r"D:\Springfield\cogs\RaiQuotes\ApiConfig.ini"
 config = configparser.ConfigParser()
 
-
-
 # testing path
 # path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
-#configPath = r"C:\Users\olijo\Documents\discordRedbot\ApiConfig.ini"
-config.read(configPath)
-apiUrl = config['DEFAULT']['Api']
+# configPath = r"C:\Users\olijo\Documents\discordRedbot\ApiConfig.ini"
+# config.read(configPath)
+# apiUrl = config['DEFAULT']['Api']
+
 
 class Mycog(commands.Cog):
     """RaiQuotes Cog"""
@@ -694,9 +693,9 @@ class Mycog(commands.Cog):
         await ctx.channel.send(
             '```Here are the commands for RaiQuotes cog!\nquoteid[id]               | Show the quote at [id]\naddquote [author] [quote] | Add a new quote to the database/ Accepts discord @user for [author] too!\ndeleteid [id]             | Deletes quote at [id]. It will be gone.... forever....\nrandom                    | Shows a random quote\ntotal [author]            | Shows how many quotes [author] has in this server\ngrandtotal                | Shows the total quotes in the server```')
 
-    @commands.command()
-    async def DevTest(self, ctx):
-        session = requests.Session()
-        print("Testing response....")
-        response = session.get(url=apiUrl)
-        print(response.text)
+    # @commands.command()
+    # async def DevTest(self, ctx):
+    #     session = requests.Session()
+    #     print("Testing response....")
+    #     response = session.get(url=apiUrl)
+    #     print(response.text)
