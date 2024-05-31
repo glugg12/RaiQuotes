@@ -73,12 +73,12 @@ class Mycog(commands.Cog):
                 conn.close()
 
     @quotecommands.command()
-    async def add_quote(self, interaction: discord.Interaction, member: discord.Member, quote: str):
+    async def add_quote(self, interaction: discord.Interaction, quote_author: discord.Member, quote: discord.TextInput):
         """Adds a quote to the database"""
         server_id = interaction.guild_id
         added_by = interaction.user.id
-        author_id = member.id
-        quote_text = quote
+        author_id = quote_author.id
+        quote_text = quote.value
         channel_id = interaction.channel_id
         message_id = interaction.id
         quote_id = databaseUtility.insert_quote(server_id, added_by, author_id, quote_text, channel_id, message_id)
