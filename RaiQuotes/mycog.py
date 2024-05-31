@@ -102,24 +102,11 @@ class Mycog(commands.Cog):
         emb.set_thumbnail(url='{}'.format(url))
         await interaction.response.send_message(embed=emb)
 
-    @commands.command()
-    async def deleteid(self, ctx, word):
+    @quotes.command(name="delete_quote")
+    async def deleteid(self, interaction: discord.Interaction, quote_id: int):
         """Deletes a quote at the requested id"""
-        # Your code will go here
-
-        conn = None
-        try:
-            conn = sqlite3.connect(path)
-            sql = 'DELETE FROM quotes WHERE server_quote_id=?'
-            cur = conn.cursor()
-            cur.execute(sql, (word,))
-            conn.commit()
-            await ctx.channel.send('The quote at ID {} is now gone for good.'.format(word))
-        except Error as e:
-            print(e)
-        finally:
-            if conn:
-                conn.close()
+        databaseUtility.delete_quote(interaction.guild_id, quote_id)
+        await interaction.response.send_message('The quote at ID {} is now gone for good.'.format(quote_id))
 
     @commands.command()
     async def total(self, ctx, author):

@@ -74,3 +74,17 @@ def get_all_quotes(server_id, member = None):
     finally:
         if conn:
             conn.close()
+
+def delete_quote(server_id, quote_id):
+    conn = None
+    try:
+        conn = sqlite3.connect(path)
+        cur = conn.cursor()
+        sql = 'DELETE FROM quotes WHERE server_quote_id=? and server_id = ?'
+        cur.execute(sql, (quote_id, server_id))
+        conn.commit()
+    except Error as e:
+        print(e)
+    finally:
+        if conn:
+            conn.close()
