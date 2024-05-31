@@ -7,20 +7,20 @@ path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 def insert_quote(server_id, added_by, author_id, quote, channel_id, message_id, image_url=None):
     if image_url is not None:
         sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id, image_url) VALUES(?,?,?,?,?,?,?)'''
-        inputString = (
+        input_string = (
             '{}'.format(server_id), '{}'.format(added_by), '{}'.format(author_id),
             '{}'.format(quote), '{}'.format(channel_id), '{}'.format(message_id),
             '{}'.format(image_url))
     else:
         sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
-        inputString = (
+        input_string = (
             '{}'.format(server_id), '{}'.format(added_by), '{}'.format(author_id),
             '{}'.format(quote), '{}'.format(channel_id), '{}'.format(message_id))
     conn = None
     try:
         conn = sqlite3.connect(path)
         cur = conn.cursor()
-        cur.execute(sql, inputString)
+        cur.execute(sql, input_string)
         conn.commit()
         last_id = cur.lastrowid
         cur.execute("SELECT * FROM quotes")
@@ -55,7 +55,8 @@ def get_quote(quote_id, server_id):
         if conn:
             conn.close()
 
-def get_all_quotes(server_id, member = None):
+
+def get_all_quotes(server_id, member=None):
     conn = None
     try:
         conn = sqlite3.connect(path)
@@ -74,6 +75,7 @@ def get_all_quotes(server_id, member = None):
     finally:
         if conn:
             conn.close()
+
 
 def delete_quote(server_id, quote_id):
     conn = None
