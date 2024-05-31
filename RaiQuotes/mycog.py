@@ -1,9 +1,8 @@
-from redbot.core import commands
+from redbot.core import commands, app_commands
 import discord
 import sqlite3
 from sqlite3 import Error
 import random
-from random import seed
 from random import randint
 from datetime import datetime
 import configparser
@@ -687,7 +686,7 @@ class Mycog(commands.Cog):
             if conn:
                 conn.close()
 
-    @commands.command()
+    @app_commands.command()
     async def raihepl(self, ctx):
         """More detailed help command"""
         await ctx.channel.send(
