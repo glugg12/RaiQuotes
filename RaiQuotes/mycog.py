@@ -15,7 +15,7 @@ configPath = r"D:\Springfield\cogs\RaiQuotes\ApiConfig.ini"
 config = configparser.ConfigParser()
 
 # testing path
-# path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
+path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 # configPath = r"C:\Users\olijo\Documents\discordRedbot\ApiConfig.ini"
 # config.read(configPath)
 # apiUrl = config['DEFAULT']['Api']
