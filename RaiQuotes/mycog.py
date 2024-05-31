@@ -82,7 +82,7 @@ class Mycog(commands.Cog):
         channel_id = interaction.channel_id
         message_id = interaction.id
         quote_id = databaseUtility.insert_quote(server_id, added_by, author_id, quote_text, channel_id, message_id)
-        interaction.response.send_message('I have saved that quote for you under ID {}, safe and sound ~'.format(quote_id))
+        await interaction.response.send_message('I have saved that quote for you under ID {}, safe and sound ~'.format(quote_id))
 
     @commands.command()
     async def random(self, ctx):
