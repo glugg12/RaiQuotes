@@ -47,6 +47,8 @@ def get_quote(quote_id, server_id):
 
         cur.execute(to_ex, (server_id, quote_id))
         row = cur.fetchone()
+        print(server_id)
+        print(quote_id)
         print(row)
         return row
     except Error as e:
