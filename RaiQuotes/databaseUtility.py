@@ -66,7 +66,7 @@ def get_all_quotes(server_id, member = None):
             cur.execute(to_ex, (server_id, member.id))
         else:
             to_ex = '''SELECT * FROM quotes where server_id = ?'''
-            cur.execute(to_ex, (server_id))
+            cur.execute(to_ex, (server_id,))
         rows = cur.fetchall()
         print(rows)
         return rows
