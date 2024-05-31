@@ -1,5 +1,5 @@
 from redbot.core import commands, app_commands
-import databaseUtility
+from RaiQuotes import databaseUtility
 import discord
 import sqlite3
 from sqlite3 import Error
