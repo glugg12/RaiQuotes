@@ -324,34 +324,17 @@ class Mycog(commands.Cog):
         else:
             await interaction.response.send_message("I did not find enough quotes to remix for your request.")
 
-    @commands.command()
-    async def totalAdded(self, ctx, author):
+    @quotes.command(name="total_added")
+    async def total_added(self, interaction: discord.Interaction, author: discord.Member = None):
         """Counts how many quotes the requested author has added"""
         # Your code will go here
-        author = author.replace("<", "")
-        author = author.replace(">", "")
-        author = author.replace("@", "")
-        author = author.replace("!", "")
+        if author is None:
+            author = interaction.user
+        rows = databaseUtility.get_all_quotes(interaction.guild_id, author)
+        total = len(rows)
+        await interaction.response.send_message(
+                '<@!{}> has added {} quotes in this server. Keep it up ~'.format(author, total))
 
-        conn = None
-        try:
-            conn = sqlite3.connect(path)
-
-            cur = conn.cursor()
-            count = 0
-            cur.execute("SELECT * FROM quotes")
-            rows = cur.fetchall()
-            for row in rows:
-                if row[1] == ctx.message.guild.id:
-                    if '{}'.format(row[5]) == '{}'.format(author):
-                        count = count + 1
-            await ctx.channel.send(
-                'Ehehe, <@!{}> has added {} quotes in this server. Keep it up ~'.format(author, count))
-        except Error as e:
-            print(e)
-        finally:
-            if conn:
-                conn.close()
 
     @quotes.command()
     async def raihepl(self, interaction: discord.Interaction):

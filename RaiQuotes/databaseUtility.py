@@ -76,6 +76,21 @@ def get_all_quotes(server_id, member=None):
         if conn:
             conn.close()
 
+def get_quotes_added_by(server_id, member):
+    conn = None
+    try:
+        conn = sqlite3.connect(path)
+        cur = conn.cursor()
+        to_ex = '''SELECT * FROM quotes where server_id = ? and added_id = ?'''
+        cur.execute(to_ex, (server_id, member.id))
+        rows = cur.fetchall()
+        return rows
+    except Error as e:
+        print(e)
+    finally:
+        if conn:
+            conn.close()
+
 
 def delete_quote(server_id, quote_id):
     conn = None
