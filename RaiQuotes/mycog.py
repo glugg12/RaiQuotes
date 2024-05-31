@@ -25,7 +25,7 @@ class Mycog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    quoteCommands = app_commands.Group(name="quoteCommands", description="Rai quotes commands")
+    quotecommands = app_commands.Group(name="quotecommands", description="Rai quotes commands")
 
     @commands.command()
     async def quoteid(self, ctx, word):
