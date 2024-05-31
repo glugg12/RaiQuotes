@@ -68,6 +68,7 @@ def get_all_quotes(server_id, member = None):
             to_ex = '''SELECT * FROM quotes where server_id = ?'''
             cur.execute(to_ex, server_id)
         rows = cur.fetchall()
+        print(rows)
         return rows
     except Error as e:
         print(e)
