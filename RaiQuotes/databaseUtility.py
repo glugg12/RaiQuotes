@@ -12,7 +12,7 @@ def insert_quote(server_id, added_by, author_id, quote, channel_id, message_id, 
             '{}'.format(quote), '{}'.format(channel_id), '{}'.format(message_id),
             '{}'.format(image_url))
     else:
-        sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id) VALUES(?,?,?,?,?,?,?)'''
+        sql = '''INSERT INTO quotes(server_id,added_by,author_id,quote, channel_id, message_id) VALUES(?,?,?,?,?,?)'''
         inputString = (
             '{}'.format(server_id), '{}'.format(added_by), '{}'.format(author_id),
             '{}'.format(quote), '{}'.format(channel_id), '{}'.format(message_id))
