@@ -29,7 +29,7 @@ class Mycog(commands.Cog):
     quotes = app_commands.Group(name="quotes", description="Rai quotes commands")
 
     @quotes.command(name="get_quote")
-    @quotes.describe(quote_id="The id of the quote you want to find")
+    @app_commands.describe(quote_id="The id of the quote you want to find")
     async def quote_id(self, interaction: discord.Interaction, quote_id: int):
         """Finds a quote at the requested id"""
         # originally pulls down all quotes and searches them in code
