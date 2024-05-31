@@ -28,7 +28,7 @@ class Mycog(commands.Cog):
 
     quotes = app_commands.Group(name="quotecommands", description="Rai quotes commands")
 
-    @quotes.command(name="Get Quote")
+    @quotes.command(name="get_quote")
     async def quote_id(self, interaction: discord.Interaction, quote_id: int):
         """Finds a quote at the requested id"""
         # originally pulls down all quotes and searches them in code
@@ -59,7 +59,7 @@ class Mycog(commands.Cog):
         if found == 0:
             await interaction.response.send_message("I'm afraid I couldn't find that quote for you.")
 
-    @quotes.command(name="Add Quote")
+    @quotes.command(name="add_quote")
     async def add_quote(self, interaction: discord.Interaction, quote_author: discord.Member, quote: str):
         """Adds a quote to the database"""
         server_id = interaction.guild_id
