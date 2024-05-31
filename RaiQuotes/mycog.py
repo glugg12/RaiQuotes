@@ -87,6 +87,7 @@ class Mycog(commands.Cog):
         name = ''
         added_by = ''
         url = ''
+        print(selected_row)
         for member in interaction.guild.members:
             if selected_row[6] == member.id:
                 name = '{}'.format(member.display_name)
