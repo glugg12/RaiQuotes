@@ -26,7 +26,7 @@ class Mycog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    quotes = app_commands.Group(name="quotecommands", description="Rai quotes commands")
+    quotes = app_commands.Group(name="quotes", description="Rai quotes commands")
 
     @quotes.command(name="get_quote")
     async def quote_id(self, interaction: discord.Interaction, quote_id: int):
