@@ -242,13 +242,13 @@ class Mycog(commands.Cog):
         print(rows)
         length = len(rows)
         if length != 0:
-            randval1 = randint(1, length)
-            randval2 = randint(1, length)
+            randval1 = randint(0, length - 1)
+            randval2 = randint(0, length - 1)
             matched = True
             while matched:
                 if randval1 == randval2:
                     matched = True
-                    randval2 = randint(1, length)
+                    randval2 = randint(0, length - 1)
                 else:
                     matched = False
             url = ''
