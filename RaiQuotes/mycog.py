@@ -239,10 +239,7 @@ class Mycog(commands.Cog):
         """Remixes quotes from the server."""
         random.seed(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
         rows = databaseUtility.get_all_quotes(interaction.guild_id, quote_author)
-        quote1 = ""
-        quote2 = ""
-        randval1 = 0
-        randval2 = 0
+        print(rows)
         length = len(rows)
         if length != 0:
             randval1 = randint(1, length)
