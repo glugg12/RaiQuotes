@@ -61,6 +61,7 @@ class Mycog(commands.Cog):
             await interaction.response.send_message("I'm afraid I couldn't find that quote for you.")
 
     @quotes.command(name="add_quote")
+    @app_commands.describe(quote_author="The person who said what you are quoting", quote="The quote")
     async def add_quote(self, interaction: discord.Interaction, quote_author: discord.Member, quote: str):
         """Adds a quote to the database"""
         server_id = interaction.guild_id
