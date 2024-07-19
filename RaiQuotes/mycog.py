@@ -307,6 +307,7 @@ class Mycog(commands.Cog):
                 id2 = id_swap
 
             if len(q1) != 0:
+                databaseUtility.get_quote_splits(rows[randval1][0], interaction.guild_id)
                 chop = int(len(q1) / 2)
                 while q1[chop] != ' ' and chop != len(q1) - 1:
                     chop = chop + 1

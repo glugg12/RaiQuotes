@@ -121,6 +121,7 @@ def get_quote_splits(quote_id, server_id):
             cur = conn.cursor()
             to_ex = '''SELECT * FROM remix_split where quote_id=?'''
             cur.execute(to_ex, (quote[0],))
+            print("Split Function!")
             print(cur.fetchall())
         finally:
             conn.close()
