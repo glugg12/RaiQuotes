@@ -312,9 +312,9 @@ class Mycog(commands.Cog):
                     if splits[0] is not None:
                         chop = splits[0]
                     else:
-                        chop = int(len(q1) / 2)
+                        chop = int(len(q1) / 2) - 1
                 else:
-                    chop = int(len(q1) / 2)
+                    chop = int(len(q1) / 2) - 1
                 while q1[chop] != ' ' and chop < len(q1):
                     chop = chop + 1
                 if chop < len(q1):
@@ -327,9 +327,9 @@ class Mycog(commands.Cog):
                     if splits[1]:
                         chop = splits[1]
                     else:
-                        chop = int(len(q2) / 2)
+                        chop = int(len(q2) / 2) - 1
                 else:
-                    chop = int(len(q2) / 2)
+                    chop = int(len(q2) / 2) - 1
                 while q2[chop] != ' ' and chop > 0:
                     chop = chop - 1
                 if chop == 0:
