@@ -332,7 +332,7 @@ class Mycog(commands.Cog):
 
     @quotes.command(name="add_split_value")
     @app_commands.describe(quote_id="The quote you're adding split values for", left_split_end="Where the left side of a quote split should end for remix purposes. Required if not using right_split_start.", right_split_start="Where the right side of a quote split should start for remix purposes. Required if not using left_split_end.")
-    async def add_split_value(self, interaction: discord.interaction, quote_id: int, left_split_end: int = None, right_split_start: int = None):
+    async def add_split_value(self, interaction: discord.Interaction, quote_id: int, left_split_end: int = None, right_split_start: int = None):
         result = databaseUtility.add_quote_splits(quote_id, interaction.guild_id, left_split_end, right_split_start)
         if result[0]:
             await interaction.response.send_message("No split data previously existed for that quote, I have added a new record for you!")
