@@ -175,7 +175,6 @@ def add_quote_splits(quote_id, server_id, left_split_end, right_split_start):
 
 def get_quote_splits(quote_id, server_id):
     quote = get_quote(quote_id, server_id)
-    print(quote_id)
     if quote is not None:
         #   check if quote has remix entry
         conn = None
@@ -184,8 +183,11 @@ def get_quote_splits(quote_id, server_id):
             cur = conn.cursor()
             to_ex = '''SELECT * FROM remix_split where quote_id=?'''
             cur.execute(to_ex, (quote[0],))
-            print("Split Function!")
-            print(cur.fetchall())
+            split_data = cur.fetchone()
+            if split_data is not None:
+                return [split_data[1], split_data[2]]
+            else:
+                return None
         finally:
             conn.close()
     else:

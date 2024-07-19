@@ -307,8 +307,11 @@ class Mycog(commands.Cog):
                 id2 = id_swap
 
             if len(q1) != 0:
-                databaseUtility.get_quote_splits(rows[randval1][2], interaction.guild_id)
-                chop = int(len(q1) / 2)
+                splits = databaseUtility.get_quote_splits(rows[randval1][2], interaction.guild_id)
+                if splits is not None:
+                    chop = splits[0]
+                else:
+                    chop = int(len(q1) / 2)
                 while q1[chop] != ' ' and chop != len(q1) - 1:
                     chop = chop + 1
                 if chop < len(q1):
@@ -316,10 +319,13 @@ class Mycog(commands.Cog):
                 else:
                     remixed = q1
             if len(q2) != 0:
-                chop = int(len(q2) / 2)
+                splits = databaseUtility.get_quote_splits(rows[randval2][2], interaction.guild_id)
+                if splits is not None:
+                    chop = splits[0]
+                else:
+                    chop = int(len(q2) / 2)
                 while q2[chop] != ' ' and chop != 0:
                     chop = chop - 1
-
                 if chop == 0:
                     remixed = remixed + ' '
                 remixed = remixed + q2[chop:]
