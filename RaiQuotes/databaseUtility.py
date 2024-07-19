@@ -113,6 +113,7 @@ def delete_quote(server_id, quote_id):
 
 def get_quote_splits(quote_id, server_id):
     quote = get_quote(quote_id, server_id)
+    print(quote_id)
     if quote is not None:
         #   check if quote has remix entry
         conn = None
