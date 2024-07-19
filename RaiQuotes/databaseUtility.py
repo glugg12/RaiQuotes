@@ -126,11 +126,14 @@ def add_quote_splits(quote_id, server_id, left_split_end, right_split_start):
 
             if cur.fetchone() is None:
                 # need to make new record
-                if left_split_end > len(quote[8]) and not None:
-                    left_split_end = len(quote[8])
+                if left_split_end is not None:
+                    if left_split_end > len(quote[8]):
+                        left_split_end = len(quote[8])
 
-                if right_split_start > len(quote[8]) and not None:
-                    right_split_start = int(len(quote[8])/2)
+                if right_split_start is not None:
+                    if right_split_start > len(quote[8]):
+                        right_split_start = int(len(quote[8])/2)
+
                 split_ex = '''INSERT INTO remix_split (left_split_end, right_split_start, quote_id) VALUES (?,?,?)'''
                 cur.execute(split_ex, (left_split_end, right_split_start, quote[0],))
                 new_record = True
