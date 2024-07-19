@@ -375,9 +375,9 @@ class Mycog(commands.Cog):
                 chop = chop - 1
             right_quote = text[chop:]
             if result[0]:
-                await interaction.response.send_message("No split data previously existed for that quote, I have added a new record for you!\n Here are your new splits:\n ```{}```\n```{}```".format(left_quote, right_quote))
+                await interaction.response.send_message("No split data previously existed for that quote, I have added a new record for you!\n Here are your new splits:```{}``` ```{}```".format(left_quote, right_quote))
             else:
-                await interaction.response.send_message("I have updated an existing record with the requested values for you!\n Here are your new splits:\n ```{}```\n```{}```".format(left_quote, right_quote))
+                await interaction.response.send_message("I have updated an existing record with the requested values for you!\n Here are your new splits:```{}``` ```{}```".format(left_quote, right_quote))
 
     @quotes.command(name="delete_split_values")
     @app_commands.describe(quote_id="Which quote you want to remove split value for.", keep_left="Boolean. If you wish to keep left data.", keep_right="Boolean. If you wish to keep right data.")
