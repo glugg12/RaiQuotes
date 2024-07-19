@@ -1,7 +1,7 @@
 import sqlite3
 from sqlite3 import Error
 
-from RaiQuotes.exceptions import QuoteNotFoundException
+from RaiQuotes.exceptions import QuoteNotFoundException, NoSplitValuesException
 
 # path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
 path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
@@ -109,6 +109,49 @@ def delete_quote(server_id, quote_id):
     finally:
         if conn:
             conn.close()
+
+
+def add_quote_splits(quote_id, server_id, left_split_end, right_split_start):
+    quote = get_quote(quote_id, server_id)
+    if quote is not None:
+        #   check if quote has remix entry
+        new_record = False
+        updated_record = False
+        conn = None
+        try:
+            conn = sqlite3.connect(path)
+            cur = conn.cursor()
+            to_ex = '''SELECT * FROM remix_split where quote_id=?'''
+            cur.execute(to_ex, (quote[0],))
+
+            if cur.fetchone() is None:
+                # need to make new record
+                split_ex = '''INSERT INTO remix_split (left_split_end, right_split_start, quote_id) VALUES (?,?,?)'''
+                cur.execute(split_ex, (left_split_end, right_split_start, quote_id,))
+                new_record = True
+            else:
+                # record exists, update
+                if left_split_end is not None and right_split_start is not None:
+                    split_ex = '''UPDATE remix_split SET left_split_end = ? AND right_split_start = ? WHERE quote_id = ?'''
+                    cur.execute(split_ex, (left_split_end, right_split_start, quote_id,))
+                    updated_record = True
+                elif left_split_end is not None:
+                    split_ex = '''UPDATE remix_split SET left_split_end = ? WHERE quote_id = ?'''
+                    cur.execute(split_ex, (left_split_end, right_split_start, quote_id,))
+                    updated_record = True
+                elif right_split_start is not None:
+                    split_ex = '''UPDATE remix_split SET right_split_start = ? WHERE quote_id = ?'''
+                    cur.execute(split_ex, (left_split_end, right_split_start, quote_id,))
+                    updated_record = True
+                else:
+                    raise NoSplitValuesException
+
+            conn.commit()
+            return [new_record, updated_record]
+        finally:
+            conn.close()
+    else:
+        raise QuoteNotFoundException
 
 
 def get_quote_splits(quote_id, server_id):
