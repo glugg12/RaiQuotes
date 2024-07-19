@@ -308,6 +308,7 @@ class Mycog(commands.Cog):
 
             if len(q1) != 0:
                 splits = databaseUtility.get_quote_splits(rows[randval1][2], interaction.guild_id)
+                print(splits)
                 if splits is not None:
                     if splits[0] is not None:
                         chop = splits[0]

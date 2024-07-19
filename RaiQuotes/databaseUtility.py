@@ -127,8 +127,8 @@ def add_quote_splits(quote_id, server_id, left_split_end, right_split_start):
             if cur.fetchone() is None:
                 # need to make new record
                 if left_split_end is not None:
-                    if left_split_end > len(quote[8]):
-                        left_split_end = len(quote[8])
+                    if left_split_end > len(quote[8]) - 1:
+                        left_split_end = len(quote[8]) - 1
 
                 if right_split_start is not None:
                     if right_split_start > len(quote[8]):
@@ -143,7 +143,7 @@ def add_quote_splits(quote_id, server_id, left_split_end, right_split_start):
                     if left_split_end > len(quote[8]) - 1:
                         left_split_end = len(quote[8]) - 1
                     if right_split_start > len(quote[8]) - 1:
-                        right_split_start = len(quote[8]) -1
+                        right_split_start = len(quote[8]) - 1
 
                     if left_split_end < 0:
                         left_split_end = 0
