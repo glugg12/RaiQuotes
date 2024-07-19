@@ -144,6 +144,8 @@ def add_quote_splits(quote_id, server_id, left_split_end, right_split_start):
                         left_split_end = len(quote[8])
                     if right_split_start > len(quote[8]):
                         right_split_start = int(len(quote[8])/2)
+
+                    print(left_split_end, right_split_start)
                     split_ex = '''UPDATE remix_split SET left_split_end = ? AND right_split_start = ? WHERE quote_id = ?'''
                     cur.execute(split_ex, (left_split_end, right_split_start, quote[0],))
                     updated_record = True
