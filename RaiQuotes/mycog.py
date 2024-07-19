@@ -319,7 +319,7 @@ class Mycog(commands.Cog):
                     chop = chop + 1
                     print("len {}".format(len(q1)))
                     print(chop)
-                if chop < len(q1):
+                if chop < len(q1) - 1:
                     remixed = q1[:chop]
                 else:
                     remixed = q1
