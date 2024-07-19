@@ -308,7 +308,7 @@ class Mycog(commands.Cog):
 
             if len(q1) != 0:
                 splits = databaseUtility.get_quote_splits(rows[randval1][2], interaction.guild_id)
-                if splits is not None:
+                if splits[0] is not None:
                     chop = splits[0]
                 else:
                     chop = int(len(q1) / 2)
@@ -320,8 +320,8 @@ class Mycog(commands.Cog):
                     remixed = q1
             if len(q2) != 0:
                 splits = databaseUtility.get_quote_splits(rows[randval2][2], interaction.guild_id)
-                if splits is not None:
-                    chop = splits[0]
+                if splits[1] is not None:
+                    chop = splits[1]
                 else:
                     chop = int(len(q2) / 2)
                 while q2[chop] != ' ' and chop > 0:
@@ -337,13 +337,22 @@ class Mycog(commands.Cog):
             await interaction.response.send_message("I did not find enough quotes to remix for your request.")
 
     @quotes.command(name="add_split_value")
-    @app_commands.describe(quote_id="The quote you're adding split values for", left_split_end="Where the left side of a quote split should end for remix purposes. Required if not using right_split_start.", right_split_start="Where the right side of a quote split should start for remix purposes. Required if not using left_split_end.")
+    @app_commands.describe(quote_id="The quote you're adding split values for", left_split_end="Where the left side of a quote split should end relative to the start of the quote for remix purposes. Required if not using right_split_start.", right_split_start="Where the right side of a quote split should start relative to the end of a quote for remix purposes. Required if not using left_split_end.")
     async def add_split_value(self, interaction: discord.Interaction, quote_id: int, left_split_end: int = None, right_split_start: int = None):
         result = databaseUtility.add_quote_splits(quote_id, interaction.guild_id, left_split_end, right_split_start)
         if result[0]:
             await interaction.response.send_message("No split data previously existed for that quote, I have added a new record for you!")
         else:
             await interaction.response.send_message("I have updated an existing record with the requested values for you!")
+
+    @quotes.command(name="delete_split_values")
+    @app_commands.describe(quote_id="Which quote you want to remove split value for.", keep_left="Boolean. If you wish to keep left data.", keep_right="Boolean. If you wish to keep right data.")
+    async def delete_split_value(self, interaction: discord.Interaction, quote_id: int, keep_left: bool = False, keep_right: bool = False):
+        result = databaseUtility.remove_quote_splits(quote_id, interaction.guild_id, keep_left, keep_right)
+        if result:
+            await interaction.response.send_message("I have managed to change split data records as a result of your request!")
+        else:
+            await interaction.response.send_message("You asked to keep both sets of split data. Please only set either keep_left or keep_right to True, not both! No data has been changed.")
 
     @quotes.command(name="total_added")
     @app_commands.describe(author="Optional, the user who's total number of quotes they've added.")

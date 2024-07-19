@@ -192,3 +192,28 @@ def get_quote_splits(quote_id, server_id):
             conn.close()
     else:
         raise QuoteNotFoundException
+
+
+def remove_quote_splits(quote_id, server_id, keep_left, keep_right):
+    quote = get_quote(quote_id, server_id)
+    conn = None
+    records_change = False
+    try:
+        conn = sqlite3.connect(path)
+        cur = conn.cursor()
+        if not keep_left and not keep_right:
+            to_ex = '''DELETE FROM remix_split where quote_id = ?'''
+            cur.execute(to_ex, (quote[0],))
+            records_change = True
+        elif keep_right:
+            to_ex = '''UPDATE remix_split SET left_split_end = ? where quote_id = ?'''
+            cur.execute(to_ex, (None, quote[0],))
+            records_change = True
+        elif keep_left:
+            to_ex = '''UPDATE remix_split SET right_split_start = ? where quote_id = ?'''
+            cur.execute(to_ex, (None, quote[0],))
+            records_change = True
+        conn.commit()
+    finally:
+        conn.close()
+
