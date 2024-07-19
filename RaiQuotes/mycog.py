@@ -15,10 +15,7 @@ configPath = r"D:\Springfield\cogs\RaiQuotes\ApiConfig.ini"
 config = configparser.ConfigParser()
 
 # testing path
-path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
-# configPath = r"C:\Users\olijo\Documents\discordRedbot\ApiConfig.ini"
-# config.read(configPath)
-# apiUrl = config['DEFAULT']['Api']
+# path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 
 class Mycog(commands.Cog):
@@ -129,6 +126,7 @@ class Mycog(commands.Cog):
         total = len(rows)
         await interaction.response.send_message('There are {} quotes saved in this server. Good work everyone ~'.format(total))
 
+    # OLD CODE, DEPRECATE
     @commands.command()
     async def searchQuotes(self, ctx, word):
         """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
@@ -183,6 +181,7 @@ class Mycog(commands.Cog):
             if conn:
                 conn.close()
 
+    # OLD CODE, DEPRECATE
     @commands.command()
     async def searchQuotesStrict(self, ctx, word):
         """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
@@ -308,18 +307,31 @@ class Mycog(commands.Cog):
                 id2 = id_swap
 
             if len(q1) != 0:
-                chop = int(len(q1) / 2)
-                while q1[chop] != ' ' and chop != len(q1) - 1:
+                splits = databaseUtility.get_quote_splits(id1, interaction.guild_id)
+                if splits is not None:
+                    if splits[0] is not None:
+                        chop = splits[0]
+                    else:
+                        chop = int(len(q1) / 2) - 1
+                else:
+                    chop = int(len(q1) / 2) - 1
+                while q1[chop] != ' ' and chop < len(q1) - 1:
                     chop = chop + 1
-                if chop < len(q1):
+                if chop < len(q1) - 1:
                     remixed = q1[:chop]
                 else:
                     remixed = q1
             if len(q2) != 0:
-                chop = int(len(q2) / 2)
-                while q2[chop] != ' ' and chop != 0:
+                splits = databaseUtility.get_quote_splits(id2, interaction.guild_id)
+                if splits is not None:
+                    if splits[1]:
+                        chop = splits[1]
+                    else:
+                        chop = int(len(q2) / 2) - 1
+                else:
+                    chop = int(len(q2) / 2) - 1
+                while q2[chop] != ' ' and chop > 0:
                     chop = chop - 1
-
                 if chop == 0:
                     remixed = remixed + ' '
                 remixed = remixed + q2[chop:]
@@ -329,6 +341,52 @@ class Mycog(commands.Cog):
             await interaction.response.send_message(embed=emb)
         else:
             await interaction.response.send_message("I did not find enough quotes to remix for your request.")
+
+    @quotes.command(name="add_split_value")
+    @app_commands.describe(quote_id="The quote you're adding split values for", left_split_end="Where the left side of a quote split should end relative to the start of the quote for remix purposes. Required if not using right_split_start.", right_split_start="Where the right side of a quote split should start relative to the start of a quote for remix purposes. Required if not using left_split_end.")
+    async def add_split_value(self, interaction: discord.Interaction, quote_id: int, left_split_end: int = None, right_split_start: int = None):
+        result = databaseUtility.add_quote_splits(quote_id, interaction.guild_id, left_split_end, right_split_start)
+        quote = databaseUtility.get_quote(quote_id, interaction.guild_id)
+        text = quote[8]
+        if text != 0:
+            splits = databaseUtility.get_quote_splits(quote_id, interaction.guild_id)
+            if splits is not None:
+                if splits[0] is not None:
+                    chop = splits[0]
+                else:
+                    chop = int(len(text) / 2) - 1
+            else:
+                chop = int(len(text) / 2) - 1
+            while text[chop] != ' ' and chop < len(text) - 1:
+                chop = chop + 1
+            if chop < len(text) - 1:
+                left_quote = text[:chop]
+            else:
+                left_quote = text
+
+            if splits is not None:
+                if splits[1]:
+                    chop = splits[1]
+                else:
+                    chop = int(len(text) / 2) - 1
+            else:
+                chop = int(len(text) / 2) - 1
+            while text[chop] != ' ' and chop > 0:
+                chop = chop - 1
+            right_quote = text[chop:]
+            if result[0]:
+                await interaction.response.send_message("No split data previously existed for that quote, I have added a new record for you!\n Here are your new splits:```{}``` ```{}```".format(left_quote, right_quote))
+            else:
+                await interaction.response.send_message("I have updated an existing record with the requested values for you!\n Here are your new splits:```{}``` ```{}```".format(left_quote, right_quote))
+
+    @quotes.command(name="delete_split_values")
+    @app_commands.describe(quote_id="Which quote you want to remove split value for.", keep_left="Boolean. If you wish to keep left data.", keep_right="Boolean. If you wish to keep right data.")
+    async def delete_split_value(self, interaction: discord.Interaction, quote_id: int, keep_left: bool = False, keep_right: bool = False):
+        result = databaseUtility.remove_quote_splits(quote_id, interaction.guild_id, keep_left, keep_right)
+        if result:
+            await interaction.response.send_message("I have managed to change split data records as a result of your request!")
+        else:
+            await interaction.response.send_message("You asked to keep both sets of split data. Please only set either keep_left or keep_right to True, not both! No data has been changed.")
 
     @quotes.command(name="total_added")
     @app_commands.describe(author="Optional, the user who's total number of quotes they've added.")
