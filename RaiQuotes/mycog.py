@@ -346,10 +346,38 @@ class Mycog(commands.Cog):
     @app_commands.describe(quote_id="The quote you're adding split values for", left_split_end="Where the left side of a quote split should end relative to the start of the quote for remix purposes. Required if not using right_split_start.", right_split_start="Where the right side of a quote split should start relative to the start of a quote for remix purposes. Required if not using left_split_end.")
     async def add_split_value(self, interaction: discord.Interaction, quote_id: int, left_split_end: int = None, right_split_start: int = None):
         result = databaseUtility.add_quote_splits(quote_id, interaction.guild_id, left_split_end, right_split_start)
-        if result[0]:
-            await interaction.response.send_message("No split data previously existed for that quote, I have added a new record for you!")
-        else:
-            await interaction.response.send_message("I have updated an existing record with the requested values for you!")
+        quote = databaseUtility.get_quote(quote_id, interaction.guild_id)
+        text = quote[8]
+        if text != 0:
+            splits = databaseUtility.get_quote_splits(quote_id, interaction.guild_id)
+            if splits is not None:
+                if splits[0] is not None:
+                    chop = splits[0]
+                else:
+                    chop = int(len(text) / 2) - 1
+            else:
+                chop = int(len(text) / 2) - 1
+            while text[chop] != ' ' and chop < len(text):
+                chop = chop + 1
+            if chop < len(text):
+                left_quote = text[:chop]
+            else:
+                left_quote = text
+
+            if splits is not None:
+                if splits[1]:
+                    chop = splits[1]
+                else:
+                    chop = int(len(text) / 2) - 1
+            else:
+                chop = int(len(text) / 2) - 1
+            while text[chop] != ' ' and chop > 0:
+                chop = chop - 1
+            right_quote = text[chop:]
+            if result[0]:
+                await interaction.response.send_message("No split data previously existed for that quote, I have added a new record for you!\n Here are your new splits:\n ```{}```\n```{}```".format(left_quote, right_quote))
+            else:
+                await interaction.response.send_message("I have updated an existing record with the requested values for you!\n Here are your new splits:\n ```{}```\n```{}```".format(left_quote, right_quote))
 
     @quotes.command(name="delete_split_values")
     @app_commands.describe(quote_id="Which quote you want to remove split value for.", keep_left="Boolean. If you wish to keep left data.", keep_right="Boolean. If you wish to keep right data.")
