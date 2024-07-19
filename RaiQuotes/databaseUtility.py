@@ -1,7 +1,10 @@
 import sqlite3
 from sqlite3 import Error
-path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
-# path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
+
+from RaiQuotes.exceptions import QuoteNotFoundException
+
+# path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
+path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 
 def insert_quote(server_id, added_by, author_id, quote, channel_id, message_id, image_url=None):
@@ -76,6 +79,7 @@ def get_all_quotes(server_id, member=None):
         if conn:
             conn.close()
 
+
 def get_quotes_added_by(server_id, member):
     conn = None
     try:
@@ -105,3 +109,20 @@ def delete_quote(server_id, quote_id):
     finally:
         if conn:
             conn.close()
+
+
+def get_quote_splits(quote_id, server_id):
+    quote = get_quote(quote_id, server_id)
+    if quote is not None:
+        #   check if quote has remix entry
+        conn = None
+        try:
+            conn = sqlite3.connect(path)
+            cur = conn.cursor()
+            to_ex = '''SELECT * FROM remix_split where quote_id=?'''
+            cur.execute(to_ex, (quote[0],))
+            print(cur.fetchall())
+        finally:
+            conn.close()
+    else:
+        raise QuoteNotFoundException

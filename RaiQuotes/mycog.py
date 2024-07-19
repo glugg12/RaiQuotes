@@ -15,10 +15,7 @@ configPath = r"D:\Springfield\cogs\RaiQuotes\ApiConfig.ini"
 config = configparser.ConfigParser()
 
 # testing path
-path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
-# configPath = r"C:\Users\olijo\Documents\discordRedbot\ApiConfig.ini"
-# config.read(configPath)
-# apiUrl = config['DEFAULT']['Api']
+# path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 
 class Mycog(commands.Cog):
@@ -129,6 +126,7 @@ class Mycog(commands.Cog):
         total = len(rows)
         await interaction.response.send_message('There are {} quotes saved in this server. Good work everyone ~'.format(total))
 
+    # OLD CODE, DEPRECATE
     @commands.command()
     async def searchQuotes(self, ctx, word):
         """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
@@ -183,6 +181,7 @@ class Mycog(commands.Cog):
             if conn:
                 conn.close()
 
+    # OLD CODE, DEPRECATE
     @commands.command()
     async def searchQuotesStrict(self, ctx, word):
         """Search for all quotes containing a word. Print's a table, may not show entirerty of longer quotes"""
