@@ -315,7 +315,7 @@ class Mycog(commands.Cog):
                         chop = int(len(q1) / 2) - 1
                 else:
                     chop = int(len(q1) / 2) - 1
-                while q1[chop] != ' ' and chop <= len(q1):
+                while q1[chop] != ' ' and chop <= len(q1) - 1:
                     chop = chop + 1
                     print(chop)
                 if chop < len(q1):
