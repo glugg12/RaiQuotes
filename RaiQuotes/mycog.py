@@ -317,8 +317,6 @@ class Mycog(commands.Cog):
                     chop = int(len(q1) / 2) - 1
                 while q1[chop] != ' ' and chop < len(q1) - 1:
                     chop = chop + 1
-                    print("len {}".format(len(q1)))
-                    print(chop)
                 if chop < len(q1) - 1:
                     remixed = q1[:chop]
                 else:
@@ -359,9 +357,9 @@ class Mycog(commands.Cog):
                     chop = int(len(text) / 2) - 1
             else:
                 chop = int(len(text) / 2) - 1
-            while text[chop] != ' ' and chop < len(text):
+            while text[chop] != ' ' and chop < len(text) - 1:
                 chop = chop + 1
-            if chop < len(text):
+            if chop < len(text) - 1:
                 left_quote = text[:chop]
             else:
                 left_quote = text
