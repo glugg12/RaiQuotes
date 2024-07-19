@@ -126,20 +126,33 @@ def add_quote_splits(quote_id, server_id, left_split_end, right_split_start):
 
             if cur.fetchone() is None:
                 # need to make new record
+                if left_split_end > len(quote[8]) and not None:
+                    left_split_end = len(quote[8])
+
+                if right_split_start > len(quote[8]) and not None:
+                    right_split_start = int(len(quote[8])/2)
                 split_ex = '''INSERT INTO remix_split (left_split_end, right_split_start, quote_id) VALUES (?,?,?)'''
                 cur.execute(split_ex, (left_split_end, right_split_start, quote[0],))
                 new_record = True
             else:
                 # record exists, update
                 if left_split_end is not None and right_split_start is not None:
+                    if left_split_end > len(quote[8]):
+                        left_split_end = len(quote[8])
+                    if right_split_start > len(quote[8]):
+                        right_split_start = int(len(quote[8])/2)
                     split_ex = '''UPDATE remix_split SET left_split_end = ? AND right_split_start = ? WHERE quote_id = ?'''
                     cur.execute(split_ex, (left_split_end, right_split_start, quote[0],))
                     updated_record = True
                 elif left_split_end is not None:
+                    if left_split_end > len(quote[8]):
+                        left_split_end = len(quote[8])
                     split_ex = '''UPDATE remix_split SET left_split_end = ? WHERE quote_id = ?'''
                     cur.execute(split_ex, (left_split_end, right_split_start, quote[0],))
                     updated_record = True
                 elif right_split_start is not None:
+                    if right_split_start > len(quote[8]):
+                        right_split_start = int(len(quote[8])/2)
                     split_ex = '''UPDATE remix_split SET right_split_start = ? WHERE quote_id = ?'''
                     cur.execute(split_ex, (left_split_end, right_split_start, quote[0],))
                     updated_record = True
