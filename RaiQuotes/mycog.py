@@ -315,7 +315,7 @@ class Mycog(commands.Cog):
                         chop = int(len(q1) / 2)
                 else:
                     chop = int(len(q1) / 2)
-                while q1[chop] != ' ' and chop < len(q1) - 1:
+                while q1[chop] != ' ' and chop <= len(q1) - 1:
                     chop = chop + 1
                 if chop < len(q1):
                     remixed = q1[:chop]
@@ -330,7 +330,7 @@ class Mycog(commands.Cog):
                         chop = int(len(q2) / 2)
                 else:
                     chop = int(len(q2) / 2)
-                while q2[chop] != ' ' and chop > 0:
+                while q2[chop] != ' ' and chop >= 0:
                     chop = chop - 1
                 if chop == 0:
                     remixed = remixed + ' '
