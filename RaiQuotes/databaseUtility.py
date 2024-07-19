@@ -221,6 +221,7 @@ def remove_quote_splits(quote_id, server_id, keep_left, keep_right):
             cur.execute(to_ex, (None, quote[0],))
             records_change = True
         conn.commit()
+        return records_change
     finally:
         conn.close()
 
