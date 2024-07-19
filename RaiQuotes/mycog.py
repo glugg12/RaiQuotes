@@ -324,6 +324,7 @@ class Mycog(commands.Cog):
                     remixed = q1
             if len(q2) != 0:
                 splits = databaseUtility.get_quote_splits(rows[randval2][2], interaction.guild_id)
+                print(splits)
                 if splits is not None:
                     if splits[1]:
                         chop = splits[1]
