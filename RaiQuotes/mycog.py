@@ -10,7 +10,7 @@ import configparser
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
-path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
+path = r"C:\Users\starg\Documents2\Springfield\cogs\RaiQuotes\quotes.sqlite"
 configPath = r"D:\Springfield\cogs\RaiQuotes\ApiConfig.ini"
 config = configparser.ConfigParser()
 
