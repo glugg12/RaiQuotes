@@ -3,7 +3,7 @@ from sqlite3 import Error
 
 from RaiQuotes.exceptions import QuoteNotFoundException, NoSplitValuesException
 
-path = r"D:\Springfield\cogs\RaiQuotes\quotes.sqlite"
+path = r"C:\Users\starg\Documents2\Springfield\cogs\RaiQuotes\quotes.sqlite"
 # path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 
