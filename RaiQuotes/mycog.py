@@ -69,7 +69,20 @@ class Mycog(commands.Cog):
         message_id = interaction.id
         quote_id = databaseUtility.insert_quote(server_id, added_by, author_id, quote_text, channel_id, message_id)
         if quote_id is not None:
-            await interaction.response.send_message('I have saved that quote for you under ID {}, safe and sound ~'.format(quote_id))
+            # get member from server list
+            # probs eventually have to handle if member somehow no longer in list just in case but whatever
+            emb = None
+            quote_member = None
+            added_member = None
+            for member in interaction.guild.members:
+                if quote_author.id == member.id:
+                    quote_member = member
+                if added_by == member.id:
+                    added_member = member
+            emb = discord.Embed(title='{}'.format(quote_member.display_name), description='{}'.format(quote_text), colour=0x00ff00)
+            emb.set_footer(text='Added by: {} | Quote ID: {}'.format(added_member.display_name, quote_id))
+            emb.set_thumbnail(url='{}'.format(quote_member.display_avatar))
+            await interaction.response.send_message('I have saved that quote for you under ID {}. Here is how it should look!'.format(quote_id), embed=emb)
         else:
             await interaction.response.send_message('I have encountered an error when adding that quote. insert_quote returned None.')
 
