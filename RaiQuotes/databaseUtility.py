@@ -4,7 +4,7 @@ from sqlite3 import Error
 from RaiQuotes.exceptions import QuoteNotFoundException, NoSplitValuesException
 
 path = r"C:\Users\starg\Documents2\Springfield\cogs\RaiQuotes\quotes.sqlite"
-path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
+# path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 
 def insert_quote(server_id, added_by, author_id, quote, channel_id, message_id, image_url=None):
