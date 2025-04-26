@@ -5,7 +5,7 @@ import sqlite3
 from sqlite3 import Error
 import random
 from random import randint
-from datetime import datetime
+from datetime
 import configparser
 from discord.ext import commands, tasks
 intents = discord.Intents.default()
