@@ -30,7 +30,7 @@ class Mycog(commands.Cog):
     
     quotes = app_commands.Group(name="quotes", description="Rai quotes commands")
 
-    @tasks.loop(time=time)
+    @quotes.tasks.loop(time=time)
     async def my_task(self):
         print("TASK")
 
