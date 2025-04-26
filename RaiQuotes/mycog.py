@@ -19,7 +19,7 @@ config = configparser.ConfigParser()
 path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 utc = datetime.timezone.utc
-time = datetime.time(hour=20, minute=51, tzinfo=utc)
+time = datetime.time(hour=20, minute=53, tzinfo=utc)
 
 class Mycog(commands.Cog):
     """RaiQuotes Cog"""
