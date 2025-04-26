@@ -7,6 +7,7 @@ import random
 from random import randint
 import datetime
 import configparser
+from discord.ext import tasks
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
