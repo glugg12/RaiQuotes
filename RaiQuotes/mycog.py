@@ -1,4 +1,4 @@
-from redbot.core import commands, app_commands
+from redbot.core import commands, app_commands, tasks
 from RaiQuotes import databaseUtility
 import discord
 import sqlite3
@@ -18,7 +18,7 @@ config = configparser.ConfigParser()
 path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 utc = datetime.timezone.utc
-time = datetime.time(hour=21, minute=40, tzinfo=utc)
+time = datetime.time(hour=21, minute=35, tzinfo=utc)
 
 class Mycog(commands.Cog):
     """RaiQuotes Cog"""
@@ -30,7 +30,7 @@ class Mycog(commands.Cog):
     
     quotes = app_commands.Group(name="quotes", description="Rai quotes commands")
 
-    @quotes.tasks.loop(time=time)
+    @tasks.loop(time=time)
     async def my_task(self):
         print("TASK")
 
