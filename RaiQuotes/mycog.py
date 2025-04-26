@@ -7,7 +7,6 @@ import random
 from random import randint
 import datetime
 import configparser
-from discord.ext import commands, tasks
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
@@ -19,7 +18,7 @@ config = configparser.ConfigParser()
 path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 utc = datetime.timezone.utc
-time = datetime.time(hour=21, minute=35, tzinfo=utc)
+time = datetime.time(hour=21, minute=40, tzinfo=utc)
 
 class Mycog(commands.Cog):
     """RaiQuotes Cog"""
