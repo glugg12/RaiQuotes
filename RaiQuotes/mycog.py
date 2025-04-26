@@ -1,4 +1,4 @@
-from redbot.core import commands, app_commands, tasks
+from redbot.core import commands, app_commands
 from RaiQuotes import databaseUtility
 import discord
 import sqlite3
