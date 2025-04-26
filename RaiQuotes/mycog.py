@@ -14,8 +14,8 @@ path = r"C:\Users\starg\Documents2\Springfield\cogs\RaiQuotes\quotes.sqlite"
 configPath = r"D:\Springfield\cogs\RaiQuotes\ApiConfig.ini"
 config = configparser.ConfigParser()
 
-# testing path
-# path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
+testing path
+path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 
 class Mycog(commands.Cog):
@@ -24,6 +24,10 @@ class Mycog(commands.Cog):
         self.bot = bot
 
     quotes = app_commands.Group(name="quotes", description="Rai quotes commands")
+
+    @client.event
+    async def on_ready():
+        print("READY")
 
     @quotes.command(name="get_quote")
     @app_commands.describe(quote_id="The id of the quote you want to find.")
