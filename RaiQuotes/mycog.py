@@ -7,6 +7,7 @@ import random
 from random import randint
 from datetime import datetime
 import configparser
+import asyncio
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
@@ -20,15 +21,21 @@ path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 class Mycog(commands.Cog):
     """RaiQuotes Cog"""
+    def qotd():
+        print("QOTD")
+
+    schedule.every().day.at("21:20").do(qotd)
+
+    async def task():
+        while True:
+            schedule.run_pending()
+            await asyncio.sleep(1)
+    
     def __init__(self, bot):
-        print("INIT")
         self.bot = bot
-
+        client.loop.create_task(task())
+    
     quotes = app_commands.Group(name="quotes", description="Rai quotes commands")
-
-    @client.event
-    async def on_ready():
-        print("READY")
 
     @quotes.command(name="get_quote")
     @app_commands.describe(quote_id="The id of the quote you want to find.")
