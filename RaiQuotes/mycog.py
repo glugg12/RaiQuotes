@@ -14,7 +14,7 @@ path = r"C:\Users\starg\Documents2\Springfield\cogs\RaiQuotes\quotes.sqlite"
 configPath = r"D:\Springfield\cogs\RaiQuotes\ApiConfig.ini"
 config = configparser.ConfigParser()
 
-testing path
+# testing path
 path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 
