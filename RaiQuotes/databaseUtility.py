@@ -60,8 +60,6 @@ def get_quote(quote_id, server_id):
 
 
 def get_all_quotes(server_id, member=None):
-    print(os.path.dirname(os.path.abspath(__file__)))
-    print(path)
     conn = None
     try:
         conn = sqlite3.connect(path)
