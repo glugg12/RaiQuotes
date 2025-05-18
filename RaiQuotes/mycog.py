@@ -25,6 +25,7 @@ class Mycog(commands.Cog):
     """RaiQuotes Cog"""
     
     def __init__(self, bot):
+        print(path)
         self.bot = bot
         
     
