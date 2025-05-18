@@ -25,7 +25,7 @@ class Mycog(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot
-        self.qotd.start()
+        # self.qotd.start()
         
     
     quotes = app_commands.Group(name="quotes", description="Rai quotes commands")
