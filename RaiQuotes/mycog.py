@@ -9,12 +9,11 @@ from datetime import datetime
 from datetime import timezone
 import configparser
 from discord.ext import tasks
-from pathlib import Path
+import os
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
-parent = Path(__file__).parent.absolute()
-path = r"./quotes.sqlite"
+path = os.environ['QUOTES_DB_PATH']
 
 # testing path
 # path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
