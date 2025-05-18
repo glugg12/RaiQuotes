@@ -3,7 +3,7 @@ from sqlite3 import Error
 import os
 from RaiQuotes.exceptions import QuoteNotFoundException, NoSplitValuesException
 
-path = os.environ['QUOTES_DB_PATH']
+path = f"{os.environ['QUOTES_DB_PATH']}"
 # path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 
