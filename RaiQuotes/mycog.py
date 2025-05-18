@@ -11,29 +11,116 @@ from discord.ext import tasks
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
-path = r"C:\Users\starg\Documents2\Springfield\cogs\RaiQuotes\quotes.sqlite"
+path = r".\quotes.sqlite"
 configPath = r"D:\Springfield\cogs\RaiQuotes\ApiConfig.ini"
 config = configparser.ConfigParser()
 
 # testing path
-path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
+# path = r"C:\Users\olijo\Documents\discordRedbot\quotes.sqlite"
 
 utc = datetime.timezone.utc
-time = datetime.time(hour=20, minute=53, tzinfo=utc)
+time = datetime.time(hour=20, minute=00, tzinfo=utc)
 
 class Mycog(commands.Cog):
     """RaiQuotes Cog"""
     
     def __init__(self, bot):
         self.bot = bot
-        self.my_task.start()
+        self.qotd.start()
         
     
     quotes = app_commands.Group(name="quotes", description="Rai quotes commands")
 
     @tasks.loop(time=time)
-    async def my_task(self):
-        print("TASK")
+    async def qotd(self):
+        random.seed(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+        # choose if quote should be remixed or pure
+        remix_chance = randint(1, 10)
+        # 10% for not remixed
+        if remix_chance != 10:
+            rows = databaseUtility.get_all_quotes(self.bot.guild_id)
+            length = len(rows)
+            if length > 1:
+                randval1 = randint(0, length - 1)
+                randval2 = randint(0, length - 1)
+                matched = True
+                while matched:
+                    if randval1 == randval2:
+                        matched = True
+                        randval2 = randint(0, length - 1)
+                    else:
+                        matched = False
+                url = ''
+                remixed = ''
+                # quote 1
+                n1 = '{}'.format(rows[randval1][7])
+                q1 = '{}'.format(rows[randval1][8])
+                id1 = rows[randval1][2]
+                for member in self.bot.guild.members:
+                    if rows[randval1][6] == member.id:
+                        n1 = '{}'.format(member.display_name)
+                if rows[randval1][10] is not None and rows[randval1][8] is not None:
+                    url = '{}'.format(rows[randval1][10])
+                    url = '{}'.format(url)
+                # quote 2
+                n2 = '{}'.format(rows[randval2][7])
+                q2 = '{}'.format(rows[randval2][8])
+                id2 = rows[randval2][2]
+                for member in self.bot.guild.members:
+                    if rows[randval2][6] == member.id:
+                        n2 = '{}'.format(member.display_name)
+                if rows[randval2][10] is not None and rows[randval2][8] is not None and url != '':
+                    url = '{}'.format(rows[randval2][10])
+                    url = '{}'.format(url)
+
+                # check if it should swap quote order
+                swap = randint(0, 1)
+                if swap == 1:
+                    n_swap = n1
+                    q_swap = q1
+                    id_swap = id1
+                    n1 = n2
+                    q1 = q2
+                    id1 = id2
+                    n2 = n_swap
+                    q2 = q_swap
+                    id2 = id_swap
+
+                if len(q1) != 0:
+                    splits = databaseUtility.get_quote_splits(id1, self.bot.guild_id)
+                    if splits is not None:
+                        if splits[0] is not None:
+                            chop = splits[0]
+                        else:
+                            chop = int(len(q1) / 2) - 1
+                    else:
+                        chop = int(len(q1) / 2) - 1
+                    while q1[chop] != ' ' and chop < len(q1) - 1:
+                        chop = chop + 1
+                    if chop < len(q1) - 1:
+                        remixed = q1[:chop]
+                    else:
+                        remixed = q1
+                if len(q2) != 0:
+                    splits = databaseUtility.get_quote_splits(id2, self.bot.guild_id)
+                    if splits is not None:
+                        if splits[1]:
+                            chop = splits[1]
+                        else:
+                            chop = int(len(q2) / 2) - 1
+                    else:
+                        chop = int(len(q2) / 2) - 1
+                    while q2[chop] != ' ' and chop > 0:
+                        chop = chop - 1
+                    if chop == 0:
+                        remixed = remixed + ' '
+                    remixed = remixed + q2[chop:]
+                emb = discord.Embed(title='{}'.format(n1 + ' + ' + n2), description='{}'.format(remixed), colour=0x00ff00)
+                emb.set_image(url='{}'.format(url))
+                emb.set_footer(text='Quote IDs: {} + {}'.format(id1, id2))
+                await interaction.response.send_message(embed=emb)
+            else:
+                await interaction.response.send_message("I did not find enough quotes to remix for your request.")
 
     @quotes.command(name="get_quote")
     @app_commands.describe(quote_id="The id of the quote you want to find.")
@@ -261,6 +348,7 @@ class Mycog(commands.Cog):
             if conn:
                 conn.close()
 
+    # TODO pull this remix quote out to a utility function as I can use it in multiple places
     @quotes.command(name="remix")
     @app_commands.describe(quote_author="Optional, cannot be used with remix_id. The author that you want the remix quotes to pull from.", remix_id="Optional, cannot be used with quote_author. The ID of the quote to include in the remix.")
     async def remix(self, interaction: discord.Interaction, quote_author: discord.Member = None, remix_id: int = None):
