@@ -23,8 +23,10 @@ class AddItemModal(discord.ui.Modal, title="Add wishlist item"):
     category_dropdown = discord.ui.select(placeholder="Category", min_values = 1, options = ["Mods", "Prime Parts"])
 
     async def on_submit(self, interaction: discord.Interaction):
+        console.log("a")
 
-        async def on_submit(self, interaction: discord.Interaction, error):
+    async def on_submit(self, interaction: discord.Interaction, error):
+        console.log("a")
 
 class FrameCog(commands.Cog):
     """RaiQuotes Cog"""
