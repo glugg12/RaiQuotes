@@ -22,7 +22,8 @@ category_mod = discord.SelectOption(label="Mod")
 category_primes = discord.SelectOption(label="Prime Parts")
 
 class AddItemModal(discord.ui.Modal, title="Add wishlist item"):
-    category_dropdown = discord.ui.select(placeholder="Category", min_values = 1, options = [category_mod, category_primes])
+    # category_dropdown = discord.ui.select(placeholder="Category", min_values = 1, max_values = 2, options = [category_mod, category_primes])
+    name = discord.ui.TextInput(label='Name')
 
     async def on_submit(self, interaction: discord.Interaction):
         await interaction.response.send_message("A")
