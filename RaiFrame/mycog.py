@@ -20,8 +20,8 @@ client = discord.Client(intents=intents)
 # time = datetime.time(hour=20, minute=00, tzinfo=utc)
 
 class AddItemModal(discord.ui.Modal, title="Add wishlist item"):
-    category_mod = discord.SelectOption("Mod")
-    category_primes = discord.SelectOption("Prime Parts")
+    category_mod = discord.SelectOption(label="Mod")
+    category_primes = discord.SelectOption(label="Prime Parts")
     category_dropdown = discord.ui.select(placeholder="Category", min_values = 1, options = [category_mod, category_primes])
 
     async def on_submit(self, interaction: discord.Interaction):
