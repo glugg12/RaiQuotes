@@ -18,17 +18,17 @@ client = discord.Client(intents=intents)
 
 # utc = timezone.utc
 # time = datetime.time(hour=20, minute=00, tzinfo=utc)
+category_mod = discord.SelectOption(label="Mod")
+category_primes = discord.SelectOption(label="Prime Parts")
 
 class AddItemModal(discord.ui.Modal, title="Add wishlist item"):
-    category_mod = discord.SelectOption(label="Mod")
-    category_primes = discord.SelectOption(label="Prime Parts")
     category_dropdown = discord.ui.select(placeholder="Category", min_values = 1, options = [category_mod, category_primes])
 
     async def on_submit(self, interaction: discord.Interaction):
-        console.log("a")
+        await interaction.response.send_message("A")
 
     async def on_submit(self, interaction: discord.Interaction, error):
-        console.log("a")
+        await interaction.response.send_message("B")
 
 class FrameCog(commands.Cog):
     """RaiQuotes Cog"""
