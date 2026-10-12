@@ -26,7 +26,7 @@ class Mycog(commands.Cog):
         self.bot = bot
         
     
-    quotes = app_commands.Group(name="quotes", description="Rai quotes commands")
+    quotes = app_commands.AppCommandGroup(name="quotes", description="Rai quotes commands")
 
     @quotes.command(name="get_quote")
     @app_commands.describe(quote_id="The id of the quote you want to find.")
