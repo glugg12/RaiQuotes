@@ -418,7 +418,6 @@ class Mycog(commands.Cog):
                 '<@!{}> has added {} quotes in this server. Keep it up ~'.format(author.id, total))
 
     @quotes.command(name="scan_channel")
-    @app_commands.describe(channel="The channel you want to scan for quotes.")
     async def scan_channel(self, interaction: discord.Interaction):
         """Scans a channel for quotes and adds them to the database"""
         await interaction.response.send_message("I have started scanning for quotes.")
