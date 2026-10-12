@@ -1,3 +1,5 @@
+from email import message
+
 from redbot.core import commands, app_commands
 from RaiQuotes import databaseUtility
 import discord
@@ -423,8 +425,9 @@ class Mycog(commands.Cog):
         await interaction.response.send_message("I have started scanning for quotes.")
         count = 0
         channel = interaction.guild.get_channel(331960438113959950)
-        messages = [message async for message in channel.history(limit=10)]
-        print(messages)
+        # messages = [message async for message in channel.history(limit=10)]
+        async for message in channel.history(limit=200):
+            print(message)
             # if message.content.startswith('!addquote'):
             #     count = count + 1
             #     author_id = message.author.id
