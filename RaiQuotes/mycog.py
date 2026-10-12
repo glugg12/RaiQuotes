@@ -421,7 +421,7 @@ class Mycog(commands.Cog):
     @app_commands.describe(channel="The channel you want to scan for quotes.")
     async def scan_channel(self, interaction: discord.Interaction):
         """Scans a channel for quotes and adds them to the database"""
-        await interaction.response.send_message("I have started scanning <#{}> for quotes. This may take a while depending on how many messages are in the channel.".format(channel.id))
+        await interaction.response.send_message("I have started scanning for quotes.")
         count = 0
         print(discord.interaction.channel)
         messages = discord.interaction.channel.history(limit=10)
@@ -436,7 +436,7 @@ class Mycog(commands.Cog):
             #     message_id = message.id
             #     databaseUtility.insert_quote(server_id, added_by, author_id, quote_text, channel_id, message_id)
 
-        await interaction.followup.send("I have finished scanning <#{}> for quotes. I found {} quotes and added them to the database.".format(channel.id, count))
+        await interaction.followup.send("I have finished scanning for quotes.")
 
     # @quotes.command()
     # async def raihepl(self, interaction: discord.Interaction):
