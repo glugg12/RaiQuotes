@@ -423,7 +423,7 @@ class Mycog(commands.Cog):
         await interaction.response.send_message("I have started scanning for quotes.")
         count = 0
         print(discord.Interaction.channel)
-        messages = discord.interaction.channel.history(limit=10)
+        messages = discord.Interaction.channel.history(limit=10)
         print(messages)
             # if message.content.startswith('!addquote'):
             #     count = count + 1
