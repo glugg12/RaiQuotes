@@ -427,7 +427,7 @@ class Mycog(commands.Cog):
         channel = interaction.guild.get_channel(331960438113959950)
         # messages = [message async for message in channel.history(limit=10)]
         async for message in channel.history(limit=200):
-            print(message)
+            print(message.content)
             # if message.content.startswith('!addquote'):
             #     count = count + 1
             #     author_id = message.author.id
