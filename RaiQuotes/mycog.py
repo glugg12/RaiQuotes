@@ -424,7 +424,7 @@ class Mycog(commands.Cog):
         await interaction.response.send_message("I have started scanning <#{}> for quotes. This may take a while depending on how many messages are in the channel.".format(channel.id))
         count = 0
         print(channel)
-        messages = await channel.history(limit=10).flatten()
+        messages = await discord.utils.get(interaction.guild.text_channels, name='general').history(limit=10).flatten()
         print(messages)
             # if message.content.startswith('!addquote'):
             #     count = count + 1
