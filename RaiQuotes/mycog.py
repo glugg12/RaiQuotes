@@ -430,7 +430,7 @@ class Mycog(commands.Cog):
         async for message in channel.history(limit=50):
             print("-------------------------------------------------------")
             print(message.interaction_metadata)
-            print(message.original_response)
+            print(message.original_response_message)
             # if message.content.startswith('!addquote'):
             #     count = count + 1
             #     author_id = message.author.id
