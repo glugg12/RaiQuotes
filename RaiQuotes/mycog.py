@@ -426,6 +426,7 @@ class Mycog(commands.Cog):
         count = 0
         channel = interaction.guild.get_channel(331960438113959950)
         # messages = [message async for message in channel.history(limit=10)]
+        print("Printing Messages")
         async for message in channel.history(limit=50):
             print("-------------------------------------------------------")
             print(message.interaction_metadata)
