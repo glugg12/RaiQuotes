@@ -441,8 +441,8 @@ class Mycog(commands.Cog):
             #     databaseUtility.insert_quote(server_id, added_by, author_id, quote_text, channel_id, message_id)
 
         print("PRINTING TEST MESSAGE")
-        mescontent = await channel.fetch_message(1559362381795033149).content
-        print(mescontent)
+        mescontent = await channel.fetch_message(1559362381795033149)
+        print(mescontent.content)
 
         await interaction.followup.send("I have finished scanning for quotes.")
 
