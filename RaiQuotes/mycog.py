@@ -432,7 +432,7 @@ class Mycog(commands.Cog):
             print(message.interaction_metadata)
             if message.interaction_metadata is not None:
                 print("INT CONTENT:")
-                print(message.interaction_metadata.interacted_message.content)
+                print(message.message_interaction_metadata)
             # if message.content.startswith('!addquote'):
             #     count = count + 1
             #     author_id = message.author.id
