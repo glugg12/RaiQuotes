@@ -426,7 +426,7 @@ class Mycog(commands.Cog):
         count = 0
         channel = interaction.guild.get_channel(331960438113959950)
         # messages = [message async for message in channel.history(limit=10)]
-        async for message in channel.history(limit=200):
+        async for message in channel.history(limit=10):
             print(message.system_content)
             # if message.content.startswith('!addquote'):
             #     count = count + 1
@@ -438,7 +438,7 @@ class Mycog(commands.Cog):
             #     message_id = message.id
             #     databaseUtility.insert_quote(server_id, added_by, author_id, quote_text, channel_id, message_id)
 
-        await interaction.response.send("I have finished scanning for quotes.")
+        await interaction.response.send_message("I have finished scanning for quotes.")
 
     # @quotes.command()
     # async def raihepl(self, interaction: discord.Interaction):
