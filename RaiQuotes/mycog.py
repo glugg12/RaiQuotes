@@ -430,6 +430,7 @@ class Mycog(commands.Cog):
         async for message in channel.history(limit=50):
             print("-------------------------------------------------------")
             print(message.interaction_metadata)
+            print(message.original_response)
             # if message.content.startswith('!addquote'):
             #     count = count + 1
             #     author_id = message.author.id
@@ -440,9 +441,6 @@ class Mycog(commands.Cog):
             #     message_id = message.id
             #     databaseUtility.insert_quote(server_id, added_by, author_id, quote_text, channel_id, message_id)
 
-        print("PRINTING TEST MESSAGE")
-        mescontent = await channel.fetch_message(1559362381795033149)
-        print(mescontent.content)
 
         await interaction.followup.send("I have finished scanning for quotes.")
 
